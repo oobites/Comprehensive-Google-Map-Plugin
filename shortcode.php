@@ -20,76 +20,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 	function cgmp_shortcode_googlemap_handler($attr, $content = null, $code = null) {
 
-	extract(shortcode_atts(array(
+	$shortcode_attribs = shortcode_atts(array(
 		'latitude' => 0,
 		'longitude' => 0,
 		'zoom' => '7',
 		'width' => 400,
 		'height' => 400,
 		'maptype' => 'ROADMAP',
-		'showmarker' => 'true',
-		'infobubblecontent' => '',
-		'animation' => 'DROP',
-		'm_aptypecontrol' => 'true',
 		'maptypecontrol' => 'true',
 		'pancontrol' => 'true',
-		'z_oomcontrol' => 'true',
 		'zoomcontrol' => 'true',
 		'scalecontrol' => 'true',
 		'streetviewcontrol' => 'true',
 		'scrollwheelcontrol' => 'false',
-		'addresscontent' => '',
 		'showbike' => 'false',
-		'bubbleautopan' => 'nada',
+		'bubbleautopan' => 'false',
 		'showtraffic' => 'false',
 		'showpanoramio' => 'false',
 		'addmarkerlist' => '',
 		'kml' => '',
-		'markerdirections' => 'true',
 		'directionhint' => 'false',
 		'mapalign' => 'center',
 		'panoramiouid' => '',
 		'addmarkermashup' => 'false',
 		'language' => 'default',
-		'addmarkermashupbubble' => 'false'
-	), $attr));
+		'addmarkermashupbubble' => 'false'), $attr);
+
+	extract($shortcode_attribs);
 	
 	$id = md5(time().' '.rand()); 
-
-	if ($bubbleautopan == 'nada') {
-		$bubbleautopan = 'false';
-	} 
-
-	
-	$controlOpts = array();
-
-	if ($m_aptypecontrol == "true" && $maptypecontrol == "false") {
-			$controlOpts['m_aptypecontrol'] = "false";
-
-	} else 	if ($m_aptypecontrol == "false" && $maptypecontrol == "true") {
-			$controlOpts['m_aptypecontrol'] = "false";
-
-	} else {
-			$controlOpts['m_aptypecontrol'] = "true";
-	} 
-
-	$controlOpts['pancontrol'] = $pancontrol;
-	
-	if ($z_oomcontrol == "true" && $zoomcontrol == "false") {
-			$controlOpts['z_oomcontrol'] = "false";
-
-	} else 	if ($z_oomcontrol == "false" && $zoomcontrol == "true") {
-			$controlOpts['z_oomcontrol'] = "false";
-
-	} else {
-			$controlOpts['z_oomcontrol'] = "true";
-	} 
-
-	
-	$controlOpts['scalecontrol'] = $scalecontrol;
-	$controlOpts['streetviewcontrol'] = $streetviewcontrol;
-	$controlOpts['scrollwheelcontrol'] = $scrollwheelcontrol;
-
 
 	if ($addmarkermashup == 'true') {
 		$addmarkerlist = make_marker_geo_mashup();
@@ -100,31 +59,27 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 	cgmp_set_google_map_language($language);
 	cgmp_google_map_init_scripts();
 
-	$map_settings = array();
-	$map_settings['id'] = $id;
-	$map_settings['zoom'] = $zoom;
-	$map_settings['maptype'] = $maptype;
-	$map_settings['bubbleautopan'] = $bubbleautopan;
-	$map_settings['maptypecontrol'] = $controlOpts['m_aptypecontrol'];
-	$map_settings['pancontrol'] = $controlOpts['pancontrol'];
-	$map_settings['zoomcontrol'] = $controlOpts['z_oomcontrol'];
-	$map_settings['scalecontrol'] = $controlOpts['scalecontrol'];
-	$map_settings['streetviewcontrol'] = $controlOpts['streetviewcontrol'];
-	$map_settings['scrollwheelcontrol'] = $controlOpts['scrollwheelcontrol'];
-	$map_settings['markerlist'] = $addmarkerlist;
-	$map_settings['addmarkermashup'] = $addmarkermashup;
-	$map_settings['geomashupbubble'] = $addmarkermashupbubble;
-	$map_settings['kml'] = cgmp_clean_kml($kml);
-	$map_settings['showbike'] = $showbike;
-	$map_settings['showtraffic'] = $showtraffic;
-	$map_settings['showpanoramio'] = $showpanoramio;
-	$map_settings['panoramiouid'] = cgmp_clean_panoramiouid($panoramiouid);
+	$map_data_properties = array();
+	$not_map_data_properties = array("title", "latitude", "longitude", "addresscontent", "addmarkerlist");
 
-	cgmp_map_data_injector(json_encode($map_settings));
+	foreach ($shortcode_attribs as $key => $value) {
+		$value = trim($value);
+		$value = (!isset($value) || empty($value)) ? '' : esc_attr(strip_tags($value));
 
-	$result = '';
-	$result .= cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint);
-	return $result;
+		if (!in_array($key, $not_map_data_properties)) {
+			$key = str_replace("hidden", "", $key);
+			$key = str_replace("_", "", $key);
+			$map_data_properties[$key] = $value;
+		}
+	}
+
+	$map_data_properties['id'] = $id;
+	$map_data_properties['markerlist'] = $addmarkerlist;
+	$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
+	$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
+
+	cgmp_map_data_injector(json_encode($map_data_properties));
+	return cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint);
 }
 endif;
 

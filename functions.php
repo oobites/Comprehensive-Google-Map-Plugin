@@ -77,7 +77,6 @@ endif;
 
 if ( !function_exists('cgmp_map_data_injector') ):
 	function cgmp_map_data_injector($map_json) {
-			//add_action('wp_footer', 'cgmp_map_data_hook_function', 15);
 			cgmp_map_data_hook_function( $map_json );
 	}
 endif;
@@ -85,42 +84,8 @@ endif;
 
 if ( !function_exists('cgmp_map_data_hook_function') ):
 	function cgmp_map_data_hook_function( $map_json ) {
-
-			echo PHP_EOL."<script type='text/javascript'>".PHP_EOL;
-			echo "//<![CDATA[".PHP_EOL;
-			echo "  if (typeof CGMPGlobal != 'undefined' && CGMPGlobal && CGMPGlobal.maps != null) {".PHP_EOL;
-			echo "		CGMPGlobal.maps.push(".$map_json.");".PHP_EOL;
-			echo "	}".PHP_EOL;
-			echo "//]]>".PHP_EOL;
-			echo "</script>".PHP_EOL;
+		echo PHP_EOL."<object class='map-data-placeholder'><param name='json-string' value='".$map_json."' /></object> ".PHP_EOL;
 	}
-endif;
-
-
-if ( !function_exists('cgmp_google_map_init_scripts') ):
-		function cgmp_google_map_init_scripts()  {
-
-			if (!is_admin()) {
-				wp_enqueue_style('cgmp-google-map-styles', CGMP_PLUGIN_URI . 'style.css', false, CGMP_VERSION, "screen");
-				$whitelist = array('localhost', '127.0.0.1');
-				if (!in_array($_SERVER['HTTP_HOST'], $whitelist)) {
-					wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework.min.js', array('jquery'), CGMP_VERSION, true);
-				} else {
-					wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework.js', array('jquery'), CGMP_VERSION, true);
-				}
-			}
-		}
-endif;
-
-
-if ( !function_exists('cgmp_google_map_init_global_js') ):
-		function cgmp_google_map_init_global_js()  {
-
-			if (!is_admin()) {
-				wp_enqueue_script('cgmp-google-map-json-trigger', CGMP_PLUGIN_JS. '/cgmp.trigger.js', false, CGMP_VERSION, false);
-				wp_localize_script('cgmp-google-map-json-trigger', 'CGMPGlobal', array('maps' => array(), 'sep' => CGMP_SEP, 'customMarkersUri' => CGMP_PLUGIN_IMAGES."/markers/", 'errors' => array('msgNoGoogle' => "<span class='attention'>ATTENTION!</span>(by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />It looks like Google map API could not be reached. Map generation was aborted!<br /><br />Please check that Google API script was loaded in the HTML source of your web page", "msgApiV2" => "<span class='attention'>ATTENTION!</span> (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />It looks like your webpage has reference to the older Google API v2, in addition to the API v3 used by Comprehensive Google Map! An example of plugin using the older API v2, can be 'jquery.gmap plugin'.<br /><br />Please disable conflicting plugin(s). In the meanwhile, map generation is aborted!", "msgMissingMarkers" => "<span class='attention'>ATTENTION!</span> (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />You did not specify any marker locations for the Google map! Please check the following when adding marker locations:<br /><b>[a]</b> In the shortcode builder, did you click the 'Add Marker' before generating shortcode?<br /><b>[b]</b> In the widget, did you click the 'Add Marker' before clicking 'Save'?<br /><br />Please revisit and reconfigure your widget or shortcode configuration. The map requires at least one marker location to be added..", "badAddresses" => "<span class='attention'>ATTENTION!</span> (by Comprehensive Google Map Plugin)<br /><br />Google found the following address(es) as NON-geographic and could not find them:<br /><br />[REPLACE]<br />Consider revising the address(es). Did you make a mistake when creating marker locations or did not provide a full geo-address? Alternatively use Google web to validate the address(es)", "kmlNotFound" => "The KML file could not be found. Most likely it is an invalid URL, or the document is not publicly available.", "kmlTooLarge" => "The KML file exceeds the file size limits of KmlLayer.", "kmlFetchError" => "The KML file could not be fetched.", "kmlDocInvalid" => "The KML file is not a valid KML, KMZ or GeoRSS document.", "kmlRequestInvalid" => "The KmlLayer is invalid.", "kmlLimits" => "The KML file exceeds the feature limits of KmlLayer.", "kmlTimedOut" => "The KML file could not be loaded within a reasonable amount of time.", "kmlUnknown" => "The KML file failed to load for an unknown reason.", "kml" => "<span class='attention'>ATTENTION!</span> (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />Google returned the following error when trying to load KML file:<br /><br />[MSG] ([STATUS])")));
-			}
-		}
 endif;
 
 
@@ -191,22 +156,12 @@ if ( !function_exists('is_map_shortcode_present') ):
 endif;
 
 
-
 if ( !function_exists('trim_marker_value') ):
 	function trim_marker_value(&$value)
 	{
     	$value = trim($value);
 	}
 endif;
-
-
-if ( !function_exists('trim_assoc_array_key_value') ):
-	function trim_assoc_array_key_value(&$value)
-	{
-    	$value = trim($value);
-	}
-endif;
-
 
 
 if ( !function_exists('update_markerlist_from_legacy_locations') ):
@@ -404,14 +359,7 @@ if ( !function_exists('cgmp_create_html_geohidden') ):
 				$style = $attr['style'];
 				$value = $attr['value'];
 
-				return "<script>
-							//if (typeof jQueryCgmp != 'undefined') {
-									//jQueryCgmp(document).ready(function() { 
-									//	hideShowCustomMarker('".$id."'); 
-									//});
-							//}
-						</script>
-						<input type='hidden' class='' id='".$id."' name='".$name."' value='".$value ."' />";
+				return "<input type='hidden' class='' id='".$id."' name='".$name."' value='".$value ."' />";
 		}
 endif;
 

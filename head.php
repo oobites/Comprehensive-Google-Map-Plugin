@@ -36,8 +36,6 @@ if ( !function_exists('cgmp_google_map_admin_add_script') ):
 					wp_enqueue_script('cgmp-jquery-tokeninput', CGMP_PLUGIN_JS. '/cgmp.tokeninput.js', array('jquery'), CGMP_VERSION, true);
 				}
 
-				wp_localize_script('cgmp-jquery-tokeninput', 'CGMPGlobal', array('sep' => CGMP_SEP, 'customMarkersUri' => CGMP_PLUGIN_IMAGES."/markers/"));
-				
 				if (!in_array($_SERVER['HTTP_HOST'], $whitelist)) {
 					wp_enqueue_script('comprehensive-google-map-plugin', CGMP_PLUGIN_JS. '/cgmp.admin.min.js', array('jquery'), CGMP_VERSION, true);
 				} else {
@@ -46,12 +44,56 @@ if ( !function_exists('cgmp_google_map_admin_add_script') ):
 		}
 endif;
 
+
 if ( !function_exists('cgmp_google_map_tab_script') ):
     	function cgmp_google_map_tab_script()  {
              	wp_enqueue_script('cgmp-jquery-tools-tabs', CGMP_PLUGIN_JS .'/jquery.tools.tabs.min.js', array('jquery'), '1.2.5', true);
         }
 endif;
 
+
+if ( !function_exists('cgmp_google_map_init_scripts') ):
+		function cgmp_google_map_init_scripts()  {
+
+			if (!is_admin()) {
+				wp_enqueue_style('cgmp-google-map-styles', CGMP_PLUGIN_URI . 'style.css', false, CGMP_VERSION, "screen");
+				$whitelist = array('localhost', '127.0.0.1');
+				if (!in_array($_SERVER['HTTP_HOST'], $whitelist)) {
+					wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework.min.js', array('jquery'), CGMP_VERSION, true);
+				} else {
+					wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework.js', array('jquery'), CGMP_VERSION, true);
+				}
+			}
+		}
+endif;
+
+
+if ( !function_exists('cgmp_google_map_init_global_admin_html_object') ):
+		function cgmp_google_map_init_global_admin_html_object()  {
+
+			if (is_admin()) {
+				echo "<object id='global-data-placeholder'>".PHP_EOL;
+				echo "    <param id='sep' name='sep' value='".CGMP_SEP."' />".PHP_EOL;
+				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;
+				echo "</object> ".PHP_EOL;
+			}
+		}
+endif;
+
+
+if ( !function_exists('cgmp_google_map_init_global_html_object') ):
+		function cgmp_google_map_init_global_html_object()  {
+
+			if (!is_admin()) {
+				$global_error_messages_json_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_HTML_GLOBAL_ERROR_MESSAGES);
+				echo "<object id='global-data-placeholder'>".PHP_EOL;
+				echo "    <param id='sep' name='sep' value='".CGMP_SEP."' />".PHP_EOL;
+				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;
+				echo "    <param id='errors' name='errors' value='".$global_error_messages_json_string."' />".PHP_EOL;
+				echo "</object> ".PHP_EOL;
+			}
+		}
+endif;
 
 
 ?>

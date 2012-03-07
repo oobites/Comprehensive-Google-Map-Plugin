@@ -18,22 +18,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 var jQueryCgmp = jQuery.noConflict();
 
 function sendShortcodeToEditor(container_id) {
-	var id = '#' + container_id;
-	var code = buildShortcode(id, jQueryCgmp);
-	send_to_editor('<br />' + code + '<br />');
+	(function ($) {
+		var id = '#' + container_id;
+		var code = buildShortcode(id, $);
+		send_to_editor('<br />' + code + '<br />');
+	}(jQueryCgmp));
 }
 
 
 function displayShortcodeInPopup(container_id) {
-	var id = '#' + container_id;
-	var code = buildShortcode(id, jQueryCgmp);
-	var content = "Select the generated shortcode text below including the square brackets and press CTRL+C (CMMND+C on Mac) to copy:<br /><br /><div id='inner-shortcode-dialog'><b>" + code + "</b></div><br /><br />Paste the copied text into your post/page";
-	displayPopupWithContent(content);
+	(function ($) {
+		var id = '#' + container_id;
+		var code = buildShortcode(id, $);
+		var content = "Select the generated shortcode text below including the square brackets and press CTRL+C (CMMND+C on Mac) to copy:<br /><br /><div id='inner-shortcode-dialog'><b>" 
+			+ code + "</b></div><br /><br />Paste the copied text into your post/page";
+		displayPopupWithContent(content, $);
+	}(jQueryCgmp));
 }
 
-function displayPopupWithContent(content)  {
-
-	(function ($, content) {
+function displayPopupWithContent(content, $)  {
 
 		var mask = $('<div id="mask"/>');
 		var shortcode_dialog = $('<div id="shortcode-dialog" class="window" />');
@@ -71,9 +74,6 @@ function displayPopupWithContent(content)  {
         	box.css('top',  winH/2 - box.height()/2);
         	box.css('left', winW/2 - box.width()/2);
 		});
-
-	}(jQueryCgmp, content));
-
 }
 
 function buildShortcode(id, $) {
@@ -113,30 +113,12 @@ function buildShortcode(id, $) {
 }
 
 
-
-function hideShowCustomMarker(hiddenElemId) {
-
-		if (hiddenElemId.indexOf('_i_') == -1) {
-			var val = jQueryCgmp('#' + hiddenElemId).val();
-			var checkboxId = hiddenElemId.replace("hidden", "");
-			var customIconsId = checkboxId.replace("mashup", "icons");
-			var kmlId = checkboxId.replace("addmarkermashup", "kml");
-
-
-			if (val == 'true') {
-				jQueryCgmp("#" + kmlId).closest("fieldset").hide();
-				jQueryCgmp("#" + customIconsId).closest("fieldset").hide();
-				jQueryCgmp("#" + checkboxId).attr("checked", "checked");
-			} else {
-				jQueryCgmp("#" + kmlId).closest("fieldset").show();
-				jQueryCgmp("#" + customIconsId).closest("fieldset").show();
-				jQueryCgmp("#" + checkboxId).removeAttr("checked");
-			}
-		}
-}
-
-
 (function ($) {
+
+	var CGMPGlobal = {};
+
+	CGMPGlobal.sep = $("object#global-data-placeholder param#sep").attr("value");
+	CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").attr("value");
 
 	var lists = [];
 
@@ -168,7 +150,7 @@ function hideShowCustomMarker(hiddenElemId) {
 
 		function initAddLocationEevent()  {
 
-			$("input.add-additonal-location").click(function (source) {
+			$("input.add-additonal-location").live("click", function (source) {
 
 				var listId = $(this).attr("id") + "list";
 				var tokenList = {};
@@ -240,7 +222,7 @@ function hideShowCustomMarker(hiddenElemId) {
 
 		function initMarkerIconEvents() {
 
-			$("div.custom-icons-placeholder a img").click(function () {
+			$("div.custom-icons-placeholder a img").live("click", function () {
 				var currentSrc = $(this).attr('src');
 				if (currentSrc != null) {
 
@@ -252,7 +234,7 @@ function hideShowCustomMarker(hiddenElemId) {
 			});
 
 
-			$("input[name='custom-icons-radio']").click(function () {
+			$("input[name='custom-icons-radio']").live("click", function () {
 
 				var img = $(this).siblings("a").children('img');
 				var currentSrc = $(img).attr('src');
@@ -278,7 +260,7 @@ function hideShowCustomMarker(hiddenElemId) {
 
 		function initTooltips()  {
 
-			$('a.google-map-tooltip-marker').hover(function() {
+			$('a.google-map-tooltip-marker').live("hover", function() {
 			var tooltip_marker_id = $(this).attr('id');
 
 				$("a#" + tooltip_marker_id + "[title]").tooltip({
@@ -291,7 +273,7 @@ function hideShowCustomMarker(hiddenElemId) {
 					}
 				});
 
-				$("a#" + tooltip_marker_id).mouseout(function(event) {
+				$("a#" + tooltip_marker_id).live("mouseout", function(event) {
 					if ($(this).data('tooltip')) {
 						$(this).data('tooltip').hide();
 					}
@@ -301,7 +283,7 @@ function hideShowCustomMarker(hiddenElemId) {
 
 		function initGeoMashupEvent() {
 
-			$("input.marker-geo-mashup").change(function (source) {
+			$("input.marker-geo-mashup").live("change", function (source) {
 				var checkboxId = $(this).attr("id");
 				var customIconsId = checkboxId.replace("mashup", "icons");
 				var kmlId = checkboxId.replace("addmarkermashup", "kml");
@@ -323,27 +305,29 @@ function hideShowCustomMarker(hiddenElemId) {
 			$.each($("input.marker-geo-mashup"), function() {
 				var checkboxId = $(this).attr("id");
 				var hiddenIdVal = $("#" + checkboxId + "hidden").val();
+				var customIconsId = checkboxId.replace("mashup", "icons");
+				var kmlId = checkboxId.replace("addmarkermashup", "kml");
 
 				if (hiddenIdVal == "true") {
 					$(this).attr("checked", "checked");
+					$("#" + kmlId).closest("fieldset").hide();
+					$("#" + customIconsId).closest("fieldset").hide();
 				} else {
 					$(this).removeAttr("checked");
+					$("#" + kmlId).closest("fieldset").show();
+					$("#" + customIconsId).closest("fieldset").show();
 				}
 			});
 		}
 
 
-		function initAll() {
+		$(document).ready(function() {
 			initTokenHolders();
 			initAddLocationEevent();
 			initTooltips();
 			initMarkerIconEvents();
 			checkedGeoMashupOnInit();
 			initGeoMashupEvent() ;
-		}
-
-		$(document).ready(function() {
-			initAll();
 
 			if (typeof $("ul.tools-tabs-nav").tabs == "function") {
 				$("ul.tools-tabs-nav").tabs("div.tools-tab-body", {
@@ -356,17 +340,14 @@ function hideShowCustomMarker(hiddenElemId) {
 
 		$(document).ajaxSuccess(
 			function (e, x, o) {
-				$(document).ready(
-					function ($) {
-						if (o.data != null)	{
-							var indexOf = o.data.indexOf('id_base=comprehensivegooglemap');
+				if (o.data != null)	{
+					var indexOf = o.data.indexOf('id_base=comprehensivegooglemap');
 
-							if (indexOf > 0) {
-								initAll();
-							}
-						}
+					if (indexOf > 0) {
+						initTokenHolders();
+						checkedGeoMashupOnInit();
 					}
-				);
+				}
 			}
 		);
 

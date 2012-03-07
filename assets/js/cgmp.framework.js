@@ -18,11 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 var jQueryCgmp = jQuery.noConflict();
 	(function ($) {
 
-		if (typeof CGMPGlobal != "undefined") {
-			if (!CGMPGlobal.maps instanceof Array) {
-				CGMPGlobal.maps = [];
-			}
-		}
+		var CGMPGlobal = {};
 
 		var GoogleMapOrchestrator = (function() {
 
@@ -986,14 +982,17 @@ var jQueryCgmp = jQuery.noConflict();
 
 		//$(document).ready(function() {
 
-			if (typeof CGMPGlobal != "undefined" && CGMPGlobal.maps) {
-				Logger.info("The CGMPGlobal object has [" + CGMPGlobal.maps.length + "] map JSONs inside");
-			} else {
-				Logger.fatal("The CGMPGlobal object is undefined. Aborting map generation .. d[-_-]b");
+			if ($('object#global-data-placeholder').length == 0) {
+				Logger.fatal("The global HTML <object> element is undefined. Aborting map generation .. d[-_-]b");
 				return;
 			}
 
-			$.each(CGMPGlobal.maps, function(index, json) {
+			CGMPGlobal.sep = $("object#global-data-placeholder param#sep").attr("value");
+			CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").attr("value");
+			CGMPGlobal.errors = $("object#global-data-placeholder param#errors").attr("value");
+			CGMPGlobal.errors = $.parseJSON(CGMPGlobal.errors);
+
+			$("object.map-data-placeholder").each(function (index, element) {
 
 				if (typeof google == "undefined" || !google) {
 					Errors.alertError(CGMPGlobal.errors.msgNoGoogle);
@@ -1004,6 +1003,9 @@ var jQueryCgmp = jQuery.noConflict();
 					Logger.fatal("It looks like the webpage has reference to GMap2 object from Google API v2. Aborting map generation ..");
 					return false;
 				}
+
+				var jsonString = $(element).find('param').attr("value");
+				var json = $.parseJSON(jsonString);
 
 				if ($('div#' + json.id).length > 0) {
 

@@ -14,6 +14,12 @@
 var jQueryCgmp = jQuery.noConflict();
 
 (function ($) {
+
+		var CGMPGlobal = {};
+
+		CGMPGlobal.sep = $("object#global-data-placeholder param#sep").attr("value");
+		CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").attr("value");
+
 		
 		var DEFAULT_SETTINGS = {
 			holderId: null,	
