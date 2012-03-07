@@ -37,14 +37,25 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 
 	function widget( $args, $instance ) {
-	
+
+		$map_data_properties = array();
+		$not_map_data_properties = array("title", "width", "height", "mapalign", "directionhint",
+				"latitude", "longitude", "addresscontent", "addmarkerlisthidden", "addmarkermashuphidden", "addmarkerinput");
+
 		$json_default_values_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_DEFAULT_WIDGET_PARAM_VALUES);
 		$json_default_values = json_decode($json_default_values_string, true);
 		$json_default_values = $json_default_values [0];
 
 		foreach ($instance as $key => $value) {
 				$value = trim($value);
-				$instance[$key] = (!isset($value) || empty($value)) ? $json_default_values[$id] : esc_attr(strip_tags($value));
+				$value = (!isset($value) || empty($value)) ? $json_default_values[$id] : esc_attr(strip_tags($value));
+				$instance[$key] = $value;
+
+				if (!in_array($key, $not_map_data_properties)) {
+					$key = str_replace("hidden", "", $key);
+					$key = str_replace("_", "", $key);
+					$map_data_properties[$key] = $value;
+				}
 		}
 		extract( $instance );
 
@@ -66,28 +77,12 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$id = md5(time().' '.rand());
 		echo cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint);
 
-		$map_settings = array();
-		$map_settings['id'] = $id;
-		$map_settings['zoom'] = $zoom;
-		$map_settings['maptype'] = $maptype;
-		$map_settings['bubbleautopan'] = $bubbleautopan;
-		$map_settings['maptypecontrol'] = $m_aptypecontrol;
-		$map_settings['pancontrol'] = $pancontrol;
-		$map_settings['zoomcontrol'] = $z_oomcontrol;
-		$map_settings['scalecontrol'] = $scalecontrol;
-		$map_settings['streetviewcontrol'] = $streetviewcontrol;
-		$map_settings['scrollwheelcontrol'] = $scrollwheelcontrol;
-		$map_settings['markerlist'] = $addmarkerlisthidden;
-		$map_settings['addmarkermashup'] = $addmarkermashuphidden;
-		$map_settings['addmarkermashupbubble'] = $addmarkermashupbubble;
-		$map_settings['kml'] = cgmp_clean_kml($kml);
-		$map_settings['showbike'] = $showbike;
-		$map_settings['showtraffic'] = $showtraffic;
-		$map_settings['showpanoramio'] = $showpanoramio;
-		$map_settings['directionhint'] = $directionhint;
-		$map_settings['panoramiouid'] = cgmp_clean_panoramiouid($panoramiouid);
-
-		cgmp_map_data_injector(json_encode($map_settings));
+		$map_data_properties['id'] = $id;
+		$map_data_properties['markerlist'] = $addmarkerlisthidden;
+		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
+		$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
+		$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
+		cgmp_map_data_injector(json_encode($map_data_properties));
 
 		echo $after_widget;
 
