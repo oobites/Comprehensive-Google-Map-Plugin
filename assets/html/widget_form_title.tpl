@@ -1,5 +1,5 @@
 			<fieldset>
-				<legend>LEGEND_WIDGETTITLE</legend>
+				<legend>Widget Title</legend>
 				<table cellspacing="0" cellpadding="0" border="0">
 					<tbody>
 						<tr>

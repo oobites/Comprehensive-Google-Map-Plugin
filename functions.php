@@ -21,98 +21,38 @@ if ( !function_exists('cgmp_draw_map_placeholder') ):
 
 				$toploading = ceil($height / 2) - 50;
 
-				$hintdiv = "";
+				$map_marker_directions_hint_template = "";
 
 				if ($hint == "true") {
-					$hintdiv = "<div style='padding: 3px 0 3px 0; width:".$width."px; background-color: #efefef; border: 1px #cecece solid; font-size:12px;'><strong>Click on map markers to get directions</strong></div>";
+					$tokens_with_values = array();
+					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width;
+					$map_marker_directions_hint_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_MARKER_DIRECTION_HINT);
 				}
 
-	$result = '<div align="'.$align.'">'.$hintdiv.'<div class="google-map-placeholder" id="' .$id . '" style="width:' . 
-			$width . 'px;height:' . $height . 'px; border:1px solid #333333;"><div class="map-loading" style="position: relative; top: '.$toploading.'px !important;"></div></div>';
+				$tokens_with_values = array();
+				$tokens_with_values['MAP_PLACEHOLDER_ID_TOKEN'] = $id;
+				$tokens_with_values['MAP_PLACEHOLDER_WIDTH_TOKEN'] = $width;
+				$tokens_with_values['MAP_PLACEHOLDER_HEIGHT_TOKEN'] = $height;
+				$tokens_with_values['LOADING_INDICATOR_TOP_POS_TOKEN'] = $toploading;
+				$tokens_with_values['MAP_ALIGN_TOKEN'] = $align;
+				$tokens_with_values['MARKER_DIRECTIONS_HINT_TOKEN'] = $map_marker_directions_hint_template;
+				$tokens_with_values['IMAGES_DIRECTORY_URI'] = CGMP_PLUGIN_IMAGES;
+				$tokens_with_values['DIRECTIONS_WIDTH_TOKEN'] = ($width - 10);
 
-			$result .= '<div class="direction-controls-placeholder" id="direction-controls-placeholder-' .$id . '" style="background: white; width: '.$width.'px; margin-top: 5px; border: 1px solid #EBEBEB; display: none; padding: 18px 0 9px 0;">
-			<div class="d_close-wrapper">
-				<a id="d_close" href="javascript:void(0)"> 
-					<img src="'.CGMP_PLUGIN_IMAGES.'/transparent.png" class="close"> 
-				</a>
-			</div>
-
-			<div style="" id="travel_modes_div" class="dir-tm kd-buttonbar">
-				<a tabindex="3" class="kd-button kd-button-left selected" href="javascript:void(0)" id="dir_d_btn" title="By car"> 
-					<img class="dir-tm-d" src="'.CGMP_PLUGIN_IMAGES.'/transparent.png" /> 
-				</a>
-				<a tabindex="3" class="kd-button kd-button-right" href="javascript:void(0)" id="dir_w_btn" title="Walking"> 
-					<img class="dir-tm-w" src="'.CGMP_PLUGIN_IMAGES.'/transparent.png"> 
-				</a>
-			</div>
-			<div class="dir-clear"></div>
-			<div id="dir_wps">
-				<div id="dir_wp_0" class="dir-wp">
-					<div class="dir-wp-hl">
-						<div id="dir_m_0" class="dir-m" style="cursor: -moz-grab;">
-							<div style="width: 24px; height: 24px; overflow: hidden; position: relative;">
-								<img style="position: absolute; left: 0px; top: -141px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;" src="'.CGMP_PLUGIN_IMAGES.'/directions.png">
-							</div>
-						</div>
-						<div class="dir-input">
-							<div class="kd-input-text-wrp">
-								<input type="text" maxlength="2048" tabindex="4" value="" name="a_address" id="a_address" title="Start address" class="wp kd-input-text" autocomplete="off" autocorrect="off">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="dir-rev-wrapper">
-					<div id="dir_rev" title="Get reverse directions">
-						<a id="reverse-btn" href="javascript:void(0)" class="kd-button"> 
-							<img class="dir-reverse" src="'.CGMP_PLUGIN_IMAGES.'/transparent.png"> 
-						</a>
-					</div>
-				</div>
-				<div id="dir_wp_1" class="dir-wp">
-					<div class="dir-wp-hl">
-						<div id="dir_m_1" class="dir-m" style="cursor: -moz-grab;">
-							<div style="width: 24px; height: 24px; overflow: hidden; position: relative;">
-								<img style="position: absolute; left: 0px; top: -72px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;" src="'.CGMP_PLUGIN_IMAGES.'/directions.png">
-							</div>
-						</div>
-						<div class="dir-input">
-							<div class="kd-input-text-wrp">
-								<input type="text" maxlength="2048" tabindex="4" value="" name="b_address" id="b_address" title="End address" class="wp kd-input-text" autocomplete="off" autocorrect="off">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="dir_controls">
-				<div class="d_links">
-					<span id="d_options_toggle">
-						<a id="d_options_show" class="no-wrap" href="javascript:void(0)" style="display: none !important;">Show options</a> 
-						<a id="d_options_hide" class="no-wrap" href="javascript:void(0)" style="display: none !important;">Hide options</a>
-					   	<b><span style="color: blue">Additional options</span></b>
-					</span>
-				</div>
-				<div id="d_options" style="background-color: #ddd; margin-bottom: 3px; text-align: left; padding: 3px;">
-					<input type="checkbox" tabindex="5" name="avoid_hway" id="avoid_hway" />
-					<label for="avoid_hway">Avoid highways</label>
-					<input type="checkbox" tabindex="5" name="avoid_tolls" id="avoid_tolls" />
-					<label for="avoid_tolls">Avoid tolls</label>
-					<input type="radio" name="travel_mode" id="radio_km" />
-					<label for="radio_km">KM</label>
-					<input type="radio" name="travel_mode" id="radio_miles" checked="checked" />
-					<label for="radio_miles">'.__('Miles').'</label>
-				</div>
-				<div class="dir-sub-cntn">
-					<button tabindex="6" name="btnG" type="submit" id="d_sub" class="kd-button kd-button-submit">'.__('Get Directions').'</button>
-					<button tabindex="6" name="btnG" type="button" style="display: none;" id="print_sub" class="kd-button kd-button-submit">Print Directions</button>
-				</div>
-			</div>
-		</div>
-		<div id="rendered-directions-placeholder-' .$id . '" style="display: none; border: 1px solid #ddd; width: '.($width - 10).'px; margin-top: 10px; direction: ltr; overflow: auto; height: 180px; padding: 5px;" class="rendered-directions-placeholder"></div>
-	</div>';
-
-        return $result;
+				return cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_PLACEHOLDER_AND_DIRECTIONS);
  	}
 endif;
+
+
+if ( !function_exists('cgmp_render_template_with_values') ):
+	function cgmp_render_template_with_values($tokens_with_values, $template_name) {
+
+		$map_shortcode_builder_metabox_template = file_get_contents(CGMP_PLUGIN_HTML."/".$template_name);
+  		$map_shortcode_builder_metabox_template = cgmp_replace_template_tokens($tokens_with_values, $map_shortcode_builder_metabox_template);
+		return $map_shortcode_builder_metabox_template;
+	}
+endif;
+
 
 
 if ( !function_exists('cgmp_load_plugin_textdomain') ):
@@ -258,6 +198,15 @@ if ( !function_exists('trim_marker_value') ):
     	$value = trim($value);
 	}
 endif;
+
+
+if ( !function_exists('trim_assoc_array_key_value') ):
+	function trim_assoc_array_key_value(&$value)
+	{
+    	$value = trim($value);
+	}
+endif;
+
 
 
 if ( !function_exists('update_markerlist_from_legacy_locations') ):
@@ -456,11 +405,11 @@ if ( !function_exists('cgmp_create_html_geohidden') ):
 				$value = $attr['value'];
 
 				return "<script>
-								if (typeof jQueryCgmp != 'undefined') {
-									jQueryCgmp(document).ready(function() { 
-										return hideShowCustomMarker('".$id."'); 
-									});
-								}
+							//if (typeof jQueryCgmp != 'undefined') {
+									//jQueryCgmp(document).ready(function() { 
+									//	hideShowCustomMarker('".$id."'); 
+									//});
+							//}
 						</script>
 						<input type='hidden' class='' id='".$id."' name='".$name."' value='".$value ."' />";
 		}
@@ -562,7 +511,9 @@ endif;
 
 
 if ( !function_exists('cgmp_build_template_values') ):
-	function cgmp_build_template_values($settings) {
+		function cgmp_build_template_values($settings) {
+
+
 		$template_values = array();
 
 		foreach($settings as $setting) {
@@ -572,7 +523,7 @@ if ( !function_exists('cgmp_build_template_values') ):
 
 			$pos = strrpos($func_type, "@");
 
-			if ($pos != 0) {
+			if ($pos !== 0) {
 				$pieces = explode("@", $func_type);
 				$func_type = $pieces[0];
 				$attr['elem_type'] = $pieces[1];
@@ -580,9 +531,40 @@ if ( !function_exists('cgmp_build_template_values') ):
 
 
 			$func =  "cgmp_create_html_".$func_type;
+			//echo $token. " " .$func."<br />";
 			$template_values[strtoupper($func_type)."_".strtoupper($token)] = $func($attr);
 		}
 		return $template_values;
+	}
+endif;
+
+
+if ( !function_exists('cgmp_set_values_for_html_rendering') ):
+	function cgmp_set_values_for_html_rendering(&$settings, $params) {
+
+		$html_element_select_options = array();
+		$html_element_select_options['show_hide'] = array("Show" => "true", "Hide" => "false");
+		$html_element_select_options['enable_disable_xor'] = array("Enable" => "false", "Disable" => "true");
+		$html_element_select_options['enable_disable'] = array("Enable" => "true", "Disable" => "false");
+		$html_element_select_options['map_types'] = array("Roadmap"=>"ROADMAP", "Satellite"=>"SATELLITE", "Hybrid"=>"HYBRID", "Terrain" => "TERRAIN");
+		$html_element_select_options['animation_types'] = array("Drop"=>"DROP", "Bounce"=>"BOUNCE");
+		$html_element_select_options['map_aligns'] = array("Center"=>"center", "Right"=>"right", "Left" => "left");
+		$html_element_select_options['languages'] = array("Default" => "default", "Arabic" => "ar", "Basque" => "eu", "Bulgarian" => "bg", "Bengali" => "bn", "Catalan" => "ca", "Czech" => "cs", "Danish" => "da", "English" => "en", "German" => "de", "Greek" => "el", "Spanish" => "es", "Farsi" => "fa", "Finnish" => "fi", "Filipino" => "fil", "French" => "fr", "Galician" => "gl", "Gujarati" => "gu", "Hindi" => "hi", "Croatian" => "hr", "Hungarian" => "hu", "Indonesian" => "id", "Italian" => "it", "Hebrew" => "iw", "Japanese" => "ja", "Kannada" => "kn", "Korean" => "ko", "Lithuanian" => "lt", "Latvian" => "lv", "Malayalam" => "ml", "Marathi" => "mr", "Dutch" => "nl", "Norwegian" => "no", "Oriya" => "or", "Polish" => "pl", "Portuguese" => "pt", "Romanian" => "ro", "Russian" => "ru", "Slovak" => "sk", "Slovenian" => "sl", "Serbian" => "sr", "Swedish" => "sv", "Tagalog" => "tl", "Tamil" => "ta", "Telugu" => "te", "Thai" => "th", "Turkish" => "tr", "Ukrainian" => "uk", "Vietnamese" => "vi", "Chinese (simpl)" => "zh-CN", "Chinese (tradi)" => "zh-TW");
+
+
+		if (isset($params['htmlLabelValue']) && trim($params['htmlLabelValue']) != "") {
+			$settings[] = array("type" => "label", "token" => $params['templateTokenNameSuffix'], 
+				"attr" => array("for" => $params['dbParameterId'], "value" => $params['htmlLabelValue'])); 
+		}
+
+		$settings[] = array("type" => $params['htmlElementType'], "token" => $params['templateTokenNameSuffix'],
+				"attr"=> array("role" => $params['templateTokenNameSuffix'],
+				"id" => $params['dbParameterId'],
+				"name" => $params['dbParameterName'],
+				"value" => (isset($params['dbParameterValue']) ? $params['dbParameterValue'] : ""),
+				"class" => (isset($params['cssClasses']) ? $params['cssClasses'] : ""),
+				"style" => (isset($params['inlineCss']) ? $params['inlineCss'] : ""),
+				"options" => (isset($params['htmlSelectOptionsKey']) ? $html_element_select_options[$params['htmlSelectOptionsKey']] : array()))); 
 	}
 endif;
 
@@ -939,11 +921,6 @@ function make_marker_geo_mashup()   {
 				}
 			}
 		}
-
-		//echo "Extracted list: " .print_r($filtered, true)."<br /><br />";
-		//exit;
-		//$addmarkerlist = implode("|", $filtered);
-		//$addmarkerlist = update_markerlist_from_legacy_locations(0, 0, "", $addmarkerlist);
 
 		return json_encode($filtered);
 	}

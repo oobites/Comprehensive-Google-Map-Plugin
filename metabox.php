@@ -38,14 +38,8 @@ endif;
 if ( !function_exists('cgmp_render_shortcode_builder_form') ):
 function cgmp_render_shortcode_builder_form() {
 
-		include_once(CGMP_PLUGIN_INCLUDE_DIR.'/_shortcode_builder_form.php');
-
-  		$res = "<div id='google-map-container-metabox'>
-				{$template}
-		</div>
-		<input type='button' onclick='return sendShortcodeToEditor(\"google-map-container-metabox\");' 
-		class='button button-highlighted' tabindex='4' value='Send to Editor' id='send-to-editor' name='send-to-editor' />";
-		echo $res;
+		include_once(CGMP_PLUGIN_INCLUDE_DIR.'/shortcode_builder_form.php');
+		echo cgmp_render_template_with_values(array("MAP_CONFIGURATION_FORM_TOKEN" => $map_configuration_template), "map_shortcode_builder_metabox.tpl");
 }
 endif;
 

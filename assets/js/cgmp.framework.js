@@ -1038,7 +1038,7 @@ var jQueryCgmp = jQuery.noConflict();
 						} else {
 
 							if (json.markerlist != null && json.markerlist != '') {
-								markerBuilder.buildAddressMarkers(json.markerlist, json.addmarkermashup, json.geomashupbubble);
+								markerBuilder.buildAddressMarkers(json.markerlist, json.addmarkermashup, json.addmarkermashupbubble);
 							}
 
 							var isBuildAddressMarkersCalled = markerBuilder.isBuildAddressMarkersCalled();

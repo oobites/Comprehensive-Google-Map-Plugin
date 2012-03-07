@@ -1,5 +1,5 @@
 	<fieldset>
-		<legend>LEGEND_BASIC_SETTINGS</legend>
+		<legend>Basic Settings</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -61,7 +61,7 @@
 
 
 	<fieldset>
-		<legend>LEGEND_MARKER</legend>
+		<legend>Map Markers</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -93,7 +93,7 @@
 	
 
 	<fieldset  class="collapsible">
-		<legend>LEGEND_ADDRESS</legend>
+		<legend>KML/Geo RSS</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 
@@ -108,7 +108,7 @@
 
 
 	<fieldset  class="collapsible">
-		<legend>LEGEND_CONTROL</legend>
+		<legend>Map Controls</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -134,7 +134,7 @@
 	</fieldset>
 
 	<fieldset  class="collapsible">
-		<legend>LEGEND_INFOBUBBLE</legend>
+		<legend>Map Marker Info Bubbles</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -149,7 +149,7 @@
 
 
 	<fieldset class="collapsible">
-		<legend>LEGEND_BIKE_AND_TRAFFIC</legend>
+		<legend>Custom Overlays</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -164,7 +164,7 @@
 
 
 	<fieldset class="collapsible">
-		<legend>LEGEND_PANORAMIO</legend>
+		<legend>Panoramio Library</legend>
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -178,4 +178,4 @@
 	</fieldset>
 
 
-    <div align="right">FOOTER_NOTICES</div>
+    <div align="right"><span style="font-size: 9px;"><a href="admin.php?page=cgmp-documentation">Documentation</a> | <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=CWNZ5P4Z8RTQ8">Donate</a></span></div>

@@ -713,7 +713,8 @@ img {
 .shortcode-dialog {
   /*background:url("images/notice-2.png") no-repeat 0 0 transparent; */
   width:560px; 
-  height:280px;
+  min-height: 200px;
+  height: auto;
   background-color: #efefef;
   color: #222;
   border-radius: 7px;
