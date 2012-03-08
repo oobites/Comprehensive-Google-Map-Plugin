@@ -39,8 +39,8 @@
 					<td><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will aggregate all markers from other maps created by you in your public published posts. In other words, you get a Geo marker mashup in one map! At the moment, the mashup does not include markers from maps on pages and widgets, posts ONLY">[?]</a>&nbsp;</td>
 					<td align="left" colspan="4">
 						<span style="float: left !important;">
-							GEOHIDDEN_ADDMARKERMASHUPHIDDEN
-							GEO_ADDMARKERMASHUP&nbsp;LABEL_ADDMARKERMASHUP
+							HIDDEN_ADDMARKERMASHUPHIDDEN
+							INPUT_ADDMARKERMASHUP&nbsp;LABEL_ADDMARKERMASHUP
 						</span>
 					</td>
 				</tr>
@@ -84,7 +84,7 @@
 					<!-- <td>&nbsp;</td> -->
 					<td colspan="4">
 						LIST_ADDMARKERLIST
-						HIDDEN_ADDMARKERLISTHIDDEN
+						INPUT_ADDMARKERLISTHIDDEN
 					</td>
 				</tr>
 			</tbody>

@@ -261,16 +261,20 @@ ul.tools-tabs-nav {
 	padding-top: 3.1em;
 }
 
-input.slider-output {
-    width: 60px;
-    border: 1px solid #999999;
+input.text-field {
+    width: 115px !important;
+    border: 1px solid #999999 !important;
+}
+
+.widget-google-map-container input.text-field {
+    width: 85px !important;
 }
 
 input.marker-location-text {
     width: 90% !important; 
     font-size: 16px; 
     padding: 4px 0px 2px 36px; 
-    height: 32px !important;
+    height: 40px !important;
 }
 
 
@@ -290,17 +294,6 @@ span.sep {
     font-size: 12px;
 }
 
-.widget-google-map-container div.slider {
-    margin-left: 5px;
-    margin-top: 7px;
-    width: 50px;
-}
-
-.tools-tabs .shortcodebuilder div.slider {
-    margin-left: 7px;
-    margin-top: 7px;
-    width: 60px;
-}
 
 ul.tools-tabs-nav li {
 	display: inline-block;
@@ -615,8 +608,8 @@ fieldset.collapsible {
 
 div#shortcode-dialog {
   /*background:url("images/notice-2.png") no-repeat 0 0 transparent; */
-  width:560px; 
-  height:280px;
+  width: 560px; 
+  height: auto;
   background-color: #efefef;
   color: #222;
   border-radius: 7px;

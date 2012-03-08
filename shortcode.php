@@ -60,7 +60,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 	cgmp_google_map_init_scripts();
 
 	$map_data_properties = array();
-	$not_map_data_properties = array("title", "latitude", "longitude", "addresscontent", "addmarkerlist");
+	$not_map_data_properties = array("title", "latitude", "longitude", "addresscontent", "addmarkerlist", "showmarker", "animation", "infobubblecontent", "markerdirections");
 
 	foreach ($shortcode_attribs as $key => $value) {
 		$value = trim($value);

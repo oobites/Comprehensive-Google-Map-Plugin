@@ -40,7 +40,8 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		$map_data_properties = array();
 		$not_map_data_properties = array("title", "width", "height", "mapalign", "directionhint",
-				"latitude", "longitude", "addresscontent", "addmarkerlisthidden", "addmarkermashuphidden", "addmarkerinput");
+				"latitude", "longitude", "addresscontent", "addmarkerlisthidden", "addmarkermashuphidden", "addmarkerinput", 
+				"showmarker", "animation", "infobubblecontent", "markerdirections");
 
 		$json_default_values_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_DEFAULT_WIDGET_PARAM_VALUES);
 		$json_default_values = json_decode($json_default_values_string, true);
@@ -58,7 +59,6 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 				}
 		}
 		extract( $instance );
-
 		echo $before_widget;
 
 		if ( isset($title)) {
@@ -89,6 +89,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 	}
 
 	function update( $new_instance, $old_instance ) {
+
 		$instance = $old_instance;
 		foreach ($new_instance as $key => $val) {
 			$instance[$key] = strip_tags($new_instance[$key]);

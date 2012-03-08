@@ -131,31 +131,6 @@ if ( !function_exists('cgmp_deregister_and_enqueue_google_api') ):
 endif;
 
 
-if ( !function_exists('is_map_shortcode_present') ):
-	function is_map_shortcode_present($posts)
-	{
-		if ( empty($posts) ) {
-			return $posts;
-		}
-
-    	$found = false;
-
-    	foreach ($posts as $post) {
-        	if ( stripos($post->post_content, '[google-map-v3') !== false) {
-            	$found = true;
-				break;
-			}
-        }
-
-		if ($found) {
-			cgmp_google_map_init_scripts();
-		}
-
-		return $posts;
-	}
-endif;
-
-
 if ( !function_exists('trim_marker_value') ):
 	function trim_marker_value(&$value)
 	{
@@ -237,17 +212,10 @@ endif;
 
 
 
-
 if ( !function_exists('cgmp_create_html_select') ):
 	function cgmp_create_html_select($attr) {
-		$role = $attr['role'];
-		$id = $attr['id'];
-		$name = $attr['name'];
-		$value = $attr['value'];
-		$options = $attr['options'];
-				
-		return "<select role='".$role."' id='".$id."' style='' class='shortcodeitem' name='".$name."'>".
-				cgmp_create_html_select_options($options, $value)."</select>";
+		return "<select role='".$attr['role']."' id='".$attr['id']."' style='' class='shortcodeitem' name='".$attr['name']."'>".
+				cgmp_create_html_select_options($attr['options'], $attr['value'])."</select>";
 	}
 endif;
 
@@ -269,121 +237,49 @@ endif;
 
 if ( !function_exists('cgmp_create_html_input') ):
 	function cgmp_create_html_input($attr) {
-		$role = $attr['role'];
-		$id = $attr['id'];
-		$name = $attr['name'];
-		$value = $attr['value'];
-		$class = $attr['class'];
-		$style = $attr['style'];
-		$elem_type = 'text';
+		$type = 'text';
 
-		if (isset($attr['elem_type'])) {
-			$elem_type = $attr['elem_type'];
-		}
-		$steps = "";
-		$slider = "";
-		if ($elem_type == "range") {
-				$slider = "<div id='".$role."' class='slider'></div>";
-				$class .= " slider-output";
+		if (isset($attr['type'])) {
+			$type = $attr['type'];
 		}
 
-		if (strpos($class, "notshortcodeitem") === false) {
-			$class = $class." shortcodeitem";
+		if (strpos($attr['class'], "notshortcodeitem") === false) {
+			$attr['class'] = $attr['class']." shortcodeitem";
 		}
-		return $slider."<input role='".$role."' {$steps} class='".$class."' id='".$id."' name='".$name."' value='".$value."' style='".$style."' />";
-	}
-endif;
-
-if ( !function_exists('cgmp_create_html_hidden') ):
-		function cgmp_create_html_hidden($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$value = $attr['value'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-			return "<input class='".$class."' id='".$id."' name='".$name."' value='".$value."' style='".$style."' type='hidden' />";
-	}
-endif;
-
-
-if ( !function_exists('cgmp_create_html_button') ):
-		function cgmp_create_html_button($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$value = $attr['value'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-			return "<input class='".$class."' id='".$id."' name='".$name."' value='".$value."' style='".$style."' type='button' />";
+		return "<input type='".$type ."' id='".$attr['id']."' name='".$attr['name']."' value='".$attr['value']."' 
+				role='".$attr['role']."' class='".$attr['class']."' style='".$attr['style']."' />";
 	}
 endif;
 
 if ( !function_exists('cgmp_create_html_list') ):
-		function cgmp_create_html_list($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-			return "<ul class='".$class."' id='".$id."' name='".$name."' style='".$style."'></ul>";
+	function cgmp_create_html_list($attr) {
+		return "<ul class='".$attr['class']."' id='".$attr['id']."' name='".$attr['name']."' style='".$attr['style']."'></ul>";
 	}
 endif;
 
 
 
 if ( !function_exists('cgmp_create_html_label') ):
-		function cgmp_create_html_label($attr) {
-			$for = $attr['for'];
-			$value = $attr['value'];
-		 	return "<label for=".$for.">".$value."</label>";
+	function cgmp_create_html_label($attr) {
+		 return "<label for=".$attr['for'].">".$attr['value']."</label>";
 	}
-endif;
-
-
-if ( !function_exists('cgmp_create_html_geo') ):
-		function cgmp_create_html_geo($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-
-				return  "<input type='checkbox' class='".$class."' id='".$id."' name='".$name."' style='".$style."' />";
-		}
-endif;
-
-
-
-if ( !function_exists('cgmp_create_html_geohidden') ):
-		function cgmp_create_html_geohidden($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-				$value = $attr['value'];
-
-				return "<input type='hidden' class='' id='".$id."' name='".$name."' value='".$value ."' />";
-		}
 endif;
 
 
 if ( !function_exists('cgmp_create_html_geobubble') ):
 		function cgmp_create_html_geobubble($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-				$value = $attr['value'];
-
 				$falseselected = "checked";
 				$trueselected = "";
 
-				if ($value == "true") {
+				if ($attr['value'] == "true") {
 					$falseselected = "";
 					$trueselected = "checked";
 				}
 
-				$elem = "<input type='radio' class='".$class."' id='".$id."-false' role='".$name."' name='".$name."' ".$falseselected." value='false' />&nbsp;";
-				$elem .= "<label for='".$id."-false'>Display Geo address and lat/long in the marker info bubble</label><br />";
-				$elem .= "<input type='radio' class='".$class."' id='".$id."-true' role='".$name."' name='".$name."' ".$trueselected." value='true' />&nbsp;";
-				$elem .= "<label for='".$id."-true'>Display linked title and excerpt of the original blog post in the marker info bubble</label>";
+				$elem = "<input type='radio' class='".$attr['class']."' id='".$attr['id']."-false' role='".$attr['name']."' name='".$attr['name']."' ".$falseselected." value='false' />&nbsp;";
+				$elem .= "<label for='".$attr['id']."-false'>Display Geo address and lat/long in the marker info bubble</label><br />";
+				$elem .= "<input type='radio' class='".$attr['class']."' id='".$attr['id']."-true' role='".$attr['name']."' name='".$attr['name']."' ".$trueselected." value='true' />&nbsp;";
+				$elem .= "<label for='".$attr['id']."-true'>Display linked title and excerpt of the original blog post in the marker info bubble</label>";
 				return $elem;
 		}
 endif;
@@ -392,15 +288,11 @@ endif;
 
 if ( !function_exists('cgmp_create_html_custom') ):
 		function cgmp_create_html_custom($attr) {
-				$id = $attr['id'];
-				$name = $attr['name'];
-				$class = $attr['class'];
-				$style = $attr['style'];
-				$start =  "<ul class='".$class."' id='".$id."' name='".$name."' style='".$style."'>";
+				$start =  "<ul class='".$attr['class']."' id='".$attr['id']."' name='".$attr['name']."' style='".$attr['style']."'>";
 
 				$markerDir = CGMP_PLUGIN_IMAGES_DIR . "/markers/";
 
-				$items = "<div id='".$id."' class='".$class."' style='margin-bottom: 15px; padding-bottom: 10px; padding-top: 10px; padding-left: 30px; height: 200px; overflow: auto; border-radius: 4px 4px 4px 4px; border: 1px solid #C9C9C9;'>";
+				$items = "<div id='".$attr['id']."' class='".$attr['class']."' style='margin-bottom: 15px; padding-bottom: 10px; padding-top: 10px; padding-left: 30px; height: 200px; overflow: auto; border-radius: 4px 4px 4px 4px; border: 1px solid #C9C9C9;'>";
 				if (is_readable($markerDir)) {
 
 					if ($dir = opendir($markerDir)) {
@@ -420,23 +312,23 @@ if ( !function_exists('cgmp_create_html_custom') ):
 							}
 
 							if ($file != "shadow.png") {
-									$class = "";
-									$style = "";
+									$attr['class'] = "";
+									$attr['style'] = "";
 									$sel = "";
 									$iconId = "";
 									$radioId = "";
 									$src = CGMP_PLUGIN_IMAGES."/markers/".$file;
 									if ($file == "1-default.png") {
-											$class = "selected-marker-image nomarker";
-											$style = "cursor: default; ";
+											$attr['class'] = "selected-marker-image nomarker";
+											$attr['style'] = "cursor: default; ";
 											$sel = "checked='checked'";
 											$iconId = "default-marker-icon";
 											$radioId = $iconId."-radio";
 									} else if ($file == "2-default.png" || $file == "3-default.png") {
-											$class = "nomarker";
+											$attr['class'] = "nomarker";
 									}
 
-									$items .= "<div style='float: left; text-align: center; margin-right: 8px;'><a href='javascript:void(0);'><img id='".$iconId."' style='".$style."' class='".$class."' src='".$src."' border='0' /></a><br /><input ".$sel." type='radio' id='".$radioId."' value='".$file."' style='' name='custom-icons-radio' /></div>";
+									$items .= "<div style='float: left; text-align: center; margin-right: 8px;'><a href='javascript:void(0);'><img id='".$iconId."' style='".$attr['style']."' class='".$attr['class']."' src='".$src."' border='0' /></a><br /><input ".$sel." type='radio' id='".$radioId."' value='".$file."' style='' name='custom-icons-radio' /></div>";
 
 							}
         				}
@@ -459,28 +351,21 @@ endif;
 
 
 if ( !function_exists('cgmp_build_template_values') ):
-		function cgmp_build_template_values($settings) {
-
+	function cgmp_build_template_values($settings) {
 
 		$template_values = array();
 
 		foreach($settings as $setting) {
-			$func_type = $setting['type'];
+			$function_type = $setting['type'];
 			$token = $setting['token'];
-			$attr = $setting['attr'];
+			$token_prefix = $setting['token_prefix'];
 
-			$pos = strrpos($func_type, "@");
-
-			if ($pos !== 0) {
-				$pieces = explode("@", $func_type);
-				$func_type = $pieces[0];
-				$attr['elem_type'] = $pieces[1];
+			$function_name =  "cgmp_create_html_".$function_type;
+			$html_template_token_name = strtoupper((isset($token_prefix) && $token_prefix != '' ) ? $token_prefix : $function_type)."_".strtoupper($token);
+			$template_values[$html_template_token_name] = "COULD NOT RENDER HTML";
+			if (function_exists($function_name)) {
+				$template_values[$html_template_token_name] = $function_name($setting['attr']);
 			}
-
-
-			$func =  "cgmp_create_html_".$func_type;
-			//echo $token. " " .$func."<br />";
-			$template_values[strtoupper($func_type)."_".strtoupper($token)] = $func($attr);
 		}
 		return $template_values;
 	}
@@ -505,10 +390,12 @@ if ( !function_exists('cgmp_set_values_for_html_rendering') ):
 				"attr" => array("for" => $params['dbParameterId'], "value" => $params['htmlLabelValue'])); 
 		}
 
-		$settings[] = array("type" => $params['htmlElementType'], "token" => $params['templateTokenNameSuffix'],
+		$settings[] = array("type" => $params['backendFunctionNameSuffix'], "token" => $params['templateTokenNameSuffix'], 
+				"token_prefix" => $params['templateTokenNamePrefix'],
 				"attr"=> array("role" => $params['templateTokenNameSuffix'],
 				"id" => $params['dbParameterId'],
 				"name" => $params['dbParameterName'],
+				"type" => $params['htmlInputElementType'],
 				"value" => (isset($params['dbParameterValue']) ? $params['dbParameterValue'] : ""),
 				"class" => (isset($params['cssClasses']) ? $params['cssClasses'] : ""),
 				"style" => (isset($params['inlineCss']) ? $params['inlineCss'] : ""),

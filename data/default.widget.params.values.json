@@ -23,7 +23,7 @@
     "showpanoramio" : "false",
     "showtraffic" : "false",
     "streetviewcontrol" : "true",
-    "title" : "Google Map",
+    "title" : "",
     "width" : "250",
     "z_oomcontrol" : "true",
     "zoom" : "7"
