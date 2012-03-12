@@ -122,14 +122,14 @@ ul.custom-icons-placeholder li img:hover {
 		background-image: -moz-linear-gradient(center top , #F8F8F8, #F1F1F1);
 }
 
-.widget-google-map-container table {
+.widget-google-map-container table.cgmp-widget-table {
 		width: 554px !important;
         /*border: 1px solid black;*/
 }
 
 #google-map-container-metabox table td,
 .tools-tabs .shortcodebuilder table td ,
-.widget-google-map-container table td {
+.widget-google-map-container table.cgmp-widget-table td {
 		text-align: right;
         padding-right: 5px;
         /*border: 1px solid black;*/
@@ -147,8 +147,8 @@ ul.custom-icons-placeholder li img:hover {
         padding: 10px;
 }
 
-.widget-google-map-container table td {
-		width: 95px !important; /* 4*95 + 4*5(padding) == 460px */
+.widget-google-map-container table.cgmp-widget-table td {
+		width: 65px;
 }
 
 #google-map-container-settings fieldset table,
@@ -201,6 +201,14 @@ ul.custom-icons-placeholder li img:hover {
 
 .widget-google-map-container input[type="text"] {
 		width: 120px;
+}
+
+.widget-google-map-container table.marker-element-holder td input.marker-text-details {
+		width: 378px !important;
+}
+
+#google-map-container-metabox table.marker-element-holder td input.marker-text-details {
+		width: 426px !important;
 }
 
 
@@ -270,16 +278,17 @@ input.text-field {
     width: 85px !important;
 }
 
-input.marker-location-text {
-    width: 90% !important; 
-    font-size: 16px; 
-    padding: 4px 0px 2px 36px; 
+input.marker-location-icon {
+    background-color: transparent !important;
+    font-size: 16px;
     height: 40px !important;
+    padding: 4px 0 2px 30px;
+    width: 0 !important;
 }
 
 
 input.default-marker-icon {
-    background: url('images/markers/1-default.png') no-repeat scroll 0px 0px #F9F9F9 !important
+    background: url('images/markers/1-default.png') no-repeat scroll 0px 0px transparent !important
 }
 
 span.italic {
@@ -413,7 +422,7 @@ ul.token-input-list li input {
 
 li.token-input-token {
     overflow: hidden; 
-    height: 38px !important;
+    height: 46px !important;
     height: 1%;
     margin: 3px;
     padding: 3px 5px;
@@ -430,8 +439,8 @@ li.token-input-token {
 }
 
 li.token-input-token p {
-    font-size: 15px !important;
-    padding-top: 10px !important;
+    font-size: 12px !important;
+    padding-top: 4px !important;
 }
 
 .tools-tabs .shortcodebuilder div#google_map_shortcode_builder li.token-input-token p {
@@ -458,15 +467,17 @@ li.token-input-input-token {
 }
 
 li.token-input-token p {
-    float: left;
+    text-align: left;
     padding: 0;
-    margin: 0;
+    margin: 0 !important;
 }
 
 li.token-input-token span {
     float: right;
     color: #777;
     cursor: pointer;
+    position: relative;
+    top: -35px;
 }
 
 li.token-input-token span.token-input-delete-token-highlighted {
@@ -629,4 +640,8 @@ div#inner-shortcode-dialog {
     background-color: #fff;
     overflow: auto;
     height: 90px;
+}
+
+.marker-input-info-text {
+    color: #ababab;
 }

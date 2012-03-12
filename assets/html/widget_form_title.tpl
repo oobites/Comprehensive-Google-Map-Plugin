@@ -1,6 +1,6 @@
 			<fieldset>
 				<legend>Widget Title</legend>
-				<table cellspacing="0" cellpadding="0" border="0">
+				<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 					<tbody>
 						<tr>
 							<td>LABEL_TITLE</td>

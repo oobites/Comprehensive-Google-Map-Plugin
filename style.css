@@ -520,6 +520,9 @@ img {
     text-transform: uppercase;
 }
 
+.google-map-placeholder {
+    margin-bottom: 15px !important;
+}
 /** Override styles */
 .google-map-placeholder img {
     max-width: none !important;
@@ -690,7 +693,7 @@ img {
 
 }
 
-#mask {
+#cgmp-popup-mask {
   position:absolute;
   left:0;
   top:0;
@@ -699,7 +702,7 @@ img {
   display:none;
 }
   
-.window {
+.cgmp-popup-window {
   position:fixed;
   left:0;
   top:0;
@@ -710,7 +713,7 @@ img {
   padding:20px;
 }
 
-.shortcode-dialog {
+.cgmp-popup-shortcode-dialog {
   /*background:url("images/notice-2.png") no-repeat 0 0 transparent; */
   width:560px; 
   min-height: 200px;
@@ -725,11 +728,19 @@ img {
     box-shadow: 0px 5px 30px #000;
 }
 
-.shortcode-dialog p {
+.cgmp-popup-shortcode-dialog p {
     font-size: 13px !important;
 }
 
 .attention {
     font-weight: bold;
     color: red;
+}
+
+object.map-data-placeholder,
+object.global-data-placeholder {
+    min-width: 0px !important; 
+    width: 0px !important; 
+    min-height: 0px !important; 
+    height: 0px !important
 }

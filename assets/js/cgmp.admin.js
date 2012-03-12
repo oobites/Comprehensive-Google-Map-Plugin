@@ -83,6 +83,12 @@ function buildShortcode(id, $) {
 		var role = $(this).attr('role');
 		var val =  $(this).attr('value');
 
+		if (role == 'addmarkerlisthidden') {
+			val = $('<div />').text(val).html();
+			val = val.replace(new RegExp("'", "g"), "");
+			val = val.replace(new RegExp("\"", "g"), "");
+		}
+
 		if ($(this).attr('type') == "checkbox") {
 			val = $(this).is(":checked");
 		}
@@ -119,6 +125,8 @@ function buildShortcode(id, $) {
 
 	CGMPGlobal.sep = $("object#global-data-placeholder param#sep").attr("value");
 	CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").attr("value");
+	CGMPGlobal.defaultLocationText = $("object#global-data-placeholder param#defaultLocationText").attr("value");
+	CGMPGlobal.defaultBubbleText = $("object#global-data-placeholder param#defaultBubbleText").attr("value");
 
 	var lists = [];
 
@@ -148,6 +156,35 @@ function buildShortcode(id, $) {
 				});
 		}
 
+		function initMarkerInputDataFieldsEvent()  {
+
+			$("input.marker-text-details").live("focus", function () {
+
+				if ($(this).val().indexOf("Enter marker") != -1) {
+					$(this).val("");
+					$(this).removeClass("marker-input-info-text");
+				} else {
+					$(this).removeClass("marker-input-info-text");
+				}
+			});
+
+			$("input.marker-text-details").live("blur", function () {
+				var value = $(this).val().replace(/^\s+|\s+$/g, '');
+				if (value == "") {
+
+					$(this).addClass("marker-input-info-text");
+
+					if ($(this).attr("id").indexOf("bubble") == -1) {
+						$(this).val(CGMPGlobal.defaultLocationText);
+					} else {
+						$(this).val(CGMPGlobal.defaultBubbleText);
+					}
+				}
+			});
+
+		}
+
+
 		function initAddLocationEevent()  {
 
 			$("input.add-additonal-location").live("click", function (source) {
@@ -161,18 +198,30 @@ function buildShortcode(id, $) {
 					}
 				});
 
-				var targetInput = "#" + $(this).attr("id") + "input";
+				var iconHolderInput = "#" + $(this).attr("id") + "input"; //addmarkerinput
+				var targetInput = "#" + $(this).attr("id").replace("addmarker", "locationaddmarkerinput"); //locationaddmarkerinput
+				var customBubbleTextInput = "#" + $(this).attr("id").replace("addmarker", "bubbletextaddmarkerinput"); //bubbletextaddmarkerinput
+				var customBubbleText = $(customBubbleTextInput).val();
+				customBubbleText = customBubbleText.replace(/^\s+|\s+$/g, '');
 				var customIconListId = "#" + $(this).attr("id") + "icons";
 				var selectedIcon = $(customIconListId + " input[name='custom-icons-radio']:checked").val();
 
-				if ($(targetInput).val() != null && $(targetInput).val() != "") {
+				if ($(targetInput).val() != null && $(targetInput).val() != "" && $(targetInput).val().indexOf("Enter marker") == -1) {
 
 					var target = $(targetInput).val().replace(/^\s+|\s+$/g, '');
 					var chars = /^(?=.*(\d|[a-zA-Z])).{5,}$/;
 					var hasValidChars = chars.test(target);
 					if (hasValidChars) {
 
-						tokenList.add(target + CGMPGlobal.sep + selectedIcon);
+						customBubbleText = CGMPGlobal.sep + customBubbleText;
+						if (customBubbleText.indexOf("Enter marker") != -1) {
+							customBubbleText = '';
+						}
+						target = target.replace(new RegExp("'", "g"), "");
+						customBubbleText = customBubbleText.replace(new RegExp("'", "g"), "");
+						customBubbleText = customBubbleText.replace(new RegExp("\"", "g"), "");
+						
+						tokenList.add(target + CGMPGlobal.sep + selectedIcon + customBubbleText);
 
 						resetPreviousIconSelection($(customIconListId));
 
@@ -180,10 +229,13 @@ function buildShortcode(id, $) {
 						$(customIconListId + " img#default-marker-icon").addClass('selected-marker-image');
 						$(customIconListId + " input#default-marker-icon-radio").attr('checked', 'checked');
 
-						$(targetInput).attr("style", "");
-						$(targetInput).addClass("default-marker-icon");
-						$(targetInput).val("");
-						$(targetInput).focus();
+						$(iconHolderInput).attr("style", "");
+						$(iconHolderInput).addClass("default-marker-icon");
+						$(targetInput).val(CGMPGlobal.defaultLocationText);
+						$(customBubbleTextInput).val(CGMPGlobal.defaultBubbleText);
+						$(targetInput).addClass("marker-input-info-text");
+						$(customBubbleTextInput).addClass("marker-input-info-text");
+						//$(targetInput).focus();
 
 					} else {
 						fadeInOutOnError(targetInput);
@@ -202,7 +254,7 @@ function buildShortcode(id, $) {
 				$(this).addClass("errorToken");
 			});
 
-			$(targetInput).focus().fadeOut(function() {
+			$(targetInput).fadeOut(function() {
 				$(this).removeClass("errorToken");
 				$(this).fadeIn("slow");
 			});
@@ -253,9 +305,10 @@ function buildShortcode(id, $) {
 
 			var currentSrc = $(img).attr('src');
 			var inputId = $(parentDiv).attr("id").replace("icons", "input");
-			$("#" + inputId).attr("style", "background: url('" + currentSrc + "') no-repeat scroll 0px 0px #F9F9F9 !important");
+			$("#" + inputId).attr("style", "background: url('" + currentSrc + "') no-repeat scroll 0px 0px transparent !important");
+			$("#" + inputId).attr("readonly", "readonly");
 			$("#" + inputId).removeClass("default-marker-icon");
-			$("#" + inputId).focus();
+			//$("#" + inputId).focus();
 		}
 
 		function initTooltips()  {
@@ -324,6 +377,7 @@ function buildShortcode(id, $) {
 		$(document).ready(function() {
 			initTokenHolders();
 			initAddLocationEevent();
+			initMarkerInputDataFieldsEvent();
 			initTooltips();
 			initMarkerIconEvents();
 			checkedGeoMashupOnInit();

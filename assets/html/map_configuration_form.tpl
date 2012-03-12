@@ -1,6 +1,6 @@
 	<fieldset>
 		<legend>Basic Settings</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="Width of map placeholder DIV">[?]</a>&nbsp;LABEL_WIDTH</td>
@@ -33,7 +33,7 @@
 	
 	<fieldset>
 		<legend>GEO Mashup</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will aggregate all markers from other maps created by you in your public published posts. In other words, you get a Geo marker mashup in one map! At the moment, the mashup does not include markers from maps on pages and widgets, posts ONLY">[?]</a>&nbsp;</td>
@@ -62,7 +62,7 @@
 
 	<fieldset>
 		<legend>Map Markers</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td colspan="4">
@@ -71,10 +71,24 @@
 				</tr>
 				<tr>
 					<td>
-						<a id="tooltip-marker-addmarkerinput" class="google-map-tooltip-marker" href="javascript:void(0);" title="You can enter either latitude/longitude seperated by comma, or a fully qualified geographical address. You can also select a custom icon for your marker. If none is selected, default Google marker icon is used - the red pin with black dot">[?]</a>&nbsp;LABEL_ADDMARKERINPUT
+						<a id="tooltip-marker-addmarkerinput" class="google-map-tooltip-marker" href="javascript:void(0);" title="You can enter either latitude/longitude seperated by comma, or a fully qualified geographical address. You can also select a custom icon for your marker. If none is selected, default Google marker icon is used - the red pin with black dot. When entering custom marker text, <b>no HTML tags are accepted</b>, all other HTML tags will be stripped. <br /><br />If you wish to insert a hyper link, you can do it using the following format:<br />#Fully qualified URL starting with http(s) followed by space and a link Name#. Please note the opening and closing hash tags. <br />For example: <b>#http://google.com Search Engine#</b> or <br /><b>#http://someblog.com Where I spent last summer#</b>">[?]</a>&nbsp;LABEL_ADDMARKERINPUT
 					</td>
-					<td colspan="2">
-						INPUT_ADDMARKERINPUT
+					<td colspan="2" style="text-align: left !important;">
+						<table class="marker-element-holder" cellspacing="0" cellpadding="0" border="0" style="width: 98% !important;">
+							<tbody>
+								<tr>
+									<td width="" rowspan="2" style="text-align: left;">
+										INPUT_ADDMARKERINPUT
+									</td>
+								</tr>
+								<tr>
+									<td rowspan="" style="text-align: left;">
+										INPUT_LOCATIONADDMARKERINPUT
+										INPUT_BUBBLETEXTADDMARKERINPUT
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</td>
 					<td>
 						BUTTON_ADDMARKER
@@ -94,7 +108,7 @@
 
 	<fieldset  class="collapsible">
 		<legend>KML/Geo RSS</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 
 				<tr>	
@@ -109,7 +123,7 @@
 
 	<fieldset  class="collapsible">
 		<legend>Map Controls</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td><a id="tooltip-marker-maptypecontrol" class="google-map-tooltip-marker" href="javascript:void(0);" title="The MapType control lets the user toggle between map types (such as ROADMAP and SATELLITE). This control appears by default in the top right corner of the map">[?]</a>&nbsp;LABEL_M_APTYPECONTROL</td>
@@ -135,7 +149,7 @@
 
 	<fieldset  class="collapsible">
 		<legend>Map Marker Info Bubbles</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td><a id="tooltip-marker-bubbleautopan" class="google-map-tooltip-marker" href="javascript:void(0);" title="Enables or disables info bubble auto-panning (the map view centers on the info bubble) when marker is clicked">[?]</a>&nbsp;LABEL_BUBBLEAUTOPAN</td>
@@ -150,7 +164,7 @@
 
 	<fieldset class="collapsible">
 		<legend>Custom Overlays</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td><a id="tooltip-marker-showbike" class="google-map-tooltip-marker" href="javascript:void(0);" title="A layer showing bike lanes and paths as overlays on a Google Map">[?]</a>&nbsp;LABEL_SHOWBIKE</td>
@@ -165,7 +179,7 @@
 
 	<fieldset class="collapsible">
 		<legend>Panoramio Library</legend>
-		<table cellspacing="0" cellpadding="0" border="0">
+		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td><a id="tooltip-marker-panoramio" class="google-map-tooltip-marker" href="javascript:void(0);" title="Panoramio (http://www.panoramio.com) is a geolocation-oriented photo sharing website. Accepted photos uploaded to the site can be accessed as a layer in Google Maps. In other words, each photo will be placed on the map like a marker.">[?]</a>&nbsp;LABEL_SHOWPANORAMIO</td>

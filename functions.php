@@ -26,6 +26,7 @@ if ( !function_exists('cgmp_draw_map_placeholder') ):
 				if ($hint == "true") {
 					$tokens_with_values = array();
 					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width;
+					$tokens_with_values['LABEL_DIRECTIONS_HINT'] = __('Click on map markers to get directions');
 					$map_marker_directions_hint_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_MARKER_DIRECTION_HINT);
 				}
 
@@ -38,6 +39,13 @@ if ( !function_exists('cgmp_draw_map_placeholder') ):
 				$tokens_with_values['MARKER_DIRECTIONS_HINT_TOKEN'] = $map_marker_directions_hint_template;
 				$tokens_with_values['IMAGES_DIRECTORY_URI'] = CGMP_PLUGIN_IMAGES;
 				$tokens_with_values['DIRECTIONS_WIDTH_TOKEN'] = ($width - 10);
+				$tokens_with_values['LABEL_GET_DIRECTIONS'] = __('Get Directions');
+				$tokens_with_values['LABEL_PRINT_DIRECTIONS'] = __('Print Directions');
+				$tokens_with_values['LABEL_ADDITIONAL_OPTIONS'] = __('Additional options');
+				$tokens_with_values['LABEL_AVOID_TOLLS'] = __('Avoid tolls');
+				$tokens_with_values['LABEL_AVOID_HIGHWAYS'] = __('Avoid highways');
+				$tokens_with_values['LABEL_KM'] = __('KM');
+				$tokens_with_values['LABEL_MILES'] = __('Miles');
 
 				return cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_PLACEHOLDER_AND_DIRECTIONS);
  	}
@@ -50,6 +58,45 @@ if ( !function_exists('cgmp_render_template_with_values') ):
 		$map_shortcode_builder_metabox_template = file_get_contents(CGMP_PLUGIN_HTML."/".$template_name);
   		$map_shortcode_builder_metabox_template = cgmp_replace_template_tokens($tokens_with_values, $map_shortcode_builder_metabox_template);
 		return $map_shortcode_builder_metabox_template;
+	}
+endif;
+
+
+if ( !function_exists('cgmp_fetch_json_data_file') ):
+	function cgmp_fetch_json_data_file($filename) {
+
+		$json_html_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".$filename);
+		$json_html = json_decode($json_html_string, true);
+		if (sizeof($json_html) == 1) {
+			$json_html = $json_html[0];
+		}
+		return $json_html;
+	}
+endif;
+
+
+if ( !function_exists('cgmp_parse_wiki_style_links') ):
+	function cgmp_parse_wiki_style_links($text) {
+
+		$pattern = "/\#[^\#]*\#/";
+		preg_match_all($pattern, $text, $wikilinks);
+
+		if (isset($wikilinks[0])) {
+			foreach ($wikilinks[0] as $wikilink)  {
+				$text = str_replace($wikilink, "[TOKEN]", $text);
+				$wikilink = preg_replace("/(\#)|(\#)/", "", $wikilink);
+				$url_data = preg_split("/[\s,]+/", $wikilink, 2);
+				$href = trim($url_data[0]);
+				$linkName = "Click Here";
+				if (isset($url_data[1])) {
+					$linkName = trim($url_data[1]);
+				}
+
+				$anchor = "<a href='".$href."'>".$linkName."</a>";
+				$text = str_replace("[TOKEN]", $anchor, $text);
+			}
+		}
+		return $text;
 	}
 endif;
 
@@ -84,7 +131,10 @@ endif;
 
 if ( !function_exists('cgmp_map_data_hook_function') ):
 	function cgmp_map_data_hook_function( $map_json ) {
-		echo PHP_EOL."<object class='map-data-placeholder'><param name='json-string' value='".$map_json."' /></object> ".PHP_EOL;
+		$naughty_stuff = array("'", "\r\n", "\n", "\r");
+		$map_json = str_replace($naughty_stuff, "", $map_json);
+		//$map_json = htmlentities($map_json, ENT_QUOTES);
+		echo "<object class='map-data-placeholder' style='width: 0px !important; height: 0px !important'><param name='json-string' value='".$map_json."' /></object> ".PHP_EOL;
 	}
 endif;
 
@@ -472,9 +522,9 @@ if ( !function_exists('cgmp_plugin_row_meta') ):
 		if ($file == $plugin) {
 
 			$links = array_merge( $links,
-				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation'), 'cgmp' ) ),
-				array( sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcode Builder'), 'cgmp' ) ),
-				array( sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings'), 'cgmp' ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation') ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcode Builder') ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings') ) ),
 				array( '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8" target="_blank">' . __('Donate') . '</a>' )
 			);
 		}

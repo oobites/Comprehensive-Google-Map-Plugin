@@ -7,6 +7,8 @@
     "CGMP_HOOK" : "cgmp-documentation",
     "CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM" : "map_configuration_form.tpl",
     "CGMP_HTML_TEMPLATE_MAP_CONFIG_DOCUMENTATION_PAGE" : "map_config_documentation_page.tpl",
+	"CGMP_HTML_TEMPLATE_GLOBAL_ERROR_MESSAGES" : "html_global_error_messages_json.tpl",
+	"CGMP_HTML_TEMPLATE_INFO_BUBBLE" : "html_info_bubble_json.tpl",
     "CGMP_HTML_TEMPLATE_MAP_MARKER_DIRECTION_HINT" : "map_marker_directions_hint.tpl",
     "CGMP_HTML_TEMPLATE_MAP_PLACEHOLDER_AND_DIRECTIONS" : "map_placeholder_and_directions.tpl",
     "CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_METABOX" : "map_shortcode_builder_metabox.tpl",
@@ -30,5 +32,5 @@
     "CGMP_PLUGIN_INCLUDE_DIR" : "CGMP_PLUGIN_DIR/include",
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
-    "CGMP_VERSION" : "7.0.0"
+    "CGMP_VERSION" : "7.0.6"
   } ]

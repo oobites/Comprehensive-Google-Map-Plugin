@@ -1,5 +1,7 @@
-[ { "addmarker" : "Add Marker",
+[ { "addmarker" : "Add",
     "addmarkerlisthidden" : "",
+	"locationaddmarkerinput" : "Enter marker address or latitude,longitude here (required)",
+	"bubbletextaddmarkerinput" : "Enter marker info bubble text here (optional)",
     "addmarkermashupbubble" : "false",
     "addmarkermashuphidden" : "false",
     "addresscontent" : "",

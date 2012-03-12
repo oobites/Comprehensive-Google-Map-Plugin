@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 	function cgmp_shortcode_googlemap_handler($attr, $content = null, $code = null) {
-
+	
 	$shortcode_attribs = shortcode_atts(array(
 		'latitude' => 0,
 		'longitude' => 0,
@@ -29,6 +29,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 		'maptype' => 'ROADMAP',
 		'maptypecontrol' => 'true',
 		'pancontrol' => 'true',
+		'addresscontent' => '',
 		'zoomcontrol' => 'true',
 		'scalecontrol' => 'true',
 		'streetviewcontrol' => 'true',
@@ -50,17 +51,21 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 	
 	$id = md5(time().' '.rand()); 
 
+	$addmarkerlist = strip_tags($addmarkerlist);
 	if ($addmarkermashup == 'true') {
 		$addmarkerlist = make_marker_geo_mashup();
 	} else if ($addmarkermashup == 'false') {
 		$addmarkerlist = update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $addmarkerlist);
+		$addmarkerlist = cgmp_parse_wiki_style_links($addmarkerlist);
+		$addmarkerlist = htmlspecialchars($addmarkerlist);
 	}
 
 	cgmp_set_google_map_language($language);
 	cgmp_google_map_init_scripts();
 
 	$map_data_properties = array();
-	$not_map_data_properties = array("title", "latitude", "longitude", "addresscontent", "addmarkerlist", "showmarker", "animation", "infobubblecontent", "markerdirections");
+	$not_map_data_properties = array("title", "latitude", "longitude", "addresscontent", "addmarkerlist", "showmarker", 
+			"animation", "infobubblecontent", "markerdirections", "locationaddmarkerinput", "bubbletextaddmarkerinput");
 
 	foreach ($shortcode_attribs as $key => $value) {
 		$value = trim($value);

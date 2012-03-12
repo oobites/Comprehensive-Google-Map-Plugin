@@ -42,7 +42,7 @@
 
 	&nbsp;&nbsp;&nbsp;&nbsp;latitude="<span class="italic">any numeric character, between -90 and 90</span>" <span style="color: red;">(Deprecated. Do not use. Please use the <span class="italic">addmarkerlist</span> property instead)</span><br />  
 	&nbsp;&nbsp;&nbsp;&nbsp;longitude="<span class="italic">any numeric character, between -180 and 180</span>" <span style="color: red;">(Deprecated. Do not use. Please use the <span class="italic">addmarkerlist</span> property instead)</span><br />  
-	&nbsp;&nbsp;&nbsp;&nbsp;addresscontent="<span class="italic">full geo address string or latitude/longitude</span>" <span style="color: red;">(Deprecated. Do not use. Please use the <span class="italic">addmarkerlist</span> property instead)</span><br /> 
+	&nbsp;&nbsp;&nbsp;&nbsp;addresscontent="<span class="italic">full geo address string or latitude/longitude</span>" <span style="color: red;">(Deprecated, but supported for backwards compatibility. Do not use. Please use the <span class="italic">addmarkerlist</span> property instead)</span><br /> 
 
 	&nbsp;&nbsp;&nbsp;&nbsp;showmarker="<span class="italic">true <span class="sep">or</span> false</span>"<br /> 
 	&nbsp;&nbsp;&nbsp;&nbsp;directionhint="<span class="italic">true <span class="sep">or</span> false</span>"<br />

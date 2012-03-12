@@ -78,16 +78,10 @@ function cgmp_parse_menu_html() {
                 wp_die( __('You do not have sufficient permissions to access this page.') );
         }
 
-		$json_html_doco_params_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_HTML_ELEMENTS_DOCO_PARAMS);
-		$json_html_doco_params = json_decode($json_html_doco_params_string, true);
+		$json_html_doco_params = cgmp_fetch_json_data_file(CGMP_JSON_DATA_HTML_ELEMENTS_DOCO_PARAMS);
 
 		if (is_array($json_html_doco_params)) {
-
-			$map_configuration_form_template = "";
-			foreach ($json_html_doco_params as $data_chunk) {
-				$map_configuration_form_template = cgmp_render_template_with_values($data_chunk, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
-			}
-
+			$map_configuration_form_template = cgmp_render_template_with_values($json_html_doco_params, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 			$template_values = array();
         	$template_values["DOCUMENTATION_TOKEN"] = $map_configuration_form_template;
 

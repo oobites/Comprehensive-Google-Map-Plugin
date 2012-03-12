@@ -58,22 +58,22 @@
 					<span id="d_options_toggle">
 						<a id="d_options_show" class="no-wrap" href="javascript:void(0)" style="display: none !important;">Show options</a> 
 						<a id="d_options_hide" class="no-wrap" href="javascript:void(0)" style="display: none !important;">Hide options</a>
-					   	<b><span style="color: blue">Additional options</span></b>
+					   	<b><span style="color: blue">LABEL_ADDITIONAL_OPTIONS</span></b>
 					</span>
 				</div>
 				<div id="d_options" style="background-color: #ddd; margin-bottom: 3px; text-align: left; padding: 3px;">
 					<input type="checkbox" tabindex="5" name="avoid_hway" id="avoid_hway" />
-					<label for="avoid_hway">Avoid highways</label>
+					<label for="avoid_hway">LABEL_AVOID_HIGHWAYS</label>
 					<input type="checkbox" tabindex="5" name="avoid_tolls" id="avoid_tolls" />
-					<label for="avoid_tolls">Avoid tolls</label>
+					<label for="avoid_tolls">LABEL_AVOID_TOLLS</label>
 					<input type="radio" name="travel_mode" id="radio_km" />
-					<label for="radio_km">KM</label>
+					<label for="radio_km">LABEL_KM</label>
 					<input type="radio" name="travel_mode" id="radio_miles" checked="checked" />
-					<label for="radio_miles">Miles</label>
+					<label for="radio_miles">LABEL_MILES</label>
 				</div>
 				<div class="dir-sub-cntn">
-					<button tabindex="6" name="btnG" type="submit" id="d_sub" class="kd-button kd-button-submit">Get Directions</button>
-					<button tabindex="6" name="btnG" type="button" style="display: none;" id="print_sub" class="kd-button kd-button-submit">Print Directions</button>
+					<button tabindex="6" name="btnG" type="submit" id="d_sub" class="kd-button kd-button-submit">LABEL_GET_DIRECTIONS</button>
+					<button tabindex="6" name="btnG" type="button" style="display: none;" id="print_sub" class="kd-button kd-button-submit">LABEL_PRINT_DIRECTIONS</button>
 				</div>
 			</div>
 		</div>

@@ -15,7 +15,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var jQueryCgmp = jQuery.noConflict();
+	(function () {
+		if (typeof jQuery == "undefined" || jQuery == null ) {
+			alert("You dont have jQuery library loaded, aborting map generation :(");
+			return;
+		}
+	})();
+
+	var jQueryCgmp = jQuery.noConflict();
 	(function ($) {
 
 		var CGMPGlobal = {};
@@ -256,10 +263,10 @@ var jQueryCgmp = jQuery.noConflict();
 
 			function resetMap()  {
 				if (originalExtendedBounds != null) {
-					if (googleMap.setCenter() != originalExtendedBounds.getCenter()) {
-						Logger.info("Panning map back to its original bounds center: " + originalExtendedBounds.getCenter() + " and updated zoom: " + updatedZoom);
+					if (googleMap.getCenter() != originalExtendedBounds.getCenter()) {
+						Logger.info("Panning map back to its original bounds center: " + originalExtendedBounds.getCenter());
+						googleMap.fitBounds(originalExtendedBounds);
 						googleMap.setCenter(originalExtendedBounds.getCenter());
-						googleMap.setZoom(updatedZoom);
 					}
 				} else 	if (originalMapCenter != null) {
 					Logger.info("Panning map back to its original center: " + originalMapCenter  + " and updated zoom: " + updatedZoom);
@@ -578,8 +585,12 @@ var jQueryCgmp = jQuery.noConflict();
 				var	bubble = "<div id='bubble-" + randomNumber + "' style='height: 130px !important; width: 300px !important;' class='bubble-content'>";
 
 				if (!markersElement.geoMashup) {
-					bubble += "<h4>Address:</h4>";
+					bubble += "<h4>" + CGMPGlobal.translations.address + ":</h4>";
 					bubble += "<p style='text-align: left'>" + contentFromMarker + "</p>";
+					if (markersElement.customBubbleText != '') {
+						//var decodedHtml = $("<p></p>").html(markersElement.customBubbleText).text();
+						bubble += "<p style='text-align: left; margin-top: 5px !important;'>" + markersElement.customBubbleText + "</p>";
+					}
 				} else {
 					var substr = markersElement.postTitle.substring(0, 30);
 					bubble += "";
@@ -588,7 +599,7 @@ var jQueryCgmp = jQuery.noConflict();
 				}
 
 				bubble += "<hr />";
-				bubble += "<p style='text-align: left'>Directions: <a id='toHere-" + randomNumber + "' class='dirToHereTrigger' href='javascript:void(0);'>To here</a> - <a id='fromHere-" + randomNumber + "' class='dirFromHereTrigger' href='javascript:void(0);'>From here</a> | <a id='trigger-" + randomNumber + "' class='streetViewTrigger' href='javascript:void(0);'>Street View</a></p>";
+				bubble += "<p style='text-align: left'>" + CGMPGlobal.translations.directions + ": <a id='toHere-" + randomNumber + "' class='dirToHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.toHere + "</a> - <a id='fromHere-" + randomNumber + "' class='dirFromHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.fromHere + "</a> | <a id='trigger-" + randomNumber + "' class='streetViewTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.streetView + "</a></p>";
 				bubble += "</div>";
 
 				return {bubbleHolderId : randomNumber, bubbleContent: bubble};
@@ -616,16 +627,19 @@ var jQueryCgmp = jQuery.noConflict();
 
 				var index = 1;
 				$.each(json, function() {
+					if (this.excerpt == null) {
+						this.excerpt = '';
+					}
 					Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.addy + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
 
 					var targetArr = this.addy.split(CGMPGlobal.sep);
 
 					if (Utils.isNumeric(targetArr[0])) {
-						addGeoPoint(targetArr[0], index, targetArr[1], this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
+						addGeoPoint(index, targetArr, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
 					} else if (Utils.isAlphaNumeric(targetArr[0])) {
-						storeAddress(targetArr[0], index, targetArr[1], this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
+						storeAddress(index, targetArr, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
 					} else {
-						storeAddress(targetArr[0], index, targetArr[1], this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
+						storeAddress(index, targetArr, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
 						Logger.warn("Unknown type of geo destination in regexp: " + targetArr[0] + ", fallingback to store it as an address");
 					}
 					index ++;
@@ -637,23 +651,31 @@ var jQueryCgmp = jQuery.noConflict();
 				 var targetArr = target.split(CGMPGlobal.sep);
 
 				 if (Utils.isNumeric(targetArr[0])) {
-					 addGeoPoint(targetArr[0], index, targetArr[1], '', '', '', false);
+					 addGeoPoint(index, targetArr, '', '', '', false);
 				 } else if (Utils.isAlphaNumeric(targetArr[0])) {
-					 storeAddress(targetArr[0], index, targetArr[1], '', '', '', false);
+					 storeAddress(index, targetArr, '', '', '', false);
 				 } else {
-					 storeAddress(targetArr[0], index, targetArr[1], '', '', '', false);
+					 storeAddress(index, targetArr, '', '', '', false);
 					 Logger.warn("Unknown type of geo destination in regexp: " + targetArr[0] + ", fallingback to store it as an address");
 				 }
 			}
 
-			function storeAddress(address, zIndex, markerIcon, postTitle, postLink, postExcerpt, geoMashup) {
-					
-					Logger.info("Storing address: " + address + " for marker-to-be for the map ID: " + mapDivId);
+			function storeAddress(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup) {
+
+					if (targetArr[2] != null) {
+				 		if (targetArr[2].indexOf("No description provided") != -1) {
+							targetArr[2] = '';
+				 		}
+				 	} else {
+						targetArr[2] = '';
+				 	}
+					Logger.info("Storing address: " + targetArr[0] + " for marker-to-be for the map ID: " + mapDivId);
 					storedAddresses.push({
-						address: address,
+						address: targetArr[0],
 						animation: google.maps.Animation.DROP,
 						zIndex: zIndex,
-						markerIcon: markerIcon,
+						markerIcon: targetArr[1],
+						customBubbleText: targetArr[2],
 						postTitle: postTitle,
 						postLink: postLink,
 						postExcerpt: postExcerpt,
@@ -661,16 +683,16 @@ var jQueryCgmp = jQuery.noConflict();
 					});
 				}
 			
-			function addGeoPoint(point, zIndex, markerIcon, postTitle, postLink, postExcerpt, geoMashup) {
-				if (point == null || !point) {
+			function addGeoPoint(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup) {
+				if (targetArr[0] == null || !targetArr[0]) {
 					Logger.warn("Given GEO point containing Lat/Long is NULL");
 					return false;
 				}
 				
-				var latLng = point;
+				var latLng = targetArr[0];
 				if (!(latLng instanceof google.maps.LatLng)) {
-					if (point.indexOf(",") != -1) {
-						var latlngStr = point.split(",",4);
+					if (targetArr[0].indexOf(",") != -1) {
+						var latlngStr = targetArr[0].split(",",4);
 
 						if (latlngStr == null || latlngStr.length != 2) {
 							Logger.warn("Exploded lat/long array is NULL or does not have length of two");
@@ -695,7 +717,8 @@ var jQueryCgmp = jQuery.noConflict();
 						latLng = new google.maps.LatLng(lat, lng);
 					}
 				}
-				storeAddress(latLng, zIndex, markerIcon, postTitle, postLink, postExcerpt, geoMashup);
+				targetArr[0] = latLng;
+				storeAddress(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup);
 			}
 			
 			function queryGeocoderService() {
@@ -736,11 +759,13 @@ var jQueryCgmp = jQuery.noConflict();
 						}
 					});
 					originalExtendedBounds = bounds;
-					googleMap.fitBounds(bounds);
-					updatedZoom = googleMap.getZoom();
+					if (bounds != null) {
+						googleMap.fitBounds(bounds);
+					}
 				} else if (markers.length == 1) {
 					googleMap.setCenter(markers[0].position);
 					updatedZoom = googleMap.getZoom();
+					originalMapCenter = googleMap.getCenter();
 				}
 			}
 
@@ -753,10 +778,6 @@ var jQueryCgmp = jQuery.noConflict();
 			}
 
 			function buildLatLongBubbleInfo(element, addressPoint)  {
-				if (element.zIndex == 1) {
-					originalMapCenter = addressPoint;
-				}
-
 				var lat = addressPoint.lat();
 				lat = parseFloat(lat);
 				lat = lat.toFixed(5);
@@ -770,9 +791,7 @@ var jQueryCgmp = jQuery.noConflict();
 
 			function geocoderCallback(results, status, element) {
 				if (status == google.maps.GeocoderStatus.OK) {
-
 					var addressPoint = results[0].geometry.location;
-					
 					instrumentMarker(addressPoint, element);
 					timeout = setTimeout(function() { queryGeocoderService(); }, 330);
 				} else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
@@ -905,8 +924,10 @@ var jQueryCgmp = jQuery.noConflict();
 				 } else {
 					if ($.browser.mozilla && parseInt($.browser.version) >= 3 ) {
 						console.log(message);
+					} else if ($.browser.webkit) {
+						console.log(message);
 					} else {
-						console.log("Logger could not print because browser is Mozilla [" + $.browser.mozilla + "] and its version is [" + parseInt($.browser.version) + "]");
+						console.log("Logger could not print because browser is not webkit nor mozilla, and its version is [" + parseInt($.browser.version) + "]");
 					}
 				 }
 			}
@@ -925,9 +946,9 @@ var jQueryCgmp = jQuery.noConflict();
 
 					var alertError = function alertError(content)  {
 
-						var mask = $('<div id="mask"/>');
+						var mask = $('<div id="cgmp-popup-mask"/>');
 						var id = Math.random().toString(36).substring(3);
-						var shortcode_dialog = $('<div id="' + id + '" class="shortcode-dialog window" />');
+						var shortcode_dialog = $('<div id="' + id + '" class="cgmp-popup-shortcode-dialog cgmp-popup-window" />');
 						shortcode_dialog.html("<p style='padding: 10px 10px 0 10px'>" + content + "</p><div align='center'><input type='button' class='close-dialog' value='Close' /></div>");
 
 						$('body').append(mask);
@@ -935,10 +956,10 @@ var jQueryCgmp = jQuery.noConflict();
 
 						var maskHeight = $(document).height();
 						var maskWidth = $(window).width();
-						$('#mask').css({'width':maskWidth,'height':maskHeight, 'opacity':0.3});
+						$('#cgmp-popup-mask').css({'width':maskWidth,'height':maskHeight, 'opacity':0.3});
 
-						if ($("#mask").length == 1) {
-							$('#mask').show();
+						if ($("#cgmp-popup-mask").length == 1) {
+							$('#cgmp-popup-mask').show();
 						}
 
 						var winH = $(window).height();
@@ -946,27 +967,27 @@ var jQueryCgmp = jQuery.noConflict();
 						$("div#" + id).css('top',  winH/2-$("div#" + id).height()/2);
 						$("div#" + id).css('left', winW/2-$("div#" + id).width()/2);
 						$("div#" + id).fadeIn(500); 
-						$('.window .close-dialog').click(function (e) {
+						$('.cgmp-popup-window .close-dialog').click(function (e) {
 							e.preventDefault();
 
-							var parentDialog = $(this).closest("div.shortcode-dialog");
+							var parentDialog = $(this).closest("div.cgmp-popup-shortcode-dialog");
 							if (parentDialog) {
 								$(parentDialog).remove();
 							}
 
-							if ($("div.shortcode-dialog").length == 0) {
-								$('#mask').remove();
+							if ($("div.cgmp-popup-shortcode-dialog").length == 0) {
+								$('#cgmp-popup-mask').remove();
 							}
 						});
-						$('#mask').click(function () {
+						$('#cgmp-popup-mask').click(function () {
 							$(this).remove();
-							$('.window').remove();
+							$('.cgmp-popup-window').remove();
 						});
 						$(window).resize(function () {
 							var box = $('.window');
 							var maskHeight = $(document).height();
 							var maskWidth = $(window).width();
-							$('#mask').css({'width':maskWidth,'height':maskHeight});
+							$('#cgmp-popup-mask').css({'width':maskWidth,'height':maskHeight});
 							var winH = $(window).height();
 							var winW = $(window).width();
 							box.css('top',  winH/2 - box.height()/2);
@@ -987,10 +1008,12 @@ var jQueryCgmp = jQuery.noConflict();
 				return;
 			}
 
-			CGMPGlobal.sep = $("object#global-data-placeholder param#sep").attr("value");
-			CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").attr("value");
-			CGMPGlobal.errors = $("object#global-data-placeholder param#errors").attr("value");
+			CGMPGlobal.sep = $("object#global-data-placeholder").find("param#sep").val();
+			CGMPGlobal.customMarkersUri = $("object#global-data-placeholder").find("param#customMarkersUri").val();
+			CGMPGlobal.errors = $("object#global-data-placeholder").find("param#errors").val();
 			CGMPGlobal.errors = $.parseJSON(CGMPGlobal.errors);
+			CGMPGlobal.translations = $("object#global-data-placeholder").find("param#translations").val();
+			CGMPGlobal.translations = $.parseJSON(CGMPGlobal.translations);
 
 			$("object.map-data-placeholder").each(function (index, element) {
 
@@ -1004,7 +1027,8 @@ var jQueryCgmp = jQuery.noConflict();
 					return false;
 				}
 
-				var jsonString = $(element).find('param').attr("value");
+				var jsonString = $(element).find('param').val();
+				jsonString = Utils.searchReplace(jsonString, "'", "");
 				var json = $.parseJSON(jsonString);
 
 				if ($('div#' + json.id).length > 0) {

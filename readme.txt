@@ -1,10 +1,10 @@
 === Comprehensive Google Map Plugin ===
 Contributors: alexanderzagniotov
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8
-Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons, geo, geo mashup, marker geo mashup
+Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 7.0.0
+Stable tag: 7.0.6
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -23,7 +23,7 @@ A simple and intuitive, yet elegant and fully documented Google map plugin that 
 manually to type the short-code in the editor (But you can if you want to).
 * The plugin auto generates unique ID for each map. In other words - unlimited maps! You do not need to specify and maintain unique map
 IDs explicitly when dealing with multiple maps on the same post/page.
-* The plugin offers extensive configuration options for Google map marker, controls, size, KML files, location by latitude/longitude, location by address, info windows, traffic/bike lanes and more!
+* The plugin offers extensive configuration options for Google map marker, controls, size, KML files, location by latitude/longitude, location by address, info windows with custom text, traffic/bike lanes and more!
 * Support for custom overlays: Panoramio photos on the map (http://www.panoramio.com/), bicycle lanes and traffic info.
 * User can get directions to the locations on the map (markers)
 * Widget enabled.
@@ -40,9 +40,14 @@ Thanks!
 Licenses:
 The plugin uses wonderful custom marker icons from the <a href="http://mapicons.nicolasmollet.com" target="_blank">Maps Icons Collection</a> <img src="http://mapicons.nicolasmollet.com/wp-content/uploads/2011/03/miclogo-88x31.gif" border="0" /> project by Nicolas Mollet.
 
-Additional Contributors:
-1. Colin 'Logan' Campbell-McPherson (colin[{_}]logaan.net)
-2. Honza Rameš (ramejan[{_}]gmail.com)
+== Contributors ==
+
+= Project Lead =
+* Alexander Zagniotov
+
+= Additional Contributors =
+* Colin 'Logan' Campbell-McPherson 
+* Honza Rameš 
 
 == Installation ==
 
@@ -71,19 +76,41 @@ Please revisit and reconfigure your widget or shortcode configuration. The map r
 
 == Screenshots ==
 
-1. Widget editing interface.
-2. Help tooltip in action
-3. Documentation page
-4. Shortcode builder page
-5. Generated short code in the editor
-6. Sliders
-7. Facebook style interactive interface for managing multiple map markers and custom icons
-8. Direction panel
-9. Markers info window with the direction and street view
-10. Street view in the marker's infer window
-11. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
+1. Help tooltip in action
+2. Documentation page
+3. Shortcode builder page
+4. Generated short code in the editor
+5. Facebook style interactive interface for map markers with custom icons and text
+6. Direction panel
+7. Markers info window with the direction and street view
+8. Street view in the marker's infer window
+9. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
 
 == Changelog ==
+
+= 7.0.6 =
+* Enhancement: Fixed title generation in widget
+* Bug: CSS class messing up other themes
+
+= 7.0.5 =
+* Enhancement: Single quote escape when parsing JSON
+* Enhancement: Widget title is now wrapped within the DIV and H3
+* Enhancement: It is possible now to add custom marker text to info bubbles with Wiki-like style hyper link support
+
+= 7.0.4 =
+* Enhancement: Making the plugin ready for translation.
+
+= 7.0.3 =
+* Bug: Overlooked 'address content' property in the new update in shortocode.php. My sincere apologies to users affected.
+
+= 7.0.2 =
+* Bug: Setting zoom value when fitting map to its marker bounds 
+* Bug: When Geo mashup enabled, missing excerpt was appearing as NULL in the info bubble 
+* Spike: Trying to resolve IE8 and jQuery 1.6.2 .attr() problems (Yep, worked)
+
+= 7.0.1 =
+* Bug: Enforcing zero width and height on an OBJECT HTML element
+* Enhancement: Logging was disabled for webkit browsers
 
 = 7.0.0 =
 * Enhancement: Huge backend rewrite in order to minimise code base by relying on JSON data files.

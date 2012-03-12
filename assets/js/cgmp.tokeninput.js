@@ -30,9 +30,15 @@ var jQueryCgmp = jQuery.noConflict();
 					
 					var value = item[this.tokenDataValue] ;
 					var value_arr = value.split(CGMPGlobal.sep);
-					//console.log(value_arr);
+					var bubbleText = "<p style='padding-left: 50px'><i>No description provided</i> ..</p>";
+
+					if (value_arr[2] != null && value_arr[2] != '') {
+						bubbleText = "<p style='padding-left: 50px'><i>" + value_arr[2] + "</i></p>";
+					}
 					
-					return "<li><img src='" + CGMPGlobal.customMarkersUri + value_arr[1] + "' border='0' style='float: left; margin-right: 8px;'><p>" + value_arr[0] + "</p></li>" }
+					return "<li><img src='" + CGMPGlobal.customMarkersUri + value_arr[1] + 
+		"' border='0' style='float: left; margin-right: 8px;'><p><b>" + value_arr[0] + 
+		"</b></p>" + bubbleText + "</li>" }
 		};
 		var DEFAULT_CLASSES = {
    		    tokenList: "token-input-list",
