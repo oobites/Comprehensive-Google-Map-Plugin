@@ -26,21 +26,15 @@ endif;
 if ( !function_exists('cgmp_google_map_admin_add_script') ):
 		function cgmp_google_map_admin_add_script()  {
 
-				$whitelist = array('localhost', '127.0.0.1');
+				$whitelist = array('localhost', '127.0.0.1', 'initbinder.com');
 
               	wp_enqueue_script('cgmp-jquery-tools-tooltip', CGMP_PLUGIN_JS .'/jquery.tools.tooltip.min.js', array('jquery'), '1.2.5.a', true);
-				
-				if (!in_array($_SERVER['HTTP_HOST'], $whitelist)) {
- 					wp_enqueue_script('cgmp-jquery-tokeninput', CGMP_PLUGIN_JS. '/cgmp.tokeninput.min.js', array('jquery'), CGMP_VERSION, true);
-				} else {
-					wp_enqueue_script('cgmp-jquery-tokeninput', CGMP_PLUGIN_JS. '/cgmp.tokeninput.js', array('jquery'), CGMP_VERSION, true);
+				$minified = ".min";
+				if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
+					$minified = "";
 				}
-
-				if (!in_array($_SERVER['HTTP_HOST'], $whitelist)) {
-					wp_enqueue_script('comprehensive-google-map-plugin', CGMP_PLUGIN_JS. '/cgmp.admin.min.js', array('jquery'), CGMP_VERSION, true);
-				} else {
-					wp_enqueue_script('comprehensive-google-map-plugin', CGMP_PLUGIN_JS. '/cgmp.admin.js', array('jquery'), CGMP_VERSION, true);
-				}
+				wp_enqueue_script('cgmp-jquery-tokeninput', CGMP_PLUGIN_JS. '/cgmp.tokeninput'.$minified.'.js', array('jquery'), CGMP_VERSION, true);
+				wp_enqueue_script('comprehensive-google-map-plugin', CGMP_PLUGIN_JS. '/cgmp.admin'.$minified.'.js', array('jquery'), CGMP_VERSION, true);
 		}
 endif;
 
@@ -56,13 +50,15 @@ if ( !function_exists('cgmp_google_map_init_scripts') ):
 		function cgmp_google_map_init_scripts()  {
 
 			if (!is_admin()) {
+
 				wp_enqueue_style('cgmp-google-map-styles', CGMP_PLUGIN_URI . 'style.css', false, CGMP_VERSION, "screen");
-				$whitelist = array('localhost', '127.0.0.1');
-				if (!in_array($_SERVER['HTTP_HOST'], $whitelist)) {
-					wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework.min.js', array('jquery'), CGMP_VERSION, true);
-				} else {
-					wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework.js', array('jquery'), CGMP_VERSION, true);
+				$whitelist = array('localhost', '127.0.0.1', 'initbinder.com');
+				wp_enqueue_script( array ( 'jquery' ) );
+				$minified = ".min";
+				if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
+					$minified = "";
 				}
+				wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework'.$minified.'.js', array(), CGMP_VERSION, true);
 			}
 		}
 endif;
@@ -72,10 +68,10 @@ if ( !function_exists('cgmp_google_map_init_global_admin_html_object') ):
 		function cgmp_google_map_init_global_admin_html_object()  {
 
 			if (is_admin()) {
-				echo "<object id='global-data-placeholder' style='width: 0px !important; height: 0px !important'>".PHP_EOL;
+				echo "<object id='global-data-placeholder' class='cgmp-data-placeholder'>".PHP_EOL;
 				echo "    <param id='sep' name='sep' value='".CGMP_SEP."' />".PHP_EOL;
 				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;
-				echo "    <param id='defaultLocationText' name='defaultLocationText' value='Enter marker address or latitude,longitude here (required)' />".PHP_EOL;
+				echo "    <param id='defaultLocationText' name='defaultLocationText' value='Enter marker destination address or latitude,longitude here (required)' />".PHP_EOL;
 				echo "    <param id='defaultBubbleText' name='defaultBubbleText' value='Enter marker info bubble text here (optional)' />".PHP_EOL;
 				echo "</object> ".PHP_EOL;
 			}
@@ -90,7 +86,7 @@ if ( !function_exists('cgmp_google_map_init_global_html_object') ):
 
 				$tokens_with_values = array();
 				$tokens_with_values['LABEL_BAD_ADDRESSES'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Google found the following address(es) as NON-geographic and could not find them:<br /><br />[REPLACE]<br />Consider revising the address(es). Did you make a mistake when creating marker locations or did not provide a full geo-address? Alternatively use Google web to validate the address(es)');
-				$tokens_with_values['LABEL_MISSING_MARKERS'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />You did not specify any marker locations for the Google map! Please check the following when adding marker locations:<br /><b>[a]</b> In the shortcode builder, did you click the Add Marker before generating shortcode?<br /><b>[b]</b> In the widget, did you click the Add Marker before clicking Save?<br /><br />Please revisit and reconfigure your widget or shortcode configuration. The map requires at least one marker location to be added..');
+				$tokens_with_values['LABEL_MISSING_MARKERS'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />You did not specify any marker locations for the Google map! Please check the following when adding marker locations:<br /><b>[a]</b> In the shortcode builder, did you add location(s) and clicked the Add button before generating shortcode?<br /><b>[b]</b> In the widget, did you add location(s) and clicked Add button before clicking Save?<br /><br />Please revisit and reconfigure your widget or shortcode configuration. The map requires at least one marker location to be added..');
 				$tokens_with_values['LABEL_KML'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />Google returned the following error when trying to load KML file:<br /><br />[MSG] ([STATUS])');
 				$tokens_with_values['LABEL_DOCINVALID_KML'] = __('The KML file is not a valid KML, KMZ or GeoRSS document.');
 				$tokens_with_values['LABEL_FETCHERROR_KML'] = __('The KML file could not be fetched.');
@@ -113,8 +109,12 @@ if ( !function_exists('cgmp_google_map_init_global_html_object') ):
 				$tokens_with_values['LABEL_FROMHERE'] = __('From here');
 				$info_bubble_translated_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_INFO_BUBBLE);
 
-				echo "<object id='global-data-placeholder' style='width: 0px !important; height: 0px !important'>".PHP_EOL;
+				global $cgmp_global_map_language;
+				$cgmp_global_map_language = (isset($cgmp_global_map_language) && $cgmp_global_map_language != '') ? $cgmp_global_map_language : "en";
+
+				echo "<object id='global-data-placeholder' style='background-color:transparent !important;border:none !important;height:0 !important;left:10000000px !important;line-height:0 !important;margin:0 !important;outline:medium none !important;padding:0 !important;position:absolute !important;top:100000px !important;width:0 !important;z-index:9999786 !important'>".PHP_EOL;
 				echo "    <param id='sep' name='sep' value='".CGMP_SEP."' />".PHP_EOL;
+				echo "    <param id='language' name='language' value='".$cgmp_global_map_language."' />".PHP_EOL;
 				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;
 				echo "    <param id='errors' name='errors' value='".$global_error_messages_json_template."' />".PHP_EOL;
 				echo "    <param id='translations' name='translations' value='".$info_bubble_translated_template."' />".PHP_EOL;

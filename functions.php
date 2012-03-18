@@ -123,18 +123,19 @@ endif;
 
 
 if ( !function_exists('cgmp_map_data_injector') ):
-	function cgmp_map_data_injector($map_json) {
-			cgmp_map_data_hook_function( $map_json );
+	function cgmp_map_data_injector($map_json, $id) {
+			cgmp_map_data_hook_function( $map_json, $id );
 	}
 endif;
 
 
 if ( !function_exists('cgmp_map_data_hook_function') ):
-	function cgmp_map_data_hook_function( $map_json ) {
+	function cgmp_map_data_hook_function( $map_json, $id) {
 		$naughty_stuff = array("'", "\r\n", "\n", "\r");
 		$map_json = str_replace($naughty_stuff, "", $map_json);
-		//$map_json = htmlentities($map_json, ENT_QUOTES);
-		echo "<object class='map-data-placeholder' style='width: 0px !important; height: 0px !important'><param name='json-string' value='".$map_json."' /></object> ".PHP_EOL;
+		$objectid = 'for-mapid-'.$id;
+		$paramid = 'json-string-'.$objectid;
+	echo "<object id='".$objectid."' name='".$objectid."' class='cgmp-data-placeholder cgmp-json-string-placeholder'><param id='".$paramid."' name='".$paramid."' value='".$map_json."' /></object> ".PHP_EOL;
 	}
 endif;
 
@@ -143,16 +144,20 @@ endif;
 if ( !function_exists('cgmp_set_google_map_language') ):
 	function cgmp_set_google_map_language($user_selected_language)  {
 
+		global $cgmp_global_map_language;
+
 		$db_saved_language = get_option(CGMP_DB_SELECTED_LANGUAGE);
 
 		if (!isset($db_saved_language) || $db_saved_language == '') {
 			if ($user_selected_language != 'default') {
 				update_option(CGMP_DB_SELECTED_LANGUAGE, $user_selected_language);
 				cgmp_deregister_and_enqueue_google_api($user_selected_language);
+				$cgmp_global_map_language = $user_selected_language;
 
 			} else {
 				if (!is_admin()) {
 					wp_enqueue_script('cgmp-google-map-api', CGMP_GOOGLE_API_URL, array('jquery'), false, true);
+					$cgmp_global_map_language = "en";
 				}
 			}
 		} else if (isset($db_saved_language) && $db_saved_language != '') {
@@ -160,9 +165,12 @@ if ( !function_exists('cgmp_set_google_map_language') ):
 			if ($user_selected_language != 'default') {
 				update_option(CGMP_DB_SELECTED_LANGUAGE, $user_selected_language);
 				cgmp_deregister_and_enqueue_google_api($user_selected_language);
+				$cgmp_global_map_language = $user_selected_language;
 
 			} else {
 				cgmp_deregister_and_enqueue_google_api($db_saved_language);
+				$cgmp_global_map_language = $db_saved_language;
+
 			}
 		}
 	}
@@ -170,9 +178,9 @@ endif;
 
 if ( !function_exists('cgmp_deregister_and_enqueue_google_api') ):
 	function cgmp_deregister_and_enqueue_google_api($lang)  {
-		if (!is_admin()) {
+		if (!is_admin() && !is_feed()) {
 			$api = CGMP_GOOGLE_API_URL;
-			$api .= "&language=".$lang;
+			//$api .= "&language=".$lang;
 			wp_deregister_script( 'cgmp-google-map-api' );
 			wp_register_script('cgmp-google-map-api', $api, array('jquery'), false, true);
 			wp_enqueue_script('cgmp-google-map-api');
@@ -326,10 +334,11 @@ if ( !function_exists('cgmp_create_html_geobubble') ):
 					$trueselected = "checked";
 				}
 
-				$elem = "<input type='radio' class='".$attr['class']."' id='".$attr['id']."-false' role='".$attr['name']."' name='".$attr['name']."' ".$falseselected." value='false' />&nbsp;";
-				$elem .= "<label for='".$attr['id']."-false'>Display Geo address and lat/long in the marker info bubble</label><br />";
+				$elem = "<p class='geo-mashup-marker-options'>When Geo mashup marker clicked, info bubble should contain:</p>";
+				$elem .= "<input type='radio' class='".$attr['class']."' id='".$attr['id']."-false' role='".$attr['name']."' name='".$attr['name']."' ".$falseselected." value='false' />&nbsp;";
+				$elem .= "<label for='".$attr['id']."-false'> - marker location (address or lat/long, whichever was set in the original map)</label><br />";
 				$elem .= "<input type='radio' class='".$attr['class']."' id='".$attr['id']."-true' role='".$attr['name']."' name='".$attr['name']."' ".$trueselected." value='true' />&nbsp;";
-				$elem .= "<label for='".$attr['id']."-true'>Display linked title and excerpt of the original blog post in the marker info bubble</label>";
+				$elem .= "<label for='".$attr['id']."-true'> - linked title to the original post/page and the latter's excerpt</label>";
 				return $elem;
 		}
 endif;
@@ -429,7 +438,7 @@ if ( !function_exists('cgmp_set_values_for_html_rendering') ):
 		$html_element_select_options['show_hide'] = array("Show" => "true", "Hide" => "false");
 		$html_element_select_options['enable_disable_xor'] = array("Enable" => "false", "Disable" => "true");
 		$html_element_select_options['enable_disable'] = array("Enable" => "true", "Disable" => "false");
-		$html_element_select_options['map_types'] = array("Roadmap"=>"ROADMAP", "Satellite"=>"SATELLITE", "Hybrid"=>"HYBRID", "Terrain" => "TERRAIN");
+		$html_element_select_options['map_types'] = array("Roadmap"=>"roadmap", "Satellite"=>"satellite", "Hybrid"=>"hybrid", "Terrain" => "terrain", "OpenStreet"=>"OSM");
 		$html_element_select_options['animation_types'] = array("Drop"=>"DROP", "Bounce"=>"BOUNCE");
 		$html_element_select_options['map_aligns'] = array("Center"=>"center", "Right"=>"right", "Left" => "left");
 		$html_element_select_options['languages'] = array("Default" => "default", "Arabic" => "ar", "Basque" => "eu", "Bulgarian" => "bg", "Bengali" => "bn", "Catalan" => "ca", "Czech" => "cs", "Danish" => "da", "English" => "en", "German" => "de", "Greek" => "el", "Spanish" => "es", "Farsi" => "fa", "Finnish" => "fi", "Filipino" => "fil", "French" => "fr", "Galician" => "gl", "Gujarati" => "gu", "Hindi" => "hi", "Croatian" => "hr", "Hungarian" => "hu", "Indonesian" => "id", "Italian" => "it", "Hebrew" => "iw", "Japanese" => "ja", "Kannada" => "kn", "Korean" => "ko", "Lithuanian" => "lt", "Latvian" => "lv", "Malayalam" => "ml", "Marathi" => "mr", "Dutch" => "nl", "Norwegian" => "no", "Oriya" => "or", "Polish" => "pl", "Portuguese" => "pt", "Romanian" => "ro", "Russian" => "ru", "Slovak" => "sk", "Slovenian" => "sl", "Serbian" => "sr", "Swedish" => "sv", "Tagalog" => "tl", "Tamil" => "ta", "Telugu" => "te", "Thai" => "th", "Turkish" => "tr", "Ukrainian" => "uk", "Vietnamese" => "vi", "Chinese (simpl)" => "zh-CN", "Chinese (tradi)" => "zh-TW");
@@ -595,24 +604,37 @@ endif;
 
 
 if ( !function_exists('extract_locations_from_all_posts') ):
-		function extract_locations_from_all_posts()  {
-			$args = array(
+	function extract_locations_from_all_posts()  {
+			$post_query_args = array(
 					'numberposts'     => 120,
 	    		    'orderby'         => 'post_date',
 	    			'order'           => 'DESC',
 	   	 		    'post_type'       => 'post',
 					'post_status'     => 'publish' );
+			$posts = get_posts( $post_query_args );
 
-				$posts = get_posts( $args );
+			$page_query_args = array(
+					'number'     => 120,
+	    		    'sort_column'     => 'post_date',
+	    			'sort_order' 	  => 'DESC',
+	   	 		    'post_type'       => 'page',
+					'post_status'     => 'publish' );
+			$pages = get_pages( $page_query_args );
+
+			return array_merge(process_collection_of_contents($posts), process_collection_of_contents($pages));
+	}
+endif;
+
+
+if ( !function_exists('process_collection_of_contents') ):
+		function process_collection_of_contents($published_content_list)  {
 
 				$db_markers = array();
-				foreach($posts as $post) {
-
-					//echo "Extracted list: " .print_r($post, true)."<br /><br />";
+				foreach($published_content_list as $post) {
 
 					$post_content = $post->post_content;
 					$extracted = extract_locations_from_post_content($post_content);
-					//echo "Extracted list: " .print_r($extracted, true)."<br /><br />";
+
 					if (count($extracted) > 0) {
 							$post_title = $post->post_title;
 							$post_title = str_replace("'", "", $post_title);
@@ -629,19 +651,18 @@ if ( !function_exists('extract_locations_from_all_posts') ):
 						} else {
 							$clean = clean_excerpt($post_content);
 						}
-						
-						//Dont consider text that has shortcodes of some sort
 						if ( strlen($clean) > 0 ) {
 							$excerpt = substr($clean, 0, 130);
 							$db_markers[$post->ID]['excerpt'] = $excerpt."..";
 						} 
 					}
 				}
-				//echo "Extracted list: " .print_r(json_decode(json_encode($db_markers)), true)."<br /><br />";
 				return $db_markers;
 
 	}
 endif;
+
+
 
 if ( !function_exists('clean_excerpt') ):
 	function clean_excerpt($content)  {
@@ -800,8 +821,19 @@ function make_marker_geo_mashup()   {
 
 				if (!isset($filtered[$tobe_filtered_loc])) {
 					$filtered[$tobe_filtered_loc]['addy'] = $full_loc;
-					$filtered[$tobe_filtered_loc]['title'] = $title;
 					$filtered[$tobe_filtered_loc]['permalink'] = $permalink;
+
+					$bad_entities = array("&quot;", "&#039;", "'");
+					if ($title != null) {
+						$title = trim($title);
+						$title = str_replace($bad_entities, "", $title);
+					}
+					$filtered[$tobe_filtered_loc]['title'] = $title;
+					if ($excerpt != null) {
+						$excerpt = trim($excerpt);
+						$excerpt = str_replace($bad_entities, "", $excerpt);
+					}
+
 					$filtered[$tobe_filtered_loc]['excerpt'] = $excerpt;
 				}
 			}
