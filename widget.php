@@ -93,9 +93,10 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
 		$language = isset($language) ? $language : "en";
-		
+
 		cgmp_set_google_map_language($language);
-		cgmp_google_map_init_scripts();
+		global $global_is_global_object_loaded;
+		$global_is_global_object_loaded = true;
 		cgmp_map_data_injector(json_encode($map_data_properties), $id);
 
 		echo $after_widget;

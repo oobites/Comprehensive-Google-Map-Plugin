@@ -16,11 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+if ( !function_exists('cgmp_enqueue_head_scripts') ):
+        function cgmp_enqueue_head_scripts()  {
+				wp_enqueue_script( array ( 'jquery' ) );
+        }
+endif;
+
+
 if ( !function_exists('cgmp_google_map_admin_add_style') ):
         function cgmp_google_map_admin_add_style()  {
        			wp_enqueue_style('comprehensive-google-map-style', CGMP_PLUGIN_CSS . '/cgmp.admin.css', false, CGMP_VERSION, "screen");
         }
 endif;
+
 
 
 if ( !function_exists('cgmp_google_map_admin_add_script') ):
@@ -46,19 +54,26 @@ if ( !function_exists('cgmp_google_map_tab_script') ):
 endif;
 
 
+if ( !function_exists('cgmp_google_map_register_scripts') ):
+		function cgmp_google_map_register_scripts()  {
+			$whitelist = array('localhost', '127.0.0.1', 'initbinder.com');
+			$minified = ".min";
+			if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
+				$minified = "";
+			}
+			wp_register_script('cgmp-google-map-orchestrator-framework', CGMP_PLUGIN_JS. '/cgmp.framework'.$minified.'.js', array(), CGMP_VERSION, true);
+			wp_register_script('cgmp-google-map-jsapi', CGMP_GOOGLE_API_URL, array(), false, true);
+		}
+endif;
+
+
 if ( !function_exists('cgmp_google_map_init_scripts') ):
 		function cgmp_google_map_init_scripts()  {
-
-			if (!is_admin()) {
-
-				wp_enqueue_style('cgmp-google-map-styles', CGMP_PLUGIN_URI . 'style.css', false, CGMP_VERSION, "screen");
-				$whitelist = array('localhost', '127.0.0.1', 'initbinder.com');
-				wp_enqueue_script( array ( 'jquery' ) );
-				$minified = ".min";
-				if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
-					$minified = "";
-				}
-				wp_enqueue_script('cgmp-google-map-wrapper-framework-final', CGMP_PLUGIN_JS. '/cgmp.framework'.$minified.'.js', array(), CGMP_VERSION, true);
+			global $global_is_global_object_loaded;
+			if ($global_is_global_object_loaded) {
+				cgmp_google_map_init_global_html_object();
+				wp_print_scripts('cgmp-google-map-jsapi');
+				wp_print_scripts('cgmp-google-map-orchestrator-framework');
 			}
 		}
 endif;
@@ -81,8 +96,6 @@ endif;
 
 if ( !function_exists('cgmp_google_map_init_global_html_object') ):
 		function cgmp_google_map_init_global_html_object()  {
-
-			if (!is_admin()) {
 
 				$tokens_with_values = array();
 				$tokens_with_values['LABEL_BAD_ADDRESSES'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Google found the following address(es) as NON-geographic and could not find them:<br /><br />[REPLACE]<br />Consider revising the address(es). Did you make a mistake when creating marker locations or did not provide a full geo-address? Alternatively use Google web to validate the address(es)');
@@ -114,14 +127,13 @@ if ( !function_exists('cgmp_google_map_init_global_html_object') ):
 
 				echo "<object id='global-data-placeholder' style='background-color:transparent !important;border:none !important;height:0 !important;left:10000000px !important;line-height:0 !important;margin:0 !important;outline:medium none !important;padding:0 !important;position:absolute !important;top:100000px !important;width:0 !important;z-index:9999786 !important'>".PHP_EOL;
 				echo "    <param id='sep' name='sep' value='".CGMP_SEP."' />".PHP_EOL;
+				echo "    <param id='cssHref' name='cssHref' value='".CGMP_PLUGIN_URI."style.css?ver=".CGMP_VERSION."' />".PHP_EOL;
 				echo "    <param id='language' name='language' value='".$cgmp_global_map_language."' />".PHP_EOL;
 				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;
 				echo "    <param id='errors' name='errors' value='".$global_error_messages_json_template."' />".PHP_EOL;
 				echo "    <param id='translations' name='translations' value='".$info_bubble_translated_template."' />".PHP_EOL;
 				echo "</object> ".PHP_EOL;
-			}
 		}
 endif;
-
 
 ?>

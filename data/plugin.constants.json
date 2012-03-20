@@ -32,5 +32,5 @@
     "CGMP_PLUGIN_INCLUDE_DIR" : "CGMP_PLUGIN_DIR/include",
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
-    "CGMP_VERSION" : "7.0.17"
+    "CGMP_VERSION" : "7.0.18"
   } ]

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 7.0.17
+Stable tag: 7.0.18
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -91,8 +91,13 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 
 == Changelog ==
 
+= 7.0.18 =
+* Enhancement: Revisited script loading using wp_print_scripts on demand
+
 = 7.0.17 =
+* Enhancement: Injecting global data placeholder OBJECT on demand
 * Enhancement: Published page maps are now included in geo mashup along side maps from posts
+* Enhancement: Not relying on WP anymore to load jQuery explicitly, but loading dynamically from Google CDN if none was loaded
 
 = 7.0.16 =
 * Enhancement: IE specific CSS on admin side
