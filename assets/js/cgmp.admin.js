@@ -143,6 +143,10 @@ function buildShortcode(id, $) {
 	var CGMPGlobal = {};
 
 	CGMPGlobal.sep = $("object#global-data-placeholder param#sep").val();
+
+	if (CGMPGlobal.sep == null || CGMPGlobal.sep == "undefined") {
+		CGMPGlobal.sep = "{}";
+	}
 	CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").val();
 	CGMPGlobal.defaultLocationText = $("object#global-data-placeholder param#defaultLocationText").val();
 	CGMPGlobal.defaultBubbleText = $("object#global-data-placeholder param#defaultBubbleText").val();

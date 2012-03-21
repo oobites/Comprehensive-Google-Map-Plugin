@@ -423,7 +423,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 								});
 							} else {
 								// no street view available in this range, or some error occurred
-								Logger.warn("There is not street view available for this marker location: " + marker.position + " status: " + status);
+								//Logger.warn("There is not street view available for this marker location: " + marker.position + " status: " + status);
 								$('a#trigger-' + localBubbleData.bubbleHolderId).live("click", function(e) {
 									e.preventDefault();
 								});
@@ -656,7 +656,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							if (this.excerpt == null) {
 								this.excerpt = '';
 							}
-							Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.addy + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
+							//Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.addy + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
 
 							var targetArr = this.addy.split(CGMPGlobal.sep);
 
@@ -670,6 +670,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							}
 							index ++;
 						});
+
+						Logger.info("Have " + (index - 1) + " destinations for marker Geo mashup..");
 					}
 					
 					function pushGeoDestination(target, index) {
@@ -695,7 +697,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							} else {
 								targetArr[2] = '';
 							}
-							Logger.info("Storing address: " + targetArr[0] + " for marker-to-be for the map ID: " + mapDivId);
+							//Logger.info("Storing address: " + targetArr[0] + " for marker-to-be for the map ID: " + mapDivId);
 							storedAddresses.push({
 								address: targetArr[0],
 								animation: google.maps.Animation.DROP,

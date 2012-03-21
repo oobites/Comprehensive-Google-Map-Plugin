@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 7.0.18
+Version: 7.0.19
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -61,9 +61,11 @@ if ( !function_exists('cgmp_require_dependancies') ):
 	}
 endif;
 
-if ( !function_exists('cgmp_register_activation_hook') ):
-	function cgmp_register_activation_hook() {
-		register_activation_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_extract_markers_from_published_posts');
+if ( !function_exists('cgmp_register_hooks') ):
+	function cgmp_register_hooks() {
+		register_activation_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_activate_hook');
+		register_deactivation_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_deactivation_hook');
+		register_uninstall_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_uninstall_hook');
 	}
 endif;
 
@@ -79,8 +81,8 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('admin_menu', 'cgmp_google_map_plugin_menu');
 		add_action('widgets_init', create_function('', 'return register_widget("ComprehensiveGoogleMap_Widget");'));
 		add_action('wp_head', 'cgmp_google_map_deregister_scripts', 200);
-		add_action('publish_post', 'cgmp_invalidate_published_post_marker' );
-		add_action('publish_page', 'cgmp_invalidate_published_post_marker' );
+		add_action('publish_post', 'cgmp_publish_post_hook' );
+		add_action('publish_page', 'cgmp_publish_page_hook' );
 	}
 endif;
 
@@ -107,8 +109,10 @@ $global_is_global_object_loaded = false;
 cgmp_define_constants();
 cgmp_require_dependancies();
 cgmp_add_actions();
-cgmp_register_activation_hook();
+cgmp_register_hooks();
 cgmp_add_shortcode_support();
 cgmp_add_filters();
 /* BOOTSTRAPPING ENDS */
+
+
 ?>
