@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
   
 if ( !function_exists('cgmp_draw_map_placeholder') ):
-		function cgmp_draw_map_placeholder($id, $width, $height, $align, $hint) {
+		function cgmp_draw_map_placeholder($id, $width, $height, $align, $hint, $poweredby) {
 
 				$toploading = ceil($height / 2) - 50;
 
@@ -30,6 +30,13 @@ if ( !function_exists('cgmp_draw_map_placeholder') ):
 					$map_marker_directions_hint_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_MARKER_DIRECTION_HINT);
 				}
 
+				$map_poweredby_notice_template = "";
+				if ($poweredby == "true") {
+					$tokens_with_values = array();
+					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width;
+					$map_poweredby_notice_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_POWEREDBY_NOTICE);
+				}
+
 				$tokens_with_values = array();
 				$tokens_with_values['MAP_PLACEHOLDER_ID_TOKEN'] = $id;
 				$tokens_with_values['MAP_PLACEHOLDER_WIDTH_TOKEN'] = $width;
@@ -37,6 +44,7 @@ if ( !function_exists('cgmp_draw_map_placeholder') ):
 				$tokens_with_values['LOADING_INDICATOR_TOP_POS_TOKEN'] = $toploading;
 				$tokens_with_values['MAP_ALIGN_TOKEN'] = $align;
 				$tokens_with_values['MARKER_DIRECTIONS_HINT_TOKEN'] = $map_marker_directions_hint_template;
+				$tokens_with_values['MAP_POWEREDBY_NOTICE_TOKEN'] = $map_poweredby_notice_template;
 				$tokens_with_values['IMAGES_DIRECTORY_URI'] = CGMP_PLUGIN_IMAGES;
 				$tokens_with_values['DIRECTIONS_WIDTH_TOKEN'] = ($width - 10);
 				$tokens_with_values['LABEL_GET_DIRECTIONS'] = __('Get Directions');

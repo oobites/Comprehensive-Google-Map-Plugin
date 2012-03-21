@@ -80,8 +80,6 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$addmarkerlisthidden = cgmp_parse_wiki_style_links($addmarkerlisthidden);
 
 		$id = md5(time().' '.rand());
-		echo cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint);
-
 		$map_data_properties['id'] = $id;
 		$map_data_properties['markerlist'] = $addmarkerlisthidden;
 		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
@@ -92,13 +90,14 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$map_data_properties['scrollwheelcontrol'] = isset($map_data_properties['scrollwheelcontrol']) ? $map_data_properties['scrollwheelcontrol'] : "false";
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
+		$poweredby = isset($poweredby) ? $poweredby : "true";
 		$language = isset($language) ? $language : "en";
 
+		echo cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint, $poweredby);
 		cgmp_set_google_map_language($language);
 		global $global_is_global_object_loaded;
 		$global_is_global_object_loaded = true;
 		cgmp_map_data_injector(json_encode($map_data_properties), $id);
-
 		echo $after_widget;
 	}
 

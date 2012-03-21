@@ -1,5 +1,5 @@
 <div align="MAP_ALIGN_TOKEN">MARKER_DIRECTIONS_HINT_TOKEN<div class="google-map-placeholder" id="MAP_PLACEHOLDER_ID_TOKEN" style="width: MAP_PLACEHOLDER_WIDTH_TOKENpx; height: MAP_PLACEHOLDER_HEIGHT_TOKENpx;"><div align="center" style="background:url('IMAGES_DIRECTORY_URI/loading.gif') no-repeat 0 0 transparent !important; height:100px; width:100px; position: relative; top: LOADING_INDICATOR_TOP_POS_TOKENpx !important;"></div></div>
-			<div style="width: DIRECTIONS_WIDTH_TOKENpx !important; display: none" class="powered-by"><a target="_blank" href="http://wordpress.org/extend/plugins/comprehensive-google-map-plugin/">Powered by Comprehensive Google Map plugin</a></div>
+			MAP_POWEREDBY_NOTICE_TOKEN
 			<div class="direction-controls-placeholder" id="direction-controls-placeholder-MAP_PLACEHOLDER_ID_TOKEN" style="background: white; width: MAP_PLACEHOLDER_WIDTH_TOKENpx; margin-top: 5px; border: 1px solid #EBEBEB; display: none; padding: 18px 0 9px 0;">
 			<div class="d_close-wrapper">
 				<a id="d_close" href="javascript:void(0)"> 

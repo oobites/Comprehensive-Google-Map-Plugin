@@ -62,6 +62,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;scalecontrol="<span class="italic">true <span class="sep">or</span> false</span>"<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;scrollwheelcontrol="<span class="italic">true <span class="sep">or</span> false</span>"<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;draggable="<span class="italic">true <span class="sep">or</span> false</span>"<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;poweredby="<span class="italic">true <span class="sep">or</span> false</span>" The 'true' displays 'Powered By ...' notice under the generated map<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;tiltfourtyfive="<span class="italic">true <span class="sep">or</span> false</span>"<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;mapalign="<span class="italic">left <span class="sep">or</span> center <span class="sep">or</span> right</span>"<br />  
 	&nbsp;&nbsp;&nbsp;&nbsp;streetviewcontrol="<span class="italic">true <span class="sep">or</span> false</span>"]

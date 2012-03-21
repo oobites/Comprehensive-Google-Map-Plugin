@@ -112,6 +112,14 @@
     "templateTokenNameSuffix" : "tiltfourtyfive"
   },
   { "backendFunctionNameSuffix" : "select",
+    "dbParameterId" : "poweredby",
+    "dbParameterName" : "poweredby",
+    "dbParameterValue" : "true",
+    "htmlLabelValue" : "'Powered By'",
+    "htmlSelectOptionsKey" : "enable_disable",
+    "templateTokenNameSuffix" : "poweredby"
+  },
+  { "backendFunctionNameSuffix" : "select",
     "dbParameterId" : "draggable",
     "dbParameterName" : "draggable",
     "dbParameterValue" : "true",
