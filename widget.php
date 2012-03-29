@@ -23,12 +23,10 @@ if ( !function_exists( 'add_action' ) ) {
 
 class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
-	var $maindesc = "A simple and intuitive, yet elegant fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more.";
-
 	function ComprehensiveGoogleMap_Widget() {
-		$widget_ops = array('classname' => 'comprehensivegooglemap_widget', 'description' => __( $this->maindesc, 'kalisto') );
+		$widget_ops = array('classname' => 'comprehensivegooglemap_widget', 'description' => __("A simple and intuitive, yet elegant fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more.", CGMP_NAME) );
 		$cops = array('width' => 570);
-		$this->WP_Widget('comprehensivegooglemap', __('AZ :: Google Map', 'kalisto'), $widget_ops, $cops);
+		$this->WP_Widget('comprehensivegooglemap', __('AZ :: Google Map', CGMP_NAME), $widget_ops, $cops);
 
 		if ( is_active_widget(false, false, $this->id_base, true) ) {
 
@@ -90,13 +88,12 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$map_data_properties['scrollwheelcontrol'] = isset($map_data_properties['scrollwheelcontrol']) ? $map_data_properties['scrollwheelcontrol'] : "false";
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
-		$poweredby = isset($poweredby) ? $poweredby : "true";
+		$poweredby = isset($poweredby) ? $poweredby : "false";
 		$language = isset($language) ? $language : "en";
 
 		echo cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint, $poweredby);
 		cgmp_set_google_map_language($language);
-		global $global_is_global_object_loaded;
-		$global_is_global_object_loaded = true;
+		update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, true);
 		cgmp_map_data_injector(json_encode($map_data_properties), $id);
 		echo $after_widget;
 	}

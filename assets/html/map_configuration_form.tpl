@@ -3,9 +3,9 @@
 		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
-					<td valign="top" class="first-td"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="Width of map placeholder DIV">[Help?]</a>&nbsp;LABEL_WIDTH</td>
+					<td valign="top" class="first-td"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="Width of map placeholder DIV. Can be in pixel or percentage">[Help?]</a>&nbsp;LABEL_WIDTH</td>
 					<td valign="top" class="second-td">INPUT_WIDTH</td>
-					<td valign="top" class="third-td"><a id="tooltip-marker-height" class="google-map-tooltip-marker" href="javascript:void(0);" title="Height of map placeholder DIV">[Help?]</a>&nbsp;LABEL_HEIGHT</td>
+					<td valign="top" class="third-td"><a id="tooltip-marker-height" class="google-map-tooltip-marker" href="javascript:void(0);" title="Height of map placeholder DIV in pixels">[Help?]</a>&nbsp;LABEL_HEIGHT</td>
 					<td valign="top" class="fourth-td">INPUT_HEIGHT</td>
 				</tr>
 				<tr>

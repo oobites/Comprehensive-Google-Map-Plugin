@@ -62,15 +62,20 @@ if ( !function_exists('cgmp_google_map_register_scripts') ):
 				$minified = "";
 			}
 			wp_register_script('cgmp-google-map-orchestrator-framework', CGMP_PLUGIN_JS. '/cgmp.framework'.$minified.'.js', array(), CGMP_VERSION, true);
-			wp_register_script('cgmp-google-map-jsapi', CGMP_GOOGLE_API_URL, array(), false, true);
+
+			$api = CGMP_GOOGLE_API_URL;
+			if (is_ssl()) {
+				$api = CGMP_GOOGLE_API_URL_SSL;
+			}
+			wp_register_script('cgmp-google-map-jsapi', $api, array(), false, true);
 		}
 endif;
 
 
 if ( !function_exists('cgmp_google_map_init_scripts') ):
 		function cgmp_google_map_init_scripts()  {
-			global $global_is_global_object_loaded;
-			if ($global_is_global_object_loaded) {
+			$was_global_object_rendered = get_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
+			if ($was_global_object_rendered) {
 				cgmp_google_map_init_global_html_object();
 				wp_print_scripts('cgmp-google-map-jsapi');
 				wp_print_scripts('cgmp-google-map-orchestrator-framework');
@@ -98,28 +103,33 @@ if ( !function_exists('cgmp_google_map_init_global_html_object') ):
 		function cgmp_google_map_init_global_html_object()  {
 
 				$tokens_with_values = array();
-				$tokens_with_values['LABEL_BAD_ADDRESSES'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Google found the following address(es) as NON-geographic and could not find them:<br /><br />[REPLACE]<br />Consider revising the address(es). Did you make a mistake when creating marker locations or did not provide a full geo-address? Alternatively use Google web to validate the address(es)');
-				$tokens_with_values['LABEL_MISSING_MARKERS'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />You did not specify any marker locations for the Google map! Please check the following when adding marker locations:<br /><b>[a]</b> In the shortcode builder, did you add location(s) and clicked the Add button before generating shortcode?<br /><b>[b]</b> In the widget, did you add location(s) and clicked Add button before clicking Save?<br /><br />Please revisit and reconfigure your widget or shortcode configuration. The map requires at least one marker location to be added..');
-				$tokens_with_values['LABEL_KML'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />Google returned the following error when trying to load KML file:<br /><br />[MSG] ([STATUS])');
-				$tokens_with_values['LABEL_DOCINVALID_KML'] = __('The KML file is not a valid KML, KMZ or GeoRSS document.');
-				$tokens_with_values['LABEL_FETCHERROR_KML'] = __('The KML file could not be fetched.');
-				$tokens_with_values['LABEL_LIMITS_KML'] = __('The KML file exceeds the feature limits of KmlLayer.');
-				$tokens_with_values['LABEL_NOTFOUND_KML'] = __('The KML file could not be found. Most likely it is an invalid URL, or the document is not publicly available.');
-				$tokens_with_values['LABEL_REQUESTINVALID_KML'] = __('The KmlLayer is invalid.');
-				$tokens_with_values['LABEL_TIMEDOUT_KML'] = __('The KML file could not be loaded within a reasonable amount of time.');
-				$tokens_with_values['LABEL_TOOLARGE_KML'] = __('The KML file exceeds the file size limits of KmlLayer.');
-				$tokens_with_values['LABEL_UNKNOWN_KML'] = __('The KML file failed to load for an unknown reason.');
-				$tokens_with_values['LABEL_GOOGLE_APIV2'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />It looks like your webpage has reference to the older Google API v2, in addition to the API v3 used by Comprehensive Google Map! An example of plugin using the older API v2, can be jquery.gmap plugin.<br /><br />Please disable conflicting plugin(s). In the meanwhile, map generation is aborted!');
-				$tokens_with_values['LABEL_NO_GOOGLE'] = __('<b>ATTENTION</b>!(by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />It looks like Google map API could not be reached. Map generation was aborted!<br /><br />Please check that Google API script was loaded in the HTML source of your web page');
+				//This one gets alerted in native browser alert
+				$tokens_with_values['LABEL_OLD_JQUERY'] = __('ATTENTION! (by Comprehensive Google Map Plugin)\n\nYour blog/site theme or one of your plugins uses jQuery javascript library which is older than the version 1.3.0.\nThe Comprehensive Google Map plugin will not work with such outdated jQuery version.\n\nThe minimum jQuery requirement for Comprehensive Google Map plugin is version 1.3.0. Apologies for the inconvenience..',CGMP_NAME);
+				$tokens_with_values['LABEL_BAD_ADDRESSES'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Google found the following address(es) as NON-geographic and could not find them:<br /><br />[REPLACE]<br />Consider revising the address(es). Did you make a mistake when creating marker locations or did not provide a full geo-address? Alternatively use Google web to validate the address(es)',CGMP_NAME);
+				$tokens_with_values['LABEL_MISSING_MARKERS'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />You did not specify any marker locations for the Google map! Please check the following when adding marker locations:<br /><b>[a]</b> In the shortcode builder, did you add location(s) and clicked the Add button before generating shortcode?<br /><b>[b]</b> In the widget, did you add location(s) and clicked Add button before clicking Save?<br /><br />Please revisit and reconfigure your widget or shortcode configuration. The map requires at least one marker location to be added..',CGMP_NAME);
+				$tokens_with_values['LABEL_KML'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />Google returned the following error when trying to load KML file:<br /><br />[MSG] ([STATUS])',CGMP_NAME);
+				$tokens_with_values['LABEL_DOCINVALID_KML'] = __('The KML file is not a valid KML, KMZ or GeoRSS document.',CGMP_NAME);
+				$tokens_with_values['LABEL_FETCHERROR_KML'] = __('The KML file could not be fetched.',CGMP_NAME);
+				$tokens_with_values['LABEL_LIMITS_KML'] = __('The KML file exceeds the feature limits of KmlLayer.',CGMP_NAME);
+				$tokens_with_values['LABEL_NOTFOUND_KML'] = __('The KML file could not be found. Most likely it is an invalid URL, or the document is not publicly available.',CGMP_NAME);
+				$tokens_with_values['LABEL_REQUESTINVALID_KML'] = __('The KmlLayer is invalid.',CGMP_NAME);
+				$tokens_with_values['LABEL_TIMEDOUT_KML'] = __('The KML file could not be loaded within a reasonable amount of time.',CGMP_NAME);
+				$tokens_with_values['LABEL_TOOLARGE_KML'] = __('The KML file exceeds the file size limits of KmlLayer.',CGMP_NAME);
+				$tokens_with_values['LABEL_UNKNOWN_KML'] = __('The KML file failed to load for an unknown reason.',CGMP_NAME);
+				$tokens_with_values['LABEL_GOOGLE_APIV2'] = __('<b>ATTENTION</b>! (by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />It looks like your webpage has reference to the older Google API v2, in addition to the API v3 used by Comprehensive Google Map! An example of plugin using the older API v2, can be jquery.gmap plugin.<br /><br />Please disable conflicting plugin(s). In the meanwhile, map generation is aborted!',CGMP_NAME);
+				$tokens_with_values['LABEL_NO_GOOGLE'] = __('<b>ATTENTION</b>!(by Comprehensive Google Map Plugin)<br /><br />Dear blog/website owner,<br />It looks like Google map API could not be reached. Map generation was aborted!<br /><br />Please check that Google API script was loaded in the HTML source of your web page',CGMP_NAME);
 
+				$tokens_with_values = array_map('cgmp_escape_json',$tokens_with_values);
 				$global_error_messages_json_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_GLOBAL_ERROR_MESSAGES);
 
 				$tokens_with_values = array();
-				$tokens_with_values['LABEL_STREETVIEW'] = __('Street View');
-				$tokens_with_values['LABEL_ADDRESS'] = __('Address');
-				$tokens_with_values['LABEL_DIRECTIONS'] = __('Directions');
-				$tokens_with_values['LABEL_TOHERE'] = __('To here');
-				$tokens_with_values['LABEL_FROMHERE'] = __('From here');
+				$tokens_with_values['LABEL_STREETVIEW'] = __('Street View',CGMP_NAME);
+				$tokens_with_values['LABEL_ADDRESS'] = __('Address',CGMP_NAME);
+				$tokens_with_values['LABEL_DIRECTIONS'] = __('Directions',CGMP_NAME);
+				$tokens_with_values['LABEL_TOHERE'] = __('To here',CGMP_NAME);
+				$tokens_with_values['LABEL_FROMHERE'] = __('From here',CGMP_NAME);
+
+				$tokens_with_values = array_map('cgmp_escape_json',$tokens_with_values);
 				$info_bubble_translated_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_INFO_BUBBLE);
 
 				global $cgmp_global_map_language;
@@ -134,6 +144,12 @@ if ( !function_exists('cgmp_google_map_init_global_html_object') ):
 				echo "    <param id='translations' name='translations' value='".$info_bubble_translated_template."' />".PHP_EOL;
 				echo "</object> ".PHP_EOL;
 		}
+endif;
+
+if ( !function_exists('cgmp_escape_json') ):
+function cgmp_escape_json( $encode ) {
+    return str_replace( array("'",'"','&') , array('\u0027','\u0022','\u0026') , $encode );
+}
 endif;
 
 ?>

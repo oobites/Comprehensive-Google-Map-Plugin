@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 7.0.21
+Stable tag: 7.0.27
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -13,7 +13,7 @@ A simple and intuitive,  yet elegant and fully documented Google map plugin that
 A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. No limited plugin editions or limited functionality! This is the full version of this free and premium plugin, which comes packed with useful features: 
 
 * Intuitive and user friendly interface, which makes it very easy to configure Google map. No complex configuration options. Facebook style interactive interface for managing multiple map markers. OpenStreetMap imagery available
-* Over 250 amazing custom marker icons to choose from!
+* Over 250 amazingg custom marker icons to choose from!
 * Aggregate all your post markers in one map - Marker Geo Mashup!
 * Help tooltips enabled, which makes your configuration hassle free
 * Google-like directions - driving and walking, distance shown in miles or KM, avoid tolls and highways options, direction print functionality
@@ -90,6 +90,31 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 9. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
 
 == Changelog ==
+
+= 7.0.27 =
+* Spike: Not relying on a global variable anymore when deciding whether to inject plugin scripts, but on DB setting instead
+
+= 7.0.26 =
+* Enhancement: Added Czech (Honza Rameš) translation
+* Bug: When width of map placeholderder is a percentage, the direction section width was 10% smaller
+* Bug: CSS tweak
+
+= 7.0.25 =
+* Enhancement: Width of map placeholderder can now be percentage as well as pixels
+* Enhancement: Added Italian (Nicola Spreafico) and French (Mehdi Lahlou) translations
+* Bug: Marker shadow image was fetched over non-SSL when client is on SSL
+
+= 7.0.24 =
+* Reverted v7.0.23 to version v7.0.22. Errors appeared in Safari on iOS (can't display the page) and IE7 and IE8 (permission denied)
+* Powered by message now is disabled by default
+
+= 7.0.23 =
+* Bug: HTML tags were not stripped from marker location and description when using short code builder
+* Enhancement: Added extra button 'send to editor' above short code builder form
+* Enhancement: Making sure that HTML5 validation does not break
+
+= 7.0.22 =
+* Enhancement: Added SSL detection before loading Google API 
 
 = 7.0.21 =
 * Powered by message is now config option that can be turned on/off 

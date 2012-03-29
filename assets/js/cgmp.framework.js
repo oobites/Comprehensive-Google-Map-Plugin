@@ -833,13 +833,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 								var defaultPins = ['4-default.png', '5-default.png', '6-default.png', '7-default.png'];
 
 								if ($.inArray(markerIcon, defaultMarkers) != -1) {
-									var url = "http://maps.google.com/mapfiles/ms/icons/msmarker.shadow.png";
+									var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
 									shadow = buildMarkerImage(url, 59, 32, 0, 0, 16, 33);
 								} else 	if ($.inArray(markerIcon, defaultPins) != -1) {
-									var url = "http://maps.google.com/mapfiles/ms/icons/msmarker.shadow.png";
+									var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
 									shadow = buildMarkerImage(url, 59, 32, 0, 0, 21, 34);
 								} else if (markerIcon.indexOf('3-default') != -1) {
-									var url = "http://code.google.com/apis/maps/documentation/javascript/examples/images/beachflag_shadow.png";
+									var url = CGMPGlobal.customMarkersUri + "beachflag_shadow.png";
 									shadow = buildMarkerImage(url, 37, 32, 0, 0, 10, 33);
 								} else {
 									shadow = buildMarkerImage(CGMPGlobal.customMarkersUri + "shadow.png", 68, 37, 0, 0, 32, 38);
@@ -1038,6 +1038,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					CGMPGlobal.errors = parseJson(CGMPGlobal.errors);
 					CGMPGlobal.translations = $("object#global-data-placeholder").find("param#translations").val();
 					CGMPGlobal.translations = parseJson(CGMPGlobal.translations);
+
+					var version = parseFloat($.fn.jquery);
+					if (version < 1.3) {
+						alert(CGMPGlobal.errors.oldJquery);
+						Logger.fatal("Client uses jQuery older than the version 1.3.0. Aborting map generation ..");
+						return false;
+					}
 
 					if (typeof google == "undefined" || !google) {
 						Errors.alertError(CGMPGlobal.errors.msgNoGoogle);

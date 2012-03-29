@@ -49,7 +49,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 				'panoramiouid' => '',
 				'addmarkermashup' => 'false',
 				'language' => 'default',
-				'poweredby' => 'true',
+				'poweredby' => 'false',
 				'draggable' => 'true',
 				'tiltfourtyfive' => 'false',
 				'addmarkermashupbubble' => 'false'), $attr);
@@ -90,8 +90,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 			$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
 
 			cgmp_set_google_map_language($language);
-			global $global_is_global_object_loaded;
-			$global_is_global_object_loaded = true;
+			update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, true);
 			cgmp_map_data_injector(json_encode($map_data_properties), $id);
 
 			return cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint, $poweredby);

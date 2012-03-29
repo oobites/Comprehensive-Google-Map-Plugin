@@ -19,41 +19,68 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 if ( !function_exists('cgmp_draw_map_placeholder') ):
 		function cgmp_draw_map_placeholder($id, $width, $height, $align, $hint, $poweredby) {
 
+				
+				$widthunits = "px";
+				$heightunits = "px";
+
+				$width = strtolower($width);
+				$height = strtolower($height);
+				$directionswidth = $width;
+
+				if (strpos($width, "%") !== false) {
+					$widthunits = "%";
+					$width = substr($width, 0, -1);
+					$directionswidth = $width;
+				}
+
+				if (strpos($width, "px") !== false) {
+					$width = substr($width, 0, -1);
+					$directionswidth = ($width - 10);
+				}
+
+				if (strpos($height, "%") !== false) {
+					$height = substr($height, 0, -1);
+				}
+
+				if (strpos($height, "px") !== false) {
+					$height = substr($height, 0, -1);
+				}
+
 				$toploading = ceil($height / 2) - 50;
 
 				$map_marker_directions_hint_template = "";
 
 				if ($hint == "true") {
 					$tokens_with_values = array();
-					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width;
-					$tokens_with_values['LABEL_DIRECTIONS_HINT'] = __('Click on map markers to get directions');
+					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width.$widthunits;
+					$tokens_with_values['LABEL_DIRECTIONS_HINT'] = __('Click on map markers to get directions',CGMP_NAME);
 					$map_marker_directions_hint_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_MARKER_DIRECTION_HINT);
 				}
 
 				$map_poweredby_notice_template = "";
 				if ($poweredby == "true") {
 					$tokens_with_values = array();
-					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width;
+					$tokens_with_values['MARKER_DIRECTIONS_HINT_WIDTH_TOKEN'] = $width.$widthunits;
 					$map_poweredby_notice_template = cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_POWEREDBY_NOTICE);
 				}
 
 				$tokens_with_values = array();
 				$tokens_with_values['MAP_PLACEHOLDER_ID_TOKEN'] = $id;
-				$tokens_with_values['MAP_PLACEHOLDER_WIDTH_TOKEN'] = $width;
-				$tokens_with_values['MAP_PLACEHOLDER_HEIGHT_TOKEN'] = $height;
+				$tokens_with_values['MAP_PLACEHOLDER_WIDTH_TOKEN'] = $width.$widthunits;
+				$tokens_with_values['MAP_PLACEHOLDER_HEIGHT_TOKEN'] = $height.$heightunits;
 				$tokens_with_values['LOADING_INDICATOR_TOP_POS_TOKEN'] = $toploading;
 				$tokens_with_values['MAP_ALIGN_TOKEN'] = $align;
 				$tokens_with_values['MARKER_DIRECTIONS_HINT_TOKEN'] = $map_marker_directions_hint_template;
 				$tokens_with_values['MAP_POWEREDBY_NOTICE_TOKEN'] = $map_poweredby_notice_template;
 				$tokens_with_values['IMAGES_DIRECTORY_URI'] = CGMP_PLUGIN_IMAGES;
-				$tokens_with_values['DIRECTIONS_WIDTH_TOKEN'] = ($width - 10);
-				$tokens_with_values['LABEL_GET_DIRECTIONS'] = __('Get Directions');
-				$tokens_with_values['LABEL_PRINT_DIRECTIONS'] = __('Print Directions');
-				$tokens_with_values['LABEL_ADDITIONAL_OPTIONS'] = __('Additional options');
-				$tokens_with_values['LABEL_AVOID_TOLLS'] = __('Avoid tolls');
-				$tokens_with_values['LABEL_AVOID_HIGHWAYS'] = __('Avoid highways');
-				$tokens_with_values['LABEL_KM'] = __('KM');
-				$tokens_with_values['LABEL_MILES'] = __('Miles');
+				$tokens_with_values['DIRECTIONS_WIDTH_TOKEN'] = $directionswidth.$widthunits;
+				$tokens_with_values['LABEL_GET_DIRECTIONS'] = __('Get Directions',CGMP_NAME);
+				$tokens_with_values['LABEL_PRINT_DIRECTIONS'] = __('Print Directions',CGMP_NAME);
+				$tokens_with_values['LABEL_ADDITIONAL_OPTIONS'] = __('Additional options',CGMP_NAME);
+				$tokens_with_values['LABEL_AVOID_TOLLS'] = __('Avoid tolls',CGMP_NAME);
+				$tokens_with_values['LABEL_AVOID_HIGHWAYS'] = __('Avoid highways',CGMP_NAME);
+				$tokens_with_values['LABEL_KM'] = __('KM',CGMP_NAME);
+				$tokens_with_values['LABEL_MILES'] = __('Miles',CGMP_NAME);
 
 				return cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_PLACEHOLDER_AND_DIRECTIONS);
  	}
@@ -112,9 +139,10 @@ endif;
 
 if ( !function_exists('cgmp_load_plugin_textdomain') ):
 	function cgmp_load_plugin_textdomain() {
-		load_plugin_textdomain(CGMP_NAME, false, dirname(CGMP_PLUGIN_BOOTSTRAP) . '/languages/');
+		load_plugin_textdomain(CGMP_NAME, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 	}
 endif;
+
 
 
 if ( !function_exists('cgmp_show_message') ):
@@ -361,7 +389,7 @@ if ( !function_exists('cgmp_create_html_custom') ):
 								continue;
 							}
 
-							if ($file != "shadow.png") {
+							if (strrpos($file, "shadow") === false) {
 									$attr['class'] = "";
 									$attr['style'] = "";
 									$sel = "";
@@ -500,9 +528,9 @@ if ( !function_exists('cgmp_plugin_row_meta') ):
 		if ($file == $plugin) {
 
 			$links = array_merge( $links,
-				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation') ) ),
-				array( sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcode Builder') ) ),
-				array( sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings') ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation',CGMP_NAME) ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcode Builder',CGMP_NAME) ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings',CGMP_NAME) ) ),
 				array( '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8" target="_blank">' . __('Donate') . '</a>' )
 			);
 		}
@@ -658,6 +686,8 @@ if ( !function_exists('cgmp_on_activate_hook') ):
 
 		function cgmp_on_activate_hook()  {
 
+			update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, false);
+
 			update_option(CGMP_DB_PUBLISHED_POST_MARKERS, '');
 			update_option(CGMP_DB_POST_COUNT, '');
 
@@ -692,6 +722,9 @@ if ( !function_exists('cgmp_on_uninstall_hook') ):
 
 			remove_option(CGMP_DB_PUBLISHED_POST_IDS);
 			remove_option(CGMP_DB_PUBLISHED_PAGE_IDS);
+
+			remove_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
+
         }
 endif;
 

@@ -19,7 +19,7 @@
     "dbParameterId" : "width",
     "dbParameterName" : "width",
     "dbParameterValue" : "350",
-    "htmlLabelValue" : "Width (px)",
+    "htmlLabelValue" : "Width (px OR %)",
     "templateTokenNameSuffix" : "width"
   },
   { "backendFunctionNameSuffix" : "input",
@@ -27,7 +27,7 @@
     "dbParameterId" : "height",
     "dbParameterName" : "height",
     "dbParameterValue" : "350",
-    "htmlLabelValue" : "Height (px)",
+    "htmlLabelValue" : "Height (px ONLY)",
     "templateTokenNameSuffix" : "height"
   },
   { "backendFunctionNameSuffix" : "input",
@@ -114,7 +114,7 @@
   { "backendFunctionNameSuffix" : "select",
     "dbParameterId" : "poweredby",
     "dbParameterName" : "poweredby",
-    "dbParameterValue" : "true",
+    "dbParameterValue" : "false",
     "htmlLabelValue" : "'Powered By'",
     "htmlSelectOptionsKey" : "enable_disable",
     "templateTokenNameSuffix" : "poweredby"

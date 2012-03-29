@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 7.0.21
+Version: 7.0.27
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -73,6 +73,7 @@ if ( !function_exists('cgmp_add_actions') ):
 	function cgmp_add_actions() {
 		//http://scribu.net/wordpress/optimal-script-loading.html
 		add_action('init', 'cgmp_google_map_register_scripts');
+		add_action('init', 'cgmp_load_plugin_textdomain');
 		add_action('wp_footer', 'cgmp_google_map_init_scripts');
 		add_action('admin_notices', 'cgmp_show_message');
 		add_action('admin_init', 'cgmp_google_map_admin_add_style');
@@ -99,11 +100,14 @@ if ( !function_exists('cgmp_add_filters') ):
 	}
 endif;
 
+if ( !function_exists('cgmp_init_db_settings') ):
+	function cgmp_init_db_settings() {
+		update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, false);
+	}
+endif;
+
 global $cgmp_global_map_language;
 $cgmp_global_map_language = "en";
-
-global $global_is_global_object_loaded;
-$global_is_global_object_loaded = false;
 
 /* BOOTSTRAPPING STARTS */
 cgmp_define_constants();
@@ -112,6 +116,7 @@ cgmp_add_actions();
 cgmp_register_hooks();
 cgmp_add_shortcode_support();
 cgmp_add_filters();
+cgmp_init_db_settings();
 /* BOOTSTRAPPING ENDS */
 
 

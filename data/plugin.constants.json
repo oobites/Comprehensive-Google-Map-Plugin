@@ -5,7 +5,9 @@
 	"CGMP_DB_PUBLISHED_PAGE_IDS" : "cgmp_published_page_ids",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
+	"CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED" : "cgmp_settings_was_base_object_rendered",
     "CGMP_GOOGLE_API_URL" : "http://www.google.com/jsapi",
+	"CGMP_GOOGLE_API_URL_SSL" : "https://www.google.com/jsapi",
     "CGMP_HOOK" : "cgmp-documentation",
     "CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM" : "map_configuration_form.tpl",
     "CGMP_HTML_TEMPLATE_MAP_CONFIG_DOCUMENTATION_PAGE" : "map_config_documentation_page.tpl",
@@ -35,5 +37,5 @@
     "CGMP_PLUGIN_INCLUDE_DIR" : "CGMP_PLUGIN_DIR/include",
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
-    "CGMP_VERSION" : "7.0.21"
+    "CGMP_VERSION" : "7.0.27"
   } ]
