@@ -17,20 +17,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$setting_builder_location = get_option(CGMP_DB_SETTINGS_BUILDER_LOCATION);
-
-if (isset($setting_builder_location) && $setting_builder_location == "true") {
-	add_action('admin_menu', 'cgmp_google_map_meta_boxes');
-}
-
+add_action('admin_menu', 'cgmp_google_map_meta_boxes');
 
 if ( !function_exists('cgmp_google_map_meta_boxes') ):
 function cgmp_google_map_meta_boxes() {
 		$id = "google_map_shortcode_builder";
 		$title = "AZ :: Google Map Shortcode Builder"; 
 		$context = "normal";
-		add_meta_box($id, $title, 'cgmp_render_shortcode_builder_form', 'post', $context, 'high');
-		add_meta_box($id, $title, 'cgmp_render_shortcode_builder_form', 'page', $context, 'high');
+
+      $setting_builder_location = get_option(CGMP_DB_SETTINGS_BUILDER_LOCATION);
+      if (isset($setting_builder_location) && $setting_builder_location == "true") {                                          
+         add_meta_box($id, $title, 'cgmp_render_shortcode_builder_form', 'post', $context, 'high');                        
+         add_meta_box($id, $title, 'cgmp_render_shortcode_builder_form', 'page', $context, 'high');                                                            
+      }
+
+      $custom_post_types = get_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES);
+      if (isset($custom_post_types) && trim($custom_post_types) != "") {
+         $custom_post_types_arr = explode(",", $custom_post_types);
+         foreach ($custom_post_types_arr as $type) {
+            $type = trim(strtolower($type));
+            if ($type == 'page' || $type == 'post') {
+               continue;
+            }
+            add_meta_box($id, $title, 'cgmp_render_shortcode_builder_form', $type, $context, 'high');
+         }
+      }
 }
 endif;
 

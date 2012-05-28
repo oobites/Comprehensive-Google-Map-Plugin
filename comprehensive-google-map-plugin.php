@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 7.0.27
+Version: 7.0.29
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -102,7 +102,27 @@ endif;
 
 if ( !function_exists('cgmp_init_db_settings') ):
 	function cgmp_init_db_settings() {
-		update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, false);
+		$current_theme_name = get_current_theme();
+
+		$problematic_themes = array("mingle");
+		//Extremly ugly hack. Some theme developers do some funky stuff with footer calls in their themes, 
+		//which messes things up, while working normally in other themes
+		if (in_array(strtolower($current_theme_name), $problematic_themes)) {
+
+			$should_base_object_render = get_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER);
+			$was_base_object_rendered = get_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
+
+			if ($should_base_object_render == trim("false") && $was_base_object_rendered == trim("true")) {
+				update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "true");
+				update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
+				add_action('wp_footer', 'cgmp_google_map_init_scripts');
+			}
+
+		} else {
+			//Makes sure that there are no plugin scripts in the footer of the page that does not have a shortcode or widget
+			update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "false");
+			update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
+		}
 	}
 endif;
 
@@ -118,6 +138,5 @@ cgmp_add_shortcode_support();
 cgmp_add_filters();
 cgmp_init_db_settings();
 /* BOOTSTRAPPING ENDS */
-
 
 ?>

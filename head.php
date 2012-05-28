@@ -74,11 +74,16 @@ endif;
 
 if ( !function_exists('cgmp_google_map_init_scripts') ):
 		function cgmp_google_map_init_scripts()  {
-			$was_global_object_rendered = get_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
-			if ($was_global_object_rendered) {
+			$should_base_object_render = get_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER);
+			$was_base_object_rendered = get_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
+
+			if ($should_base_object_render == trim("true") && $was_base_object_rendered == trim("false")) {
+
 				cgmp_google_map_init_global_html_object();
 				wp_print_scripts('cgmp-google-map-jsapi');
 				wp_print_scripts('cgmp-google-map-orchestrator-framework');
+				update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "false");
+				update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "true");
 			}
 		}
 endif;

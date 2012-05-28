@@ -36,27 +36,37 @@ if ( !function_exists('cgmp_settings_callback') ):
 		}
 
 		if (isset($_POST['cgmp-save-settings']))  {
-				update_option(CGMP_DB_SETTINGS_BUILDER_LOCATION, $_POST['builder-under-post']);
-				cgmp_show_message("Settings updated successfully!");
+		   update_option(CGMP_DB_SETTINGS_BUILDER_LOCATION, $_POST['builder-under-post']);
+			update_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES, $_POST['custom-post-types']);	
+         cgmp_show_message("Settings updated successfully!");
 		}
 
-		$setting_builder_location = get_option(CGMP_DB_SETTINGS_BUILDER_LOCATION);
-
-		$yes_display_radio_btn = "";
-		$no_display_radio_btn = "checked='checked'";
-		if (isset($setting_builder_location) && $setting_builder_location == "true") {
-			$no_display_radio_btn = "";
-			$yes_display_radio_btn = "checked='checked'";
-		}
-
-		$template_values = array();
-        $template_values["YES_DISPLAY_SHORTCODE_BUILDER_INPOST_TOKEN"] = $yes_display_radio_btn;
-		$template_values["NO_DISPLAY_SHORTCODE_BUILDER_INPOST_TOKEN"] = $no_display_radio_btn;
-        echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE);
+      $template_values = array();
+      $template_values = populate_token_builder_under_post($template_values);
+      $template_values = populate_token_custom_post_types($template_values);
+      echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE);
 	}
 
 endif;
 
+function populate_token_builder_under_post($template_values) {
+   $setting_builder_location = get_option(CGMP_DB_SETTINGS_BUILDER_LOCATION);                                        
+   $yes_display_radio_btn = "";                                                                                      
+   $no_display_radio_btn = "checked='checked'";                                                                      
+   if (isset($setting_builder_location) && $setting_builder_location == "true") {                                    
+      $no_display_radio_btn = "";                                                                                    
+      $yes_display_radio_btn = "checked='checked'";                                                                  
+   }                                                                                                                 
+   $template_values["YES_DISPLAY_SHORTCODE_BUILDER_INPOST_TOKEN"] = $yes_display_radio_btn;                        
+   $template_values["NO_DISPLAY_SHORTCODE_BUILDER_INPOST_TOKEN"] = $no_display_radio_btn;                            
+   return $template_values;
+}
+
+function populate_token_custom_post_types($template_values) {                                                                          
+   $custom_post_types = get_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES);                                           
+   $template_values["CUSTOM_POST_TYPES_TOKEN"] = $custom_post_types;                             
+   return $template_values;                 
+} 
 
 if ( !function_exists('cgmp_shortcodebuilder_callback') ):
 

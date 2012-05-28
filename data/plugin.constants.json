@@ -3,9 +3,13 @@
     "CGMP_DB_PUBLISHED_POST_MARKERS" : "cgmp_published_post_markers",
 	"CGMP_DB_PUBLISHED_POST_IDS" : "cgmp_published_post_ids",
 	"CGMP_DB_PUBLISHED_PAGE_IDS" : "cgmp_published_page_ids",
+	"CGMP_DB_GEOMASHUP_CONTENT" : "cgmp_geomashup_content",
+	"CGMP_DB_PURGE_GEOMASHUP_CACHE" : "cgmp_purge_geomashup_cache",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
+	"CGMP_DB_SETTINGS_CUSTOM_POST_TYPES" : "cgmp_settings_custom_post_types",
 	"CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED" : "cgmp_settings_was_base_object_rendered",
+	"CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER" : "cgmp_settings_should_base_object_render",
     "CGMP_GOOGLE_API_URL" : "http://www.google.com/jsapi",
 	"CGMP_GOOGLE_API_URL_SSL" : "https://www.google.com/jsapi",
     "CGMP_HOOK" : "cgmp-documentation",
@@ -37,5 +41,5 @@
     "CGMP_PLUGIN_INCLUDE_DIR" : "CGMP_PLUGIN_DIR/include",
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
-    "CGMP_VERSION" : "7.0.27"
+    "CGMP_VERSION" : "7.0.29"
   } ]

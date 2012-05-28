@@ -18,23 +18,40 @@
 			<h3 class="hide-if-js">Enable/Disable shortcode builder under post/page HTML WYSIWYG editor</h3>
 				<form action='' name='' id='' method='post'>
 				<div id='google-map-container-settings' style='margin-top: 20px'>
-				<fieldset>
-				<legend>Enable/Disable shortcode builder under post/page HTML WYSIWYG editor</legend>
 				<table cellspacing='0' cellpadding='0' border='0'>
 					<tbody>
 						<tr>
-							<td>Dispay shortcode builder under post/page HTML editor?</td>
+							<td><b>Shortcode builder under post/page HTML WYSIWYG editor?</b></td>
 						</tr>
 						<tr>
 							<td>
-								<label id='yes-display-label' for='yes-display'>Yes</label>
+								<label id='yes-display-label' for='yes-display'>Visible</label>
 								<input type='radio' id='yes-display' name='builder-under-post' value='true' YES_DISPLAY_SHORTCODE_BUILDER_INPOST_TOKEN />&nbsp;
-								<label id='no-display-label' for='no-display'>No</label>
+								<label id='no-display-label' for='no-display'>Hidden</label>
 								<input type='radio' id='no-display' name='builder-under-post' value='false' NO_DISPLAY_SHORTCODE_BUILDER_INPOST_TOKEN /></td>
 						</tr>
 					</tbody>
 				</table>
-			</fieldset>
+				<table cellspacing='0' cellpadding='0' border='0'>
+					<tbody>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>
+				<table cellspacing='0' cellpadding='0' border='0'>
+					<tbody>
+						<tr>
+							<td><b>Shortcode builder should be visible under HTML WYSIWYG editor of the following custom post/page types</b></td>
+						</tr>
+						<tr>
+							<td>
+								<label id='custom-post-types' for='custom-post-types'>Enter comma-separated values:</label>
+								<input type='text' id='custom-post-types' name='custom-post-types' maxlength="40" size="50" value='CUSTOM_POST_TYPES_TOKEN' />
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div><br /><br />
 			<input type='submit' onclick='' class='button-primary' tabindex='4' value=' Save Settings ' id='cgmp-save-settings' name='cgmp-save-settings' />
 		</form>
