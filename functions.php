@@ -190,7 +190,7 @@ endif;
 
 if ( !function_exists('cgmp_map_data_injector') ):
 	function cgmp_map_data_injector($map_json, $id) {
-			cgmp_map_data_hook_function( $map_json, $id );
+			return cgmp_map_data_hook_function( $map_json, $id );
 	}
 endif;
 
@@ -205,7 +205,7 @@ if ( !function_exists('cgmp_map_data_hook_function') ):
 		$map_json = str_replace($naughty_stuff, "", $map_json);
 		$objectid = 'for-mapid-'.$id;
 		$paramid = 'json-string-'.$objectid;
-	echo "<object id='".$objectid."' name='".$objectid."' class='cgmp-data-placeholder cgmp-json-string-placeholder'><param id='".$paramid."' name='".$paramid."' value='".$map_json."' /></object> ".PHP_EOL;
+	return "<object id='".$objectid."' name='".$objectid."' class='cgmp-data-placeholder cgmp-json-string-placeholder'><param id='".$paramid."' name='".$paramid."' value='".$map_json."' /></object> ".PHP_EOL;
 	}
 endif;
 

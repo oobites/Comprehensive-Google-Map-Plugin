@@ -93,7 +93,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		echo cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint, $poweredby);
 		cgmp_set_google_map_language($language);
-		cgmp_map_data_injector(json_encode($map_data_properties), $id);
+		echo cgmp_map_data_injector(json_encode($map_data_properties), $id);
 		echo $after_widget;
 	}
 
