@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.3.2
 Tested up to: 3.3.2
-Stable tag: 7.0.29
+Stable tag: 8.0.0
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -13,7 +13,7 @@ A simple and intuitive,  yet elegant and fully documented Google map plugin that
 A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. No limited plugin editions or limited functionality! This is the full version of this free and premium plugin, which comes packed with useful features: 
 
 * Intuitive and user friendly interface, which makes it very easy to configure Google map. No complex configuration options. Facebook style interactive interface for managing multiple map markers. OpenStreetMap imagery available
-* Over 250 amazing custom marker icons to choose from!
+* With over 250 amazing custom marker icons to choose from!
 * Aggregate all your post markers in one map - Marker Geo Mashup!
 * Help tooltips enabled, which makes your configuration hassle free
 * Google-like directions: driving and walking, distance shown in miles or KM, avoid tolls and highways options, direction print functionality
@@ -90,6 +90,20 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 9. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
 
 == Changelog ==
+
+= 8.0.0 =
+* Enhancement: Added Polish translation (Jakub Korzeniewski)
+* Fix javascript bug that mishandles minor version number on jQuery 1.xx (Israel Shirk)
+* Php warnings removed, when in wp_debug mode (Patrick Hafner)
+* Using sprintf for html output in a few lines (Patrick Hafner)
+* IE Quirks mode fix: Making the function return rather than echo to prevent tags from outputting before the and tags. This causes IE to render the document in quirks mode which basically will destroy any modern sites styling. This occurs when using the shortcode because the function just echos out the content before the rest of the site is rendered.
+
+= 7.0.31 =
+* Missing files for v7.0.30
+
+= 7.0.30 =
+* Enhancement: Added German translation
+* Enhancement: Fixed CSS on the client side when direction section is opened
 
 = 7.0.29 =
 * Enhancement: Added admin config setting to enable short code builder under custom post/page types.

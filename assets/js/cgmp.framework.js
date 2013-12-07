@@ -628,10 +628,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							bubble += "<p class='geo-mashup-post-title'><a title='Original post: " + markersElement.postTitle + "' href='" +markersElement.postLink+ "'>" + substr + "..</a></p>";
 							bubble += "<p class='geo-mashup-post-excerpt'>" + markersElement.postExcerpt  + "</p>";
 						}
-
+                  bubble += "<div class='custom-bubble-links-section'>";
 						bubble += "<hr />";
 						bubble += "<p class='custom-bubble-text'>" + CGMPGlobal.translations.directions + ": <a id='toHere-" + randomNumber + "' class='dirToHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.toHere + "</a> - <a id='fromHere-" + randomNumber + "' class='dirFromHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.fromHere + "</a> | <a id='trigger-" + randomNumber + "' class='streetViewTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.streetView + "</a></p>";
-						bubble += "</div>";
+						bubble += "</div></div>";
 
 						return {bubbleHolderId : randomNumber, bubbleContent: bubble};
 					}
