@@ -91,9 +91,8 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 			$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
 
 			cgmp_set_google_map_language($language);
-			cgmp_map_data_injector(json_encode($map_data_properties), $id);
 
-			return cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint, $poweredby);
+         return cgmp_draw_map_placeholder($id, $width, $height, $mapalign, $directionhint, $poweredby).cgmp_map_data_injector(json_encode($map_data_properties), $id);
 	}
 endif;
 
