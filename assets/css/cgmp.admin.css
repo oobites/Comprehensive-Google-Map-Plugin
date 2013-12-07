@@ -22,7 +22,7 @@ div.documentation fieldset.fieldset table td.third-td {width: 10%}
 div.documentation fieldset.fieldset table td.fourth-td {width: 40%}
 
 fieldset.fieldset table input.text-field{width:85px}
-fieldset.fieldset table input.marker-location-icon{background-color:transparent !important;float:left;font-size:16px;height:40px;margin-left:2px;margin-right:5px;margin-top:5px;padding:0 2px 0 30px;width:32px !important}
+fieldset.fieldset table input.marker-location-icon{background-color:transparent !important;float:left;font-size:16px;height:40px;margin-left:2px;margin-right:5px;margin-top:5px;/*padding:0 2px 0 30px;*/width:32px !important}
 fieldset.fieldset table input.default-marker-icon{background:url('images/markers/1-default.png') no-repeat scroll 0 0 transparent !important}
 div.shortcodebuilder li.token-input-token p{margin:-1px 0 0 !important}
 li.token-input-highlighted-token{-moz-border-radius:4px;-webkit-border-radius:4px;background-color:#D0D6E7;border:1px solid #8D9EC4;border-radius:4px}
@@ -43,7 +43,7 @@ ul.tools-tabs-nav{margin-bottom:5px;padding-left:4.2em;padding-right:3.5em;paddi
 ul.tools-tabs-nav {*margin-bottom: 1px !important; margin-bottom: 1px\0/ !important; margin-bottom: 1px\9 !important;}
 @-moz-document url-prefix() {ul.tools-tabs-nav {margin-bottom: -1px;}}
 @media not all and (-webkit-min-device-pixel-ratio:0) {ul.tools-tabs-nav {margin-bottom: 0px;}}
-ul.tools-tabs-nav li{-moz-border-radius-topleft:6px;-moz-border-radius-topright:6px;-webkit-border-top-left-radius:6px;-webkit-border-top-right-radius:6px;background:none repeat scroll 0 0 #F8F8F8;border:1px solid #DFDFDF;border-top-left-radius:6px;border-top-right-radius:6px;display:inline-block;font-weight:700;margin:0 0.2em 0 0;max-width:20%;overflow:hidden;text-align:center;text-shadow:0 1px 0 #FFF}
+ul.tools-tabs-nav li{-moz-border-radius-topleft:6px;-moz-border-radius-topright:6px;-webkit-border-top-left-radius:6px;-webkit-border-top-right-radius:6px;background:none repeat scroll 0 0 #F8F8F8;border:1px solid #DFDFDF;border-top-left-radius:6px;border-top-right-radius:6px;display:inline-block;font-weight:700;margin:0 0.2em 0 0;max-width:20%;/*overflow:hidden;*/text-align:center;text-shadow:0 1px 0 #FFF}
 @media not all and (-webkit-min-device-pixel-ratio:0) {ul.tools-tabs-nav li {margin: 0px 0.2em -1px 0px;}}
 ul.tools-tabs-nav li a{color:#C1C1C1;display:inline-block;padding:0.6em 1em;text-decoration:none}
 ul.tools-tabs-nav li.current{-moz-box-shadow:0 -3px 5px rgba(0, 0, 0, 0.06);-webkit-box-shadow:0 -3px 5px rgba(0, 0, 0, 0.06);background:#FFF;border-bottom-color:#FFF;box-shadow:0 -3px 5px rgba(0, 0, 0, 0.06);color:#000}
