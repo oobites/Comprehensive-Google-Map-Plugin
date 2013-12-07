@@ -1038,8 +1038,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					CGMPGlobal.translations = $("object#global-data-placeholder").find("param#translations").val();
 					CGMPGlobal.translations = parseJson(CGMPGlobal.translations);
 
-					var version = parseFloat($.fn.jquery);
-					if (version < 1.3) {
+					var versionMajor = parseFloat($.fn.jquery.split(".")[0]);
+					var versionMinor = parseFloat($.fn.jquery.split(".")[1]);
+					if ((versionMajor < 1) || (versionMajor >= 1 && versionMajor < 2 && versionMinor < 3)) {
 						alert(CGMPGlobal.errors.oldJquery);
 						//Logger.fatal("Client uses jQuery older than the version 1.3.0. Aborting map generation ..");
 						return false;
