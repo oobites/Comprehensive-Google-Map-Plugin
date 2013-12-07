@@ -357,14 +357,22 @@ if ( !function_exists('cgmp_create_html_input') ):
 		if (strpos($attr['class'], "notshortcodeitem") === false) {
 			$attr['class'] = $attr['class']." shortcodeitem";
 		}
-		return "<input type='".$type ."' id='".$attr['id']."' name='".$attr['name']."' value='".$attr['value']."' 
-				role='".$attr['role']."' class='".$attr['class']."' style='".$attr['style']."' />";
+
+        return sprintf('<input type="%s" id="%s" name="%s" value="%s" role="%s" class="%s" style="%s" />',
+                $type,
+                $attr['id'],
+                $attr['name'],
+                $attr['value'],
+                $attr['role'],
+                $attr['class'],
+                $attr['style']
+        );
 	}
 endif;
 
 if ( !function_exists('cgmp_create_html_list') ):
 	function cgmp_create_html_list($attr) {
-		return "<ul class='".$attr['class']."' id='".$attr['id']."' name='".$attr['name']."' style='".$attr['style']."'></ul>";
+		return sprintf('<ul class="%s" id="%s" name="%s" style="%s"></ul>', $attr['class'], $attr['id'], $attr['name'], $attr['style']);
 	}
 endif;
 
@@ -470,7 +478,7 @@ if ( !function_exists('cgmp_build_template_values') ):
 		foreach($settings as $setting) {
 			$function_type = $setting['type'];
 			$token = $setting['token'];
-			$token_prefix = $setting['token_prefix'];
+			$token_prefix = (isset($setting['token_prefix']) ? $setting['token_prefix'] : '');
 
 			$function_name =  "cgmp_create_html_".$function_type;
 			$html_template_token_name = strtoupper((isset($token_prefix) && $token_prefix != '' ) ? $token_prefix : $function_type)."_".strtoupper($token);
@@ -502,16 +510,21 @@ if ( !function_exists('cgmp_set_values_for_html_rendering') ):
 				"attr" => array("for" => $params['dbParameterId'], "value" => $params['htmlLabelValue'])); 
 		}
 
-		$settings[] = array("type" => $params['backendFunctionNameSuffix'], "token" => $params['templateTokenNameSuffix'], 
-				"token_prefix" => $params['templateTokenNamePrefix'],
-				"attr"=> array("role" => $params['templateTokenNameSuffix'],
-				"id" => $params['dbParameterId'],
-				"name" => $params['dbParameterName'],
-				"type" => $params['htmlInputElementType'],
-				"value" => (isset($params['dbParameterValue']) ? $params['dbParameterValue'] : ""),
-				"class" => (isset($params['cssClasses']) ? $params['cssClasses'] : ""),
-				"style" => (isset($params['inlineCss']) ? $params['inlineCss'] : ""),
-				"options" => (isset($params['htmlSelectOptionsKey']) ? $html_element_select_options[$params['htmlSelectOptionsKey']] : array()))); 
+		$settings[] = array(
+                    "type" => (isset($params['backendFunctionNameSuffix']) ? $params['backendFunctionNameSuffix'] : ''),
+                    "token" => (isset($params['templateTokenNameSuffix']) ? $params['templateTokenNameSuffix'] : ''),
+                    "token_prefix" => (isset($params['templateTokenNamePrefix']) ? $params['templateTokenNamePrefix'] : ''),
+                    "attr"=> array(
+                        "role" => (isset($params['templateTokenNameSuffix']) ? $params['templateTokenNameSuffix'] : ''),
+                        "id" => (isset($params['dbParameterId']) ? $params['dbParameterId'] : ''),
+                        "name" => (isset($params['dbParameterName']) ? $params['dbParameterName'] : ''),
+                        "type" => (isset($params['htmlInputElementType']) ? $params['htmlInputElementType'] : ''),
+                        "value" => (isset($params['dbParameterValue']) ? $params['dbParameterValue'] : ""),
+                        "class" => (isset($params['cssClasses']) ? $params['cssClasses'] : ""),
+                        "style" => (isset($params['inlineCss']) ? $params['inlineCss'] : ""),
+                        "options" => (isset($params['htmlSelectOptionsKey']) ? $html_element_select_options[$params['htmlSelectOptionsKey']] : array())
+                    )
+                );
 	}
 endif;
 

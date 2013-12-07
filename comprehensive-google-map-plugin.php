@@ -102,7 +102,7 @@ endif;
 
 if ( !function_exists('cgmp_init_db_settings') ):
 	function cgmp_init_db_settings() {
-		$current_theme_name = get_current_theme();
+		$current_theme_name = wp_get_theme();
 
 		$problematic_themes = array("mingle");
 		//Extremly ugly hack. Some theme developers do some funky stuff with footer calls in their themes, 
