@@ -6,7 +6,7 @@ Requires at least: 3.3.2
 Tested up to: 3.7.1
 Stable tag: 8.0.1
 
-A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
+Asimple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
 == Description ==
 
