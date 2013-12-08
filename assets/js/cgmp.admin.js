@@ -96,40 +96,44 @@ function displayPopupWithContent(content, $)  {
 }
 
 function buildShortcode(id, $) {
+	var used_roles = {};
 	var code = "[google-map-v3 ";
 	$(id + ' .shortcodeitem').each(function() {
-	
 		var role = $(this).attr('role');
 		var val =  $(this).val();
 
-		if (role == 'addmarkerlisthidden') {
+		if (role === 'addmarkerlisthidden') {
 			val = $('<div />').text(val).html();
 			val = val.replace(new RegExp("'", "g"), "");
 			val = val.replace(new RegExp("\"", "g"), "");
 		}
 
-		if ($(this).attr('type') == "checkbox") {
+		if ($(this).attr('type') === "checkbox") {
 			val = $(this).is(":checked");
 		}
 
-		if ($(this).attr('type') == "radio") {
+		if ($(this).attr('type') === "radio") {
 			var name = $(this).attr('name');
 			val = $('input[name=' + name + ']:checked').val();
 			role = name;
 		}
 	
-		if (role == null || typeof role == "undefined" || role == "undefined") {
+		if (role === null || typeof role === "undefined" || role === "undefined") {
 			role = $(this).attr('id');
 		}
 
-		if (role != null && role != "" && val != null && val != "") {
+		if (role !== null && role !== "" && val !== null && val !== "") {
 
 			if (role.indexOf("_") > 0) {
 				role = role.replace(/_/g,"");
 			} if (role.indexOf("hidden") > 0) {
 				role = role.replace(/hidden/g,"");
 			}
-			code += role + "=" + "\"" + val + "\" ";
+		
+			if (used_roles[role] === null || typeof used_roles[role] === "undefined") {
+				used_roles[role] = role;
+				code += role + "=" + "\"" + val + "\" ";
+			}
 		}
 	});
 	code = code.replace(/^\s\s*/, '').replace(/\s\s*$/, '');

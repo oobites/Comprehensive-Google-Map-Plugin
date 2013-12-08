@@ -1,12 +1,12 @@
 === Comprehensive Google Map Plugin ===
 Contributors: alexanderzagniotov
-lDonate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.3.2
 Tested up to: 3.7.1
-Stable tag: 8.0.1
+Stable tag: 8.0.2
 
-Asimple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
+A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
 == Description ==
 
@@ -91,8 +91,14 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 
 == Changelog ==
 
+= 8.0.2 =
+* Bug: Shortcode sent to editor had “addmarkermashupbubble” property generate twice
+* An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
+* Enhancement: Added Dutch translation (Jeffrey van Rossum)
+* Enhancement: Making use of the library by Chad Killingsworth [chadkillingsworth at missouristate.edu] to add geolocation marker and accuracy circle to a map. The marker position is automatically updated as the user position changes. Useful for users on devices that want to find directions from their current location to map's marker (themc)
+
 = 8.0.1 =
-* Plugin shortcode bug
+* Bug: Commented out on PHP function parsing the shortcode and rendering a map  
 
 = 8.0.0 =
 * Enhancement: Added Polish translation (Jakub Korzeniewski)
