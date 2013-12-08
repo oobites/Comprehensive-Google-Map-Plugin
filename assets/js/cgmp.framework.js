@@ -220,13 +220,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
             var MarkerBuilder = function () {
                 var markers, storedAddresses, badAddresses, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
-                var googleGeoLocator;
-                var init = function init(map, autoPan, geoLocator) {
+                var geolocationMarker = null;
+                var init = function init(map, autoPan, enableGeoLocation) {
                     googleMap = map;
                     mapDivId = googleMap.getDiv().id;
                     bubbleAutoPan = autoPan;
-                    googleGeoLocator = (geoLocator != null ? 
-                    	geoLocator : (function () {function getPosition() { return '';} return {getPosition: getPosition}})());
+
+                    if (enableGeoLocation && CGMPGlobal.isMobileDevice === "true") {
+                        var geoLocator = new GeoLocator();
+                        geoLocator.init(googleMap);
+                        geolocationMarker = geoLocator.locate();
+                    }
 
                     google.maps.event.addListener(googleMap, 'click', function () {
                         resetMap();
@@ -340,11 +344,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
                     addy = addy.replace("Lat/Long: ", "");
 
+                    var geoMarkerPosition = geolocationMarker == null ? '' : geolocationMarker.getPosition();
                     $(parentInfoBubble + ' a.dirToHereTrigger').live("click", function () {
                         var thisId = this.id;
                         if (thisId === 'toHere-' + localBubbleData.bubbleHolderId) {
                             $(dirDivId).fadeIn();
-                            $(dirDivId + ' input#a_address').val(googleGeoLocator.getPosition());
+                            $(dirDivId + ' input#a_address').val(geoMarkerPosition);
                             $(dirDivId + ' input#b_address').val(addy);
                             $(dirDivId + ' input#radio_miles').attr("checked", "checked");
                         }
@@ -355,7 +360,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         if (thisId === 'fromHere-' + localBubbleData.bubbleHolderId) {
                             $(dirDivId).fadeIn();
                             $(dirDivId + ' input#a_address').val(addy);
-                            $(dirDivId + ' input#b_address').val(googleGeoLocator.getPosition());
+                            $(dirDivId + ' input#b_address').val(geoMarkerPosition);
                             $(dirDivId + ' input#radio_miles').attr("checked", "checked");
                         }
                     });
@@ -769,36 +774,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 }
 
                 function setBounds() {
-                    var geoMarker = false;
-                    if (googleGeoLocator.getPosition() !== '') {
-                        geoMarker = true; 
-                    } 
-
+                    var fitToBounds = false;
+                    var isGeolocationMarker = geolocationMarker != null ? true : false;
                     if (markers.length > 1) {
                         $.each(markers, function (index, marker) {
                             if (!bounds.contains(marker.position)) {
                                 bounds.extend(marker.position);
                             }
                         });
-                        if (geoMarker) {
-                            bounds.extend(googleGeoLocator.getPosition());
-                        }
-                        originalExtendedBounds = bounds;
-                        if (bounds != null) {
-                            googleMap.fitBounds(bounds);
-                        }
+                        fitToBounds = true;
                     } else if (markers.length == 1) {
-                        if (geoMarker) {
-                            bounds.extend(googleGeoLocator.getPosition());
+                        if (isGeolocationMarker) {
                             bounds.extend(markers[0].position);
-                            originalExtendedBounds = bounds;
-                            if (bounds != null) {
-                                googleMap.fitBounds(bounds);
-                            }
+                            fitToBounds = true;
                         } else {
                             googleMap.setCenter(markers[0].position);
                             updatedZoom = googleMap.getZoom();
                             originalMapCenter = googleMap.getCenter();
+                        }
+                    }
+
+                    if (fitToBounds) {
+                        if (isGeolocationMarker) {
+                            bounds.extend(geolocationMarker.getPosition());
+                        }
+                        originalExtendedBounds = bounds;
+                        if (bounds != null) {
+                            googleMap.fitBounds(bounds);
                         }
                     }
                 }
@@ -901,7 +903,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     googleMap = map;
                 }
 
-                	/*
+                /*
 				 * Licensed under the Apache License, Version 2.0 (the "License");
 				 * you may not use this file except in compliance with the License.
 				 * You may obtain a copy of the License at
@@ -1185,21 +1187,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				};
 				
 				var locate = function locate() {  
-					var GeoMarker = new GeolocationMarker();      
-			        GeoMarker.setCircleOptions({fillColor: '#808080'});
+					var geolocationMarker = new GeolocationMarker();      
+			        geolocationMarker.setCircleOptions({fillColor: '#808080'});
 
-			        google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+			        google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function() {
 			        	googleMap.setCenter(this.getPosition());
 			          	//googleMap.fitBounds(this.getBounds());
 					  	googleMap.setZoom(googleMap.getZoom()); 
 			        });
 
-			        google.maps.event.addListener(GeoMarker, 'geolocation_error', function(e) {
+			        google.maps.event.addListener(geolocationMarker, 'geolocation_error', function(e) {
 			        	alert(e.message);
 			        });
-			        GeoMarker.setMap(googleMap);
+			        geolocationMarker.setMap(googleMap);
 
-			        return GeoMarker;
+			        return geolocationMarker;
                 }
 
                 return {
@@ -1430,13 +1432,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         GoogleMapOrchestrator.initMap(googleMap, json.bubbleautopan, parseInt(json.zoom), json.maptype);
                         LayerBuilder.init(googleMap);
 
-                        var geoLocator = new GeoLocator();
-                        geoLocator.init(googleMap);
-                        var geoMarker = geoLocator.locate();
-
                         var markerBuilder = new MarkerBuilder();
-                        markerBuilder.init(googleMap, json.bubbleautopan, geoMarker); //json.enablegeolocator
-
+                        markerBuilder.init(googleMap, json.bubbleautopan, true); //json.enablegeolocator
 
                         var controlOptions = {
                             mapTypeControl: (json.maptypecontrol === 'true'),

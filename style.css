@@ -13,14 +13,14 @@
 .direction-controls-placeholder .kd-buttonbar .kd-button:first-child{margin-left:0}
 .direction-controls-placeholder .kd-buttonbar .kd-button-right{border-radius:0 2px 2px 0;margin-left:5px}
 .direction-controls-placeholder .kd-buttonbar-right .kd-button:first-child{margin-right:0}
-.direction-controls-placeholder .kd-button{-moz-transition:all 0.218s ease 0;background-color:#F5F5F5;background-image:0;border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px 2px 2px 2px;color:#444;display:inline-block;font-size:85%;font-weight:700;height:20px;line-height:20px;min-width:54px;overflow:visible;padding:10px 0 0 !important;text-align:center}
+.direction-controls-placeholder .kd-button{-moz-transition:all 0.218s ease 0;background-color:#F5F5F5;background-image:none;border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px 2px 2px 2px;color:#444;display:inline-block;font-size:85%;font-weight:700;height:20px;line-height:20px;min-width:54px;overflow:visible;padding:10px 0 0 !important;text-align:center}
 .direction-controls-placeholder .kd-button.mini{height:17px;line-height:17px;min-width:0}
-.direction-controls-placeholder .kd-button:hover{-moz-transition:all 0 ease 0;background-color:#F8F8F8;background-image:0;border:1px solid #C6C6C6;box-shadow:0 1px 1px rgba(0, 0, 0, 0.1);color:#333;text-decoration:none}
-.direction-controls-placeholder .kd-button.selected{background-color:#DDD;background-image:0;border:1px solid #CCC;box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;color:#333}
-.direction-controls-placeholder .kd-button-submit{background-color:#4D90FE;background-image:0;border:1px solid #3079ED;color:#FFF}
-.direction-controls-placeholder .kd-button-submit:hover{background-color:#357AE8;background-image:0;border:1px solid #2F5BB7;color:#FFF}
-.direction-controls-placeholder .kd-button-share{background-color:#3D9400;background-image:0;border:1px solid #29691D;color:#FFF;text-shadow:0 1px rgba(0, 0, 0, 0.1)}
-.direction-controls-placeholder .kd-button-share:hover{background-color:#368200;background-image:0;border:1px solid #2D6200;color:#FFF;text-shadow:0 1px rgba(0, 0, 0, 0.3)}
+.direction-controls-placeholder .kd-button:hover{-moz-transition:all 0 ease 0;background-color:#F8F8F8;background-image:none;border:1px solid #C6C6C6;box-shadow:0 1px 1px rgba(0, 0, 0, 0.1);color:#333;text-decoration:none}
+.direction-controls-placeholder .kd-button.selected{background-color:#DDD;background-image:none;border:1px solid #CCC;box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;color:#333}
+.direction-controls-placeholder .kd-button-submit{background-color:#4D90FE;background-image:none;border:1px solid #3079ED;color:#FFF}
+.direction-controls-placeholder .kd-button-submit:hover{background-color:#357AE8;background-image:none;border:1px solid #2F5BB7;color:#FFF}
+.direction-controls-placeholder .kd-button-share{background-color:#3D9400;background-image:none;border:1px solid #29691D;color:#FFF;text-shadow:0 1px rgba(0, 0, 0, 0.1)}
+.direction-controls-placeholder .kd-button-share:hover{background-color:#368200;background-image:none;border:1px solid #2D6200;color:#FFF;text-shadow:0 1px rgba(0, 0, 0, 0.3)}
 .direction-controls-placeholder .ml-loading-img{background-image:url("assets/css/images/my_location_button_spinner.gif");height:10px !important;width:10px !important}
 .direction-controls-placeholder .dir-tm .kd-button img{opacity:0.667px;vertical-align:2px; display: inline !important}
 .direction-controls-placeholder .kd-button img{display:inline-block !important;margin:-3px 0 0;opacity:0.55px;vertical-align:middle}
@@ -81,8 +81,8 @@ img{-moz-user-select:none;border:0 none;margin:0;padding:0}
 .cgmp-popup-shortcode-dialog p{font-family:Arial,sans-serif !important;font-size:13px !important}
 .cgmp-popup-shortcode-dialog .dismiss-container{left:0;position:absolute;top:0;width:100%}
 .cgmp-popup-shortcode-dialog .dialog-dismiss{color:#7F7F7F !important;float:right;font:26px Arial,sans-serif;margin:6px 14px;text-decoration:none}
-.cgmp-popup-shortcode-dialog .close-dialog{-moz-transition:all 0.218s ease 0;-moz-user-select:none;background-color:#D14836;background-image:0;border:1px solid transparent;border-radius:2px 2px 2px 2px;color:#FFF;cursor:pointer;display:inline-block;font:bold 11px/27px "Arial","Helvetica",sans-serif;height:27px;min-width:54px;padding:0 8px;text-align:center;text-shadow:0 1px rgba(0, 0, 0, 0.1);text-transform:uppercase}
-.cgmp-popup-shortcode-dialog .close-dialog:hover{-moz-border-bottom-colors:none;-moz-border-image:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;background-color:#C53727;background-image:0;border-color:#B0281A #B0281A #AF301F;border-style:solid;border-width:1px;box-shadow:0 1px 1px rgba(0, 0, 0, 0.2);color:#FFF}
+.cgmp-popup-shortcode-dialog .close-dialog{-moz-transition:all 0.218s ease 0;-moz-user-select:none;background-color:#D14836;background-image:none;border:1px solid transparent;border-radius:2px 2px 2px 2px;color:#FFF;cursor:pointer;display:inline-block;font:bold 11px/27px "Arial","Helvetica",sans-serif;height:27px;min-width:54px;padding:0 8px;text-align:center;text-shadow:0 1px rgba(0, 0, 0, 0.1);text-transform:uppercase}
+.cgmp-popup-shortcode-dialog .close-dialog:hover{-moz-border-bottom-colors:none;-moz-border-image:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;background-color:#C53727;background-image:none;border-color:#B0281A #B0281A #AF301F;border-style:solid;border-width:1px;box-shadow:0 1px 1px rgba(0, 0, 0, 0.2);color:#FFF}
 .attention{color:red;font-weight:700}
 object.cgmp-data-placeholder{background-color:transparent !important;border:none !important;height:0 !important;left:10000000px !important;line-height:0 !important;margin:0 !important;outline:medium none !important;padding:0 !important;position:absolute !important;top:100000px !important;width:0 !important;z-index:9999786 !important}
 .direction-controls-placeholder .d_close-wrapper,.direction-controls-placeholder .dir-rev-wrapper{height:0;line-height:0;position:relative}
@@ -99,7 +99,7 @@ object.cgmp-data-placeholder{background-color:transparent !important;border:none
 .direction-controls-placeholder .kd-buttonbar-right .kd-button.right,.direction-controls-placeholder .kd-buttonbar-right .kd-button-right{margin-left:0;margin-right:0}
 .direction-controls-placeholder .msie-7 .kd-button,.direction-controls-placeholder .msie-8 .kd-button{overflow:visible}
 .direction-controls-placeholder .kd-button:active,.direction-controls-placeholder .kd-button:active:hover,.direction-controls-placeholder .kd-button:active:focus{box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset}
-.direction-controls-placeholder .kd-button.selected:hover,.direction-controls-placeholder .kd-button.selected:active{background-color:#EEE;background-image:0;border:1px solid #CCC;box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;color:#333}
+.direction-controls-placeholder .kd-button.selected:hover,.direction-controls-placeholder .kd-button.selected:active{background-color:#EEE;background-image:none;border:1px solid #CCC;box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;color:#333}
 .direction-controls-placeholder .kd-button.disabled,.direction-controls-placeholder .kd-button.disabled:hover,.direction-controls-placeholder .kd-button.disabled:active,.direction-controls-placeholder .kd-button:disabled{background:none repeat scroll 0 0 #FFF;border:1px solid rgba(0, 0, 0, 0.05);color:#B8B8B8;cursor:default;pointer-events:none}
 .direction-controls-placeholder .kd-input-text-wrp:hover input,.direction-controls-placeholder .kd-input-text:hover{border-color:#A0A0A0 #B9B9B9 #B9B9B9;border-right:1px solid #B9B9B9;border-style:solid;border-width:1px;box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset}
 .direction-controls-placeholder .kd-input-text-wrp input:focus,.direction-controls-placeholder .kd-input-text:focus{border:1px solid #4D90FE;box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset;outline:medium none}
@@ -107,4 +107,4 @@ object.cgmp-data-placeholder{background-color:transparent !important;border:none
 .rendered-directions-placeholder tr,.rendered-directions-placeholder table.adp-fullwidth,.rendered-directions-placeholder div.adp-list{border:none !important}
 .cgmp-popup-shortcode-dialog .close-dialog:focus,.cgmp-popup-shortcode-dialog .close-dialog.focus{box-shadow:0 0 0 1px #FFF inset}
 .cgmp-popup-shortcode-dialog .close-dialog:focus:hover,.cgmp-popup-shortcode-dialog .close-dialog.focus:hover{box-shadow:0 0 0 1px #FFF inset, 0 1px 1px rgba(0, 0, 0, 0.1)}
-.cgmp-popup-shortcode-dialog .close-dialog:active,.cgmp-popup-shortcode-dialog .close-dialog:focus:active,.cgmp-popup-shortcode-dialog .close-dialog.focus:active{background-color:#B0281A;background-image:0;border:1px solid #992A1B;box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset}
+.cgmp-popup-shortcode-dialog .close-dialog:active,.cgmp-popup-shortcode-dialog .close-dialog:focus:active,.cgmp-popup-shortcode-dialog .close-dialog.focus:active{background-color:#B0281A;background-image:none;border:1px solid #992A1B;box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset}
