@@ -769,6 +769,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 }
 
                 function setBounds() {
+                    var geoMarker = false;
+                    if (googleGeoLocator.getPosition() !== '') {
+                        geoMarker = true; 
+                    } 
 
                     if (markers.length > 1) {
                         $.each(markers, function (index, marker) {
@@ -776,14 +780,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 bounds.extend(marker.position);
                             }
                         });
+                        if (geoMarker) {
+                            bounds.extend(googleGeoLocator.getPosition());
+                        }
                         originalExtendedBounds = bounds;
                         if (bounds != null) {
                             googleMap.fitBounds(bounds);
                         }
                     } else if (markers.length == 1) {
-                        googleMap.setCenter(markers[0].position);
-                        updatedZoom = googleMap.getZoom();
-                        originalMapCenter = googleMap.getCenter();
+                        if (geoMarker) {
+                            bounds.extend(googleGeoLocator.getPosition());
+                            bounds.extend(markers[0].position);
+                            originalExtendedBounds = bounds;
+                            if (bounds != null) {
+                                googleMap.fitBounds(bounds);
+                            }
+                        } else {
+                            googleMap.setCenter(markers[0].position);
+                            updatedZoom = googleMap.getZoom();
+                            originalMapCenter = googleMap.getCenter();
+                        }
                     }
                 }
 
