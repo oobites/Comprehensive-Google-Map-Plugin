@@ -16,6 +16,7 @@ A simple and intuitive, yet elegant and fully documented Google map plugin that 
 * With over 250 amazing custom marker icons to choose from!
 * Aggregate all your post markers in one map - Marker Geo Mashup!
 * Help tooltips enabled, which makes your configuration hassle free
+* Add mobile device user's current GPS location to the map! Useful for end-users that want to find directions from their current location to map's markers
 * Google-like directions: driving and walking, distance shown in miles or KM, avoid tolls and highways options, direction print functionality
 * Info window can display marker's street view within itself.
 * Plugin is fully documented. If help tooltips are not enough, you can always refer to the full documentation about each of the settings
@@ -94,10 +95,10 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 = 8.0.2 =
 * Trial: An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
 * Bug: Shortcode sent to editor had “addmarkermashupbubble” property generate twice
-* Bug: Removed incorrect CC property value
+* Bug: Removed incorrect CSS property value
 * Bug: In jQuery 1.8, the behaviour of .ajaxSuccess() changed, which caused an issue when saving widgets
 * Enhancement: Added Dutch translation (Jeffrey van Rossum)
-* Enhancement: Making use of the library by Chad Killingsworth [chadkillingsworth at missouristate.edu] to add geolocation marker and accuracy circle to a map. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker (themc)
+* Enhancement: Making use of the library by Chad Killingsworth to add end-user's current GPS location as a marker. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker (themc)
 
 = 8.0.1 =
 * Bug: Commented out on PHP function parsing the shortcode and rendering a map  

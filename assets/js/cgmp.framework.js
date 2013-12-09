@@ -227,7 +227,7 @@
                     mapDivId = googleMap.getDiv().id;
                     bubbleAutoPan = autoPan;
 
-                    if (enableGeoLocation === "true"/*&& CGMPGlobal.isMobileDevice === "true"*/) {
+                    if (enableGeoLocation === "true" && CGMPGlobal.isMobileDevice === "true") {
                         var geoLocator = new GeoLocator();
                         geoLocator.init(googleMap);
                         geolocationMarker = geoLocator.locate();
