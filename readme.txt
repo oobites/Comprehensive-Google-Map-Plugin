@@ -93,15 +93,15 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 == Changelog ==
 
 = 8.0.2 =
-* Trial: An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
+* Enhancement: Added Dutch translation (Jeffrey van Rossum)
+* Enhancement: Added ability to select default distance units for directions
 * Bug: Shortcode sent to editor had “addmarkermashupbubble” property generate twice
 * Bug: Removed incorrect CSS property value
 * Bug: Fixed IDs of direction HTML elements
 * Bug: In jQuery 1.8, the behaviour of .ajaxSuccess() changed, which caused an issue when saving widgets
 * Bug: When trying to print directions in KM, the print view was showing miles
-* Enhancement: Added ability to select default distance units for directions
-* Enhancement: Added Dutch translation (Jeffrey van Rossum)
-* Enhancement: Making use of the library by Chad Killingsworth to add end-user's current GPS location as a marker. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker (themc)
+* Experimental: An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
+* Experimental: Making use of the library by Chad Killingsworth to add end-user's current GPS location as a marker. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker (themc)
 
 = 8.0.1 =
 * Bug: Commented out on PHP function parsing the shortcode and rendering a map  
