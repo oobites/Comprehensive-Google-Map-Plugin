@@ -26,6 +26,7 @@
     "showmarker" : "true",
     "showpanoramio" : "false",
     "showtraffic" : "false",
+    "distanceunits" : "miles",
     "streetviewcontrol" : "true",
 	"tiltfourtyfive" : "false",
     "title" : "",

@@ -165,6 +165,15 @@
     },
     {
         "backendFunctionNameSuffix": "select",
+        "dbParameterId": "distanceunits",
+        "dbParameterName": "distanceunits",
+        "dbParameterValue": "miles",
+        "htmlLabelValue": "Show Distance In",
+        "htmlSelectOptionsKey": "miles_km",
+        "templateTokenNameSuffix": "distanceunits"
+    },
+    {
+        "backendFunctionNameSuffix": "select",
         "dbParameterId": "bubbleautopan",
         "dbParameterName": "bubbleautopan",
         "dbParameterValue": "true",

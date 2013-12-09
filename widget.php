@@ -86,7 +86,8 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
 
 		//When widget was saved and untouched for a long time, the new added config options were not initialized
-		$map_data_properties['scrollwheelcontrol'] = isset($map_data_properties['scrollwheelcontrol']) ? $map_data_properties['scrollwheelcontrol'] : "false";
+		$map_data_properties['distanceunits'] = isset($map_data_properties['distanceunits']) ? $map_data_properties['distanceunits'] : "miles";
+        $map_data_properties['scrollwheelcontrol'] = isset($map_data_properties['scrollwheelcontrol']) ? $map_data_properties['scrollwheelcontrol'] : "false";
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
 		$poweredby = isset($poweredby) ? $poweredby : "false";

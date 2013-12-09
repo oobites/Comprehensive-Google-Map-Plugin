@@ -496,6 +496,7 @@ if ( !function_exists('cgmp_set_values_for_html_rendering') ):
 	function cgmp_set_values_for_html_rendering(&$settings, $params) {
 
 		$html_element_select_options = array();
+        $html_element_select_options['miles_km'] = array("Miles" => "miles", "KM" => "km");
 		$html_element_select_options['show_hide'] = array("Show" => "true", "Hide" => "false");
 		$html_element_select_options['enable_disable_xor'] = array("Enable" => "false", "Disable" => "true");
 		$html_element_select_options['enable_disable'] = array("Enable" => "true", "Disable" => "false");

@@ -62,14 +62,14 @@
 					</span>
 				</div>
 				<div id="d_options" style="background-color: #ddd; margin-bottom: 3px; text-align: left; padding: 3px;">
-					<input type="checkbox" tabindex="5" name="avoid_hway" id="avoid_hway" />
-					<label for="avoid_hway">LABEL_AVOID_HIGHWAYS</label>
-					<input type="checkbox" tabindex="5" name="avoid_tolls" id="avoid_tolls" />
-					<label for="avoid_tolls">LABEL_AVOID_TOLLS</label>
-					<input type="radio" name="travel_mode" id="radio_km" />
-					<label for="radio_km">LABEL_KM</label>
-					<input type="radio" name="travel_mode" id="radio_miles" checked="checked" />
-					<label for="radio_miles">LABEL_MILES</label>
+					<input type="checkbox" tabindex="5" name="MAP_PLACEHOLDER_ID_TOKEN_avoid_hway" id="MAP_PLACEHOLDER_ID_TOKEN_avoid_hway" />
+					<label for="MAP_PLACEHOLDER_ID_TOKEN_avoid_hway">LABEL_AVOID_HIGHWAYS</label>
+					<input type="checkbox" tabindex="5" name="MAP_PLACEHOLDER_ID_TOKEN_avoid_tolls" id="MAP_PLACEHOLDER_ID_TOKEN_avoid_tolls" />
+					<label for="MAP_PLACEHOLDER_ID_TOKEN_avoid_tolls">LABEL_AVOID_TOLLS</label>
+					<input type="radio" name="MAP_PLACEHOLDER_ID_TOKEN_travel_mode" id="MAP_PLACEHOLDER_ID_TOKEN_radio_km" />
+					<label for="MAP_PLACEHOLDER_ID_TOKEN_radio_km">LABEL_KM</label>
+					<input type="radio" name="MAP_PLACEHOLDER_ID_TOKEN_travel_mode" id="MAP_PLACEHOLDER_ID_TOKEN_radio_miles" checked="checked" />
+					<label for="MAP_PLACEHOLDER_ID_TOKEN_radio_miles">LABEL_MILES</label>
 				</div>
 				<div class="dir-sub-cntn">
 					<button tabindex="6" name="btnG" type="submit" id="d_sub" class="kd-button kd-button-submit">LABEL_GET_DIRECTIONS</button>

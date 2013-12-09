@@ -73,7 +73,7 @@
                 <td valign="top" class="fourth-td" align="left"></td>
             </tr>
             <tr>
-                <td class="first-td-cell"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will add end-user's GPS current location and accuracy circle to a map upon end-user's confirmation. The end-user can choose not to disclose his current location. Please refer to plugin docs for more information">[Help?]</a></td>
+                <td class="first-td-cell"><a id="tooltip-marker-gps-location" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will add end-user's GPS current location and accuracy circle to a map upon end-user's confirmation. The end-user can choose not to disclose his current location. Please refer to plugin docs for more information">[Help?]</a></td>
                 <td align="left" colspan="3">
 						<span>
 							HIDDEN_ENABLEGEOLOCATIONMARKERHIDDEN
@@ -96,7 +96,7 @@
 					<td valign="top" class="fourth-td" align="left"></td>
 				</tr>
 				<tr>
-                    <td class="first-td-cell"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will aggregate all markers from other maps created by you in your public published posts and pages. In other words, you get a Geo marker mashup in one map! At the moment, the mashup does not include markers from maps in widgets, POSTS and PAGES ONLY">[Help?]</a></td>
+                    <td class="first-td-cell"><a id="tooltip-marker-addmarkermashup" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will aggregate all markers from other maps created by you in your public published posts and pages. In other words, you get a Geo marker mashup in one map! At the moment, the mashup does not include markers from maps in widgets, POSTS and PAGES ONLY">[Help?]</a></td>
                     <td align="left" colspan="3">
 						<span>
 							HIDDEN_ADDMARKERMASHUPHIDDEN
@@ -174,14 +174,14 @@
 	</fieldset>
 
 	<fieldset class="fieldset"  class="collapsible">
-		<legend>Map Marker Info Bubbles</legend>
+		<legend>Marker Info Bubbles & Distance Units</legend>
 		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
 					<td valign="top" class="first-td"><a id="tooltip-marker-bubbleautopan" class="google-map-tooltip-marker" href="javascript:void(0);" title="Enables or disables info bubble auto-panning (the map view centers on the info bubble) when marker is clicked">[Help?]</a>&nbsp;LABEL_BUBBLEAUTOPAN</td>
 					<td valign="top" class="second-td">SELECT_BUBBLEAUTOPAN</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
+                    <td valign="top" class="first-td"><a id="tooltip-marker-distanceunits" class="google-map-tooltip-marker" href="javascript:void(0);" title="Default distance unit for 'Get Directions' dialog. 'Miles' is the default value">[Help?]</a>&nbsp;LABEL_DISTANCEUNITS</td>
+                    <td valign="top" class="second-td">SELECT_DISTANCEUNITS</td>
 				</tr>
 			</tbody>
 		</table>

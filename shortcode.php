@@ -40,6 +40,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 				'scrollwheelcontrol' => 'false',
 				'showbike' => 'false',
 				'bubbleautopan' => 'false',
+                'distanceunits' => 'miles',
 				'showtraffic' => 'false',
 				'showpanoramio' => 'false',
 				'addmarkerlist' => '',

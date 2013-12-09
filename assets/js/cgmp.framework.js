@@ -220,12 +220,13 @@
 
 
             var MarkerBuilder = function () {
-                var markers, storedAddresses, badAddresses, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
+                var markers, storedAddresses, badAddresses, defaultUnits, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
                 var geolocationMarker = null;
-                var init = function init(map, autoPan, enableGeoLocation) {
+                var init = function init(map, autoPan, units, enableGeoLocation) {
                     googleMap = map;
                     mapDivId = googleMap.getDiv().id;
                     bubbleAutoPan = autoPan;
+                    defaultUnits = units;
 
                     if (enableGeoLocation === "true" && CGMPGlobal.isMobileDevice === "true") {
                         var geoLocator = new GeoLocator();
@@ -352,7 +353,13 @@
                             $(dirDivId).fadeIn();
                             $(dirDivId + ' input#a_address').val(geoMarkerPosition);
                             $(dirDivId + ' input#b_address').val(addy);
-                            $(dirDivId + ' input#radio_miles').attr("checked", "checked");
+                            if (defaultUnits === "miles") {
+                                $('input#' + mapDivId + '_radio_miles').prop("checked", true);
+                                $('input#' + mapDivId + '_radio_km').prop("checked", false);
+                            } else if (defaultUnits === "km") {
+                                $('input#' + mapDivId + '_radio_km').prop("checked", true);
+                                $('input#' + mapDivId + '_radio_miles').prop("checked", false);
+                            }
                         }
                     });
 
@@ -362,7 +369,14 @@
                             $(dirDivId).fadeIn();
                             $(dirDivId + ' input#a_address').val(addy);
                             $(dirDivId + ' input#b_address').val(geoMarkerPosition);
-                            $(dirDivId + ' input#radio_miles').attr("checked", "checked");
+
+                            if (defaultUnits === "miles") {
+                                $('input#' + mapDivId + '_radio_miles').prop("checked", true);
+                                $('input#' + mapDivId + '_radio_km').prop("checked", false);
+                            } else if (defaultUnits === "km") {
+                                $('input#' + mapDivId + '_radio_km').prop("checked", true);
+                                $('input#' + mapDivId + '_radio_miles').prop("checked", false);
+                            }
                         }
                     });
 
@@ -475,10 +489,10 @@
                         $(dirDivId + ' a#d_options_hide').hide();
                         $(dirDivId + ' a#d_options_show').show();
                         $(dirDivId + ' div#d_options').hide();
-                        $(dirDivId + ' input#avoid_hway').removeAttr("checked");
-                        $(dirDivId + ' input#avoid_tolls').removeAttr("checked");
-                        $(dirDivId + ' input#radio_km').removeAttr("checked");
-                        $(dirDivId + ' input#radio_miles').attr("checked", "checked");
+                        $('input#' + mapDivId + '_avoid_hway').prop("checked", false);
+                        $('input#' + mapDivId + '_avoid_tolls').prop("checked", false);
+                        $('input#' + mapDivId + '_radio_km').prop("checked", false);
+                        $('input#' + mapDivId + '_radio_miles').prop("checked", true);
                         return false;
                     });
 
@@ -498,17 +512,16 @@
 
                         if (!halt) {
 
-                            $(dirDivId + ' button#d_sub').attr('disabled', 'disabled').html("Please wait..");
+                            $(dirDivId + ' button#d_sub').prop('disabled', true).html("Please wait..");
                             // Query direction service
                             var travelMode = google.maps.DirectionsTravelMode.DRIVING;
                             if ($(dirDivId + ' a#dir_w_btn').hasClass('selected')) {
                                 travelMode = google.maps.DirectionsTravelMode.WALKING;
                             }
 
-                            var is_avoid_hway = $(dirDivId + ' input#avoid_hway').is(":checked");
-                            var is_avoid_tolls = $(dirDivId + ' input#avoid_tolls').is(":checked");
-                            var is_miles = $(dirDivId + ' input#radio_miles').is(":checked");
-                            var unitSystem = google.maps.DirectionsUnitSystem.METRIC;
+                            var is_avoid_hway = $('input#' + mapDivId + '_avoid_hway').is(":checked");
+                            var is_avoid_tolls = $('input#' + mapDivId + '_avoid_tolls').is(":checked");
+                            var is_miles = $('input#' + mapDivId + '_radio_miles').is(":checked");
 
                             var request = {
                                 origin: old_a_addr,
@@ -553,6 +566,7 @@
                         }
                     });
 
+                    //http://asnsblues.blogspot.com/2011/11/google-maps-query-string-parameters.html
                     $(dirDivId + ' button#print_sub').live("click", function () {
                         var old_a_addr = $(dirDivId + ' input#a_address').val();
                         var old_b_addr = $(dirDivId + ' input#b_address').val();
@@ -563,9 +577,23 @@
                         }
 
                         var url = "http://maps.google.com/?saddr=" + old_a_addr + "&daddr=" + old_b_addr + "&dirflg=" + dirflag + "&pw=2";
-                        var is_miles = $(dirDivId + ' input#radio_miles').is(":checked");
+
+                        var is_miles = $('input#' + mapDivId + '_radio_miles').is(":checked");
                         if (is_miles) {
                             url += "&doflg=ptm";
+                        } else {
+                            url += "&doflg=ptk";
+                        }
+
+                        if (dirflag === "d") {
+                            var is_avoid_hway = $('input#' + mapDivId + '_avoid_hway').is(":checked");
+                            var is_avoid_tolls = $('input#' + mapDivId + '_avoid_tolls').is(":checked");
+                            if (is_avoid_hway) {
+                                url += "&dirflg=h";
+                            }
+                            if (is_avoid_tolls) {
+                                url += "&dirflg=t";
+                            }
                         }
 
                         window.open(url);
@@ -1437,7 +1465,7 @@
                         LayerBuilder.init(googleMap);
 
                         var markerBuilder = new MarkerBuilder();
-                        markerBuilder.init(googleMap, json.bubbleautopan, json.enablegeolocationmarker);
+                        markerBuilder.init(googleMap, json.bubbleautopan, json.distanceunits, json.enablegeolocationmarker);
 
                         var controlOptions = {
                             mapTypeControl: (json.maptypecontrol === 'true'),
