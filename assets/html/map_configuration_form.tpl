@@ -62,8 +62,31 @@
 		</table>
 	</fieldset>
 
+    <fieldset class="fieldset">
+        <legend>Current GPS Location</legend>
+        <table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+            <tr>
+                <td valign="top" class="first-td first-td-cell" align="left"></td>
+                <td valign="top" class="second-td" align="left"></td>
+                <td valign="top" class="third-td" align="left"></td>
+                <td valign="top" class="fourth-td" align="left"></td>
+            </tr>
+            <tr>
+                <td class="first-td-cell"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will add end-user's GPS current location and accuracy circle to a map upon end-user's confirmation. The end-user can choose not to disclose his current location. Please refer to plugin docs for more information">[Help?]</a></td>
+                <td align="left" colspan="3">
+						<span>
+							HIDDEN_ENABLEGEOLOCATIONMARKERHIDDEN
+							INPUT_ENABLEGEOLOCATIONMARKER&nbsp;LABEL_ENABLEGEOLOCATIONMARKER
+						</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+
 	<fieldset class="fieldset">
-		<legend>GEO Mashup</legend>
+		<legend>Marker GEO Mashup</legend>
 		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
 				<tr>
@@ -73,8 +96,8 @@
 					<td valign="top" class="fourth-td" align="left"></td>
 				</tr>
 				<tr>
-					<td class="first-td-cell"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will aggregate all markers from other maps created by you in your public published posts and pages. In other words, you get a Geo marker mashup in one map! At the moment, the mashup does not include markers from maps in widgets, POSTS and PAGES ONLY">[Help?]</a>&nbsp;</td>
-					<td align="left" colspan="3">
+                    <td class="first-td-cell"><a id="tooltip-marker-width" class="google-map-tooltip-marker" href="javascript:;" title="If selected, the generated map will aggregate all markers from other maps created by you in your public published posts and pages. In other words, you get a Geo marker mashup in one map! At the moment, the mashup does not include markers from maps in widgets, POSTS and PAGES ONLY">[Help?]</a></td>
+                    <td align="left" colspan="3">
 						<span>
 							HIDDEN_ADDMARKERMASHUPHIDDEN
 							INPUT_ADDMARKERMASHUP&nbsp;LABEL_ADDMARKERMASHUP
@@ -129,7 +152,7 @@
 			</tbody>
 		</table>
 	</fieldset>
-	
+
 
 	<fieldset class="fieldset"  class="collapsible">
 		<legend>KML/GPX/Geo RSS</legend>
@@ -141,7 +164,7 @@
 					<td align="left"></td>
 					<td align="left"></td>
 				</tr>
-				<tr>	
+				<tr>
 					<td  valign="top" class="first-td first-td-cell"><a id="tooltip-marker-kml" class="google-map-tooltip-marker"  href="javascript:void(0);" title="KML/GPX/GeoRSS is a file format used to display geographic data in an earth browser, such as Google Earth, Google Maps, and Google Maps for mobile. Specify a valid URL here to a remote KML file (Can be stored on your blog), thats starts with http(s). The Google Maps API supports the KML, GPX and GeoRSS data formats for displaying geographic information. These data formats are displayed on a map from a publicly accessible KML, GPX or GeoRSS file. Please note, KML configuration *supersedes* address and latitude/longitude settings">[Help?]</a>&nbsp;LABEL_KML</td>
 					<td colspan="3">INPUT_KML</td>
 				</tr>

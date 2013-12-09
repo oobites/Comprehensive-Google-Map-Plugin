@@ -23,18 +23,17 @@ if ( !function_exists( 'add_action' ) ) {
 
 class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
-	function ComprehensiveGoogleMap_Widget() {
-		$widget_ops = array('classname' => 'comprehensivegooglemap_widget', 'description' => __("A simple and intuitive, yet elegant fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more.", CGMP_NAME) );
-		$cops = array('width' => 570);
-		$this->WP_Widget('comprehensivegooglemap', __('AZ :: Google Map', CGMP_NAME), $widget_ops, $cops);
+    function __construct() {
+        parent::__construct(
+            'comprehensivegooglemap',
+            __('AZ :: Google Map', CGMP_NAME),
+            array( 'classname' => 'comprehensivegooglemap_widget', 'description' => __("A simple and intuitive, yet elegant fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more.", CGMP_NAME)),
+            array( 'width' => 570)
+        );
+    }
 
-		if ( is_active_widget(false, false, $this->id_base, true) ) {
 
-		}
-	}
-
-
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 
 		if (is_admin() || is_feed()) {
 			return;
@@ -43,7 +42,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		extract($args);
 		$map_data_properties = array();
 		$not_map_data_properties = array("title", "width", "height", "mapalign", "directionhint",
-				"latitude", "longitude", "addresscontent", "addmarkerlisthidden", "addmarkermashuphidden", "addmarkerinput", 
+				"latitude", "longitude", "addresscontent", "addmarkerlisthidden", "addmarkermashuphidden", "enablegeolocationmarkerhidden", "addmarkerinput",
 				"showmarker", "animation", "infobubblecontent", "markerdirections", "locationaddmarkerinput", "bubbletextaddmarkerinput");
 
 		$json_default_values = cgmp_fetch_json_data_file(CGMP_JSON_DATA_DEFAULT_WIDGET_PARAM_VALUES);
@@ -66,10 +65,11 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 			echo $before_title .$title . $after_title;
 		}
 
-		$addmarkermashuphidden = isset($addmarkermashuphidden) ? $addmarkermashuphidden : 'false';
-		if ($addmarkermashuphidden == 'true') {
+		$addmarkermashuphidden = isset($addmarkermashuphidden) ? $addmarkermashuphidden : "false";
+        $enablegeolocationmarkerhidden = isset($enablegeolocationmarkerhidden) ? $enablegeolocationmarkerhidden : "false";
+		if ($addmarkermashuphidden == "true") {
 			$addmarkerlisthidden = make_marker_geo_mashup();
-		} else if ($addmarkermashuphidden == 'false') {
+		} else if ($addmarkermashuphidden == "false") {
 			$addmarkerlisthidden = update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $addmarkerlisthidden);
 			$addmarkerlisthidden = htmlspecialchars($addmarkerlisthidden);
 		}
@@ -81,6 +81,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$map_data_properties['id'] = $id;
 		$map_data_properties['markerlist'] = $addmarkerlisthidden;
 		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
+		$map_data_properties['enablegeolocationmarker'] = $enablegeolocationmarkerhidden;
 		$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
 		$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
 
@@ -97,16 +98,17 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		echo $after_widget;
 	}
 
-	function update( $new_instance, $old_instance ) {
+    public function update( $new_instance, $old_instance ) {
 
 		$instance = $old_instance;
 		foreach ($new_instance as $key => $val) {
 			$instance[$key] = strip_tags($new_instance[$key]);
 		}
+
 		return $instance;
 	}
 
-	function form( $instance ) {
+	public function form( $instance ) {
 
 		$settings = array();
 
@@ -139,7 +141,6 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 			}
 		}
 
-		$template_values = array();
 		$template_values = cgmp_build_template_values($settings);
 
 		$tokens_with_values = array();

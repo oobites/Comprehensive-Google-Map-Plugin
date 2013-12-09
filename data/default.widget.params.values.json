@@ -4,6 +4,7 @@
 	"bubbletextaddmarkerinput" : "Enter marker info bubble text here (optional)",
     "addmarkermashupbubble" : "false",
     "addmarkermashuphidden" : "false",
+    "enablegeolocationmarkerhidden" : "false",
 	"addresscontent" : "",
     "bubbleautopan" : "true",
     "directionhint" : "false",

@@ -92,9 +92,10 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 == Changelog ==
 
 = 8.0.2 =
+* Trial: An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
 * Bug: Shortcode sent to editor had “addmarkermashupbubble” property generate twice
 * Bug: Removed incorrect CC property value
-* An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
+* Bug: In jQuery 1.8, the behaviour of .ajaxSuccess() changed, which caused an issue when saving widgets
 * Enhancement: Added Dutch translation (Jeffrey van Rossum)
 * Enhancement: Making use of the library by Chad Killingsworth [chadkillingsworth at missouristate.edu] to add geolocation marker and accuracy circle to a map. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker (themc)
 

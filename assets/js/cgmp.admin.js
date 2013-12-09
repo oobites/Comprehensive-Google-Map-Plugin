@@ -400,6 +400,31 @@ function buildShortcode(id, $) {
 			});
 		}
 
+        function initGPSMarkerEvent() {
+
+            $("input.gps-location-marker").live("change", function (source) {
+                var checkboxId = $(this).attr("id");
+
+                if ($(this).is(":checked")) {
+                    $("#" + checkboxId + "hidden").val("true");
+                } else {
+                    $("#" + checkboxId + "hidden").val("false");
+                }
+            });
+        }
+
+        function checkedGPSMarkerOnInit() {
+            $.each($("input.gps-location-marker"), function() {
+                var checkboxId = $(this).attr("id");
+                var hiddenIdVal = $("#" + checkboxId + "hidden").val();
+                if (hiddenIdVal === "true") {
+                    $(this).attr("checked", "checked");
+                } else {
+                    $(this).removeAttr("checked");
+                }
+            });
+        }
+
 
 		$(document).ready(function() {
 			initTokenHolders();
@@ -407,6 +432,8 @@ function buildShortcode(id, $) {
 			initMarkerInputDataFieldsEvent();
 			initTooltips();
 			initMarkerIconEvents();
+            checkedGPSMarkerOnInit();
+            initGPSMarkerEvent();
 			checkedGeoMashupOnInit();
 			initGeoMashupEvent() ;
 
@@ -419,14 +446,15 @@ function buildShortcode(id, $) {
 		});
 
 
-		$('div.widget-google-map-container').ajaxSuccess(
+		$(document).ajaxSuccess(
 			function (e, x, o) {
 				if (o.data != null)	{
-					var indexOf = o.data.indexOf('id_base=comprehensivegooglemap');
-					if (indexOf > 0) {
-						initTokenHolders();
-						checkedGeoMashupOnInit();
-					}
+                    var indexOf = o.data.indexOf('id_base=comprehensivegooglemap');
+                    if (indexOf > 0) {
+                        initTokenHolders();
+                        checkedGPSMarkerOnInit();
+                        checkedGeoMashupOnInit();
+                    }
 				}
 			}
 		);

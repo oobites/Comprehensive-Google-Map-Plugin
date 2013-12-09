@@ -1,19 +1,19 @@
 /*
-Copyright (C) 2011 - 2012 Alexander Zagniotov
+ Copyright (C) 2011 - 2013 Alexander Zagniotov
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 //http://stackoverflow.com/questions/4845762/onload-handler-for-script-tag-in-internet-explorer
 (function () {
     if (typeof jQuery === "undefined" || jQuery == null) {
@@ -49,15 +49,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         (function ($) {
 
-            var parseJson = function (jsonString) {}
-           	var versionMajor = parseFloat($.fn.jquery.split(".")[0]);
+            var parseJson = function (jsonString) {
+            }
+            var versionMajor = parseFloat($.fn.jquery.split(".")[0]);
             var versionMinor = parseFloat($.fn.jquery.split(".")[1]);
             if (versionMajor >= 1 && versionMajor < 2 && versionMinor >= 4) {
                 parseJson = $.parseJSON;
             } else if (window.JSON && window.JSON.parse) {
                 parseJson = window.JSON.parse;
             } else {
-            	Logger.fatal("Using parseJson stub..");
+                Logger.fatal("Using parseJson stub..");
             }
 
             var CGMPGlobal = {};
@@ -66,45 +67,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 var builder = {};
                 var googleMap = {};
                 var initMap = function initMap(map, bubbleAutoPan, zoom, mapType) {
-                        googleMap = map;
+                    googleMap = map;
 
-                        var mapTypeIds = [];
-                        for (var type in google.maps.MapTypeId) {
-                            mapTypeIds.push(google.maps.MapTypeId[type]);
-                        }
-
-                        if (mapType == "OSM") {
-                            mapTypeIds.push(mapType);
-                            googleMap.mapTypes.set(mapType, new google.maps.ImageMapType({
-                                getTileUrl: function (coord, zoom) {
-                                    return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
-                                },
-                                tileSize: new google.maps.Size(256, 256),
-                                name: "OpenStreet",
-                                maxZoom: 20
-                            }));
-                        } else if (mapType == "roadmap".toUpperCase()) {
-                            mapType = google.maps.MapTypeId.ROADMAP;
-                        } else if (mapType == "satellite".toUpperCase()) {
-                            mapType = google.maps.MapTypeId.SATELLITE;
-                        } else if (mapType == "hybrid".toUpperCase()) {
-                            mapType = google.maps.MapTypeId.HYBRID;
-                        } else if (mapType == "terrain".toUpperCase()) {
-                            mapType = google.maps.MapTypeId.TERRAIN;
-                        }
-
-                        googleMap.setOptions({
-                            zoom: zoom,
-                            mapTypeId: mapType,
-                            mapTypeControlOptions: {
-                                mapTypeIds: mapTypeIds
-                            }
-                        });
+                    var mapTypeIds = [];
+                    for (var type in google.maps.MapTypeId) {
+                        mapTypeIds.push(google.maps.MapTypeId[type]);
                     }
+
+                    if (mapType == "OSM") {
+                        mapTypeIds.push(mapType);
+                        googleMap.mapTypes.set(mapType, new google.maps.ImageMapType({
+                            getTileUrl: function (coord, zoom) {
+                                return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+                            },
+                            tileSize: new google.maps.Size(256, 256),
+                            name: "OpenStreet",
+                            maxZoom: 20
+                        }));
+                    } else if (mapType == "roadmap".toUpperCase()) {
+                        mapType = google.maps.MapTypeId.ROADMAP;
+                    } else if (mapType == "satellite".toUpperCase()) {
+                        mapType = google.maps.MapTypeId.SATELLITE;
+                    } else if (mapType == "hybrid".toUpperCase()) {
+                        mapType = google.maps.MapTypeId.HYBRID;
+                    } else if (mapType == "terrain".toUpperCase()) {
+                        mapType = google.maps.MapTypeId.TERRAIN;
+                    }
+
+                    googleMap.setOptions({
+                        zoom: zoom,
+                        mapTypeId: mapType,
+                        mapTypeControlOptions: {
+                            mapTypeIds: mapTypeIds
+                        }
+                    });
+                }
 
                 var setMapControls = function setMapControls(mapControlOptions) {
-                        googleMap.setOptions(mapControlOptions);
-                    }
+                    googleMap.setOptions(mapControlOptions);
+                }
 
                 return {
                     initMap: initMap,
@@ -118,52 +119,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 var googleMap = {};
 
                 var init = function init(map) {
-                        googleMap = map;
-                    }
+                    googleMap = map;
+                }
 
                 var buildTrafficLayer = function buildTrafficLayer() {
-                        var trafficLayer = new google.maps.TrafficLayer();
-                        trafficLayer.setMap(googleMap);
-                    }
+                    var trafficLayer = new google.maps.TrafficLayer();
+                    trafficLayer.setMap(googleMap);
+                }
 
                 var buildBikeLayer = function buildBikeLayer() {
-                        var bikeLayer = new google.maps.BicyclingLayer();
-                        bikeLayer.setMap(googleMap);
-                    }
+                    var bikeLayer = new google.maps.BicyclingLayer();
+                    bikeLayer.setMap(googleMap);
+                }
 
                 var buildPanoramioLayer = function buildPanoramioLayer(userId) {
-                        if (typeof google.maps.panoramio == "undefined" || !google.maps.panoramio || google.maps.panoramio == null) {
-                            Logger.error("We cannot access Panoramio library. Aborting..");
-                            return false;
-                        }
-                        var panoramioLayer = new google.maps.panoramio.PanoramioLayer();
-                        if (panoramioLayer) {
-                            if (userId != null && userId != "") {
-                                panoramioLayer.setUserId(userId);
-                            }
-                            panoramioLayer.setMap(googleMap);
-                        } else {
-                            Logger.error("Could not instantiate Panoramio object. Aborting..");
-                        }
+                    if (typeof google.maps.panoramio == "undefined" || !google.maps.panoramio || google.maps.panoramio == null) {
+                        Logger.error("We cannot access Panoramio library. Aborting..");
+                        return false;
                     }
+                    var panoramioLayer = new google.maps.panoramio.PanoramioLayer();
+                    if (panoramioLayer) {
+                        if (userId != null && userId != "") {
+                            panoramioLayer.setUserId(userId);
+                        }
+                        panoramioLayer.setMap(googleMap);
+                    } else {
+                        Logger.error("Could not instantiate Panoramio object. Aborting..");
+                    }
+                }
 
                 var buildKmlLayer = function buildKmlLayer(url) {
-                        if (url.toLowerCase().indexOf("http") < 0) {
-                            Logger.error("KML URL must start with HTTP(S). Aborting..");
-                            return false;
-                        }
-
-                        var kmlLayer = new google.maps.KmlLayer(url /*, {preserveViewport: true}*/ );
-                        google.maps.event.addListener(kmlLayer, "status_changed", function () {
-                            kmlLayerStatusEventCallback(kmlLayer);
-                        });
-                        google.maps.event.addListener(kmlLayer, 'defaultviewport_changed', function () {
-                            //var bounds = kmlLayer.getDefaultViewport();
-                            //googleMap.setCenter(bounds.getCenter());
-                        });
-
-                        kmlLayer.setMap(googleMap);
+                    if (url.toLowerCase().indexOf("http") < 0) {
+                        Logger.error("KML URL must start with HTTP(S). Aborting..");
+                        return false;
                     }
+
+                    var kmlLayer = new google.maps.KmlLayer(url /*, {preserveViewport: true}*/);
+                    google.maps.event.addListener(kmlLayer, "status_changed", function () {
+                        kmlLayerStatusEventCallback(kmlLayer);
+                    });
+                    google.maps.event.addListener(kmlLayer, 'defaultviewport_changed', function () {
+                        //var bounds = kmlLayer.getDefaultViewport();
+                        //googleMap.setCenter(bounds.getCenter());
+                    });
+
+                    kmlLayer.setMap(googleMap);
+                }
 
                 function kmlLayerStatusEventCallback(kmlLayer) {
                     var kmlStatus = kmlLayer.getStatus();
@@ -173,30 +174,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         var msg = '';
                         switch (kmlStatus) {
 
-                        case google.maps.KmlLayerStatus.DOCUMENT_NOT_FOUND:
-                            msg = CGMPGlobal.errors.kmlNotFound;
-                            break;
-                        case google.maps.KmlLayerStatus.DOCUMENT_TOO_LARGE:
-                            msg = CGMPGlobal.errors.kmlTooLarge;
-                            break;
-                        case google.maps.KmlLayerStatus.FETCH_ERROR:
-                            msg = CGMPGlobal.errors.kmlFetchError;
-                            break;
-                        case google.maps.KmlLayerStatus.INVALID_DOCUMENT:
-                            msg = CGMPGlobal.errors.kmlDocInvalid;
-                            break;
-                        case google.maps.KmlLayerStatus.INVALID_REQUEST:
-                            msg = CGMPGlobal.errors.kmlRequestInvalid;
-                            break;
-                        case google.maps.KmlLayerStatus.LIMITS_EXCEEDED:
-                            msg = CGMPGlobal.errors.kmlLimits;
-                            break;
-                        case google.maps.KmlLayerStatus.TIMED_OUT:
-                            msg = CGMPGlobal.errors.kmlTimedOut;
-                            break;
-                        case google.maps.KmlLayerStatus.UNKNOWN:
-                            msg = CGMPGlobal.errors.kmlUnknown;
-                            break;
+                            case google.maps.KmlLayerStatus.DOCUMENT_NOT_FOUND:
+                                msg = CGMPGlobal.errors.kmlNotFound;
+                                break;
+                            case google.maps.KmlLayerStatus.DOCUMENT_TOO_LARGE:
+                                msg = CGMPGlobal.errors.kmlTooLarge;
+                                break;
+                            case google.maps.KmlLayerStatus.FETCH_ERROR:
+                                msg = CGMPGlobal.errors.kmlFetchError;
+                                break;
+                            case google.maps.KmlLayerStatus.INVALID_DOCUMENT:
+                                msg = CGMPGlobal.errors.kmlDocInvalid;
+                                break;
+                            case google.maps.KmlLayerStatus.INVALID_REQUEST:
+                                msg = CGMPGlobal.errors.kmlRequestInvalid;
+                                break;
+                            case google.maps.KmlLayerStatus.LIMITS_EXCEEDED:
+                                msg = CGMPGlobal.errors.kmlLimits;
+                                break;
+                            case google.maps.KmlLayerStatus.TIMED_OUT:
+                                msg = CGMPGlobal.errors.kmlTimedOut;
+                                break;
+                            case google.maps.KmlLayerStatus.UNKNOWN:
+                                msg = CGMPGlobal.errors.kmlUnknown;
+                                break;
                         }
                         if (msg != '') {
                             var error = CGMPGlobal.errors.kml.replace("[MSG]", msg);
@@ -226,7 +227,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     mapDivId = googleMap.getDiv().id;
                     bubbleAutoPan = autoPan;
 
-                    if (enableGeoLocation && CGMPGlobal.isMobileDevice === "true") {
+                    if (enableGeoLocation === "true"/*&& CGMPGlobal.isMobileDevice === "true"*/) {
                         var geoLocator = new GeoLocator();
                         geoLocator.init(googleMap);
                         geolocationMarker = geoLocator.locate();
@@ -893,10 +894,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     buildAddressMarkers: buildAddressMarkers,
                     isBuildAddressMarkersCalled: isBuildAddressMarkersCalled
                 }
-           	};
+            };
 
 
-           	var GeoLocator = function () {
+            var GeoLocator = function () {
                 var googleMap = {};
 
                 var init = function init(map) {
@@ -904,309 +905,313 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 }
 
                 /*
-				 * Licensed under the Apache License, Version 2.0 (the "License");
-				 * you may not use this file except in compliance with the License.
-				 * You may obtain a copy of the License at
-				 *
-				 *       http://www.apache.org/licenses/LICENSE-2.0
-				 *
-				 * Unless required by applicable law or agreed to in writing, software
-				 * distributed under the License is distributed on an "AS IS" BASIS,
-				 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-				 * See the License for the specific language governing permissions and
-				 * limitations under the License.
-				 */
+                 * Licensed under the Apache License, Version 2.0 (the "License");
+                 * you may not use this file except in compliance with the License.
+                 * You may obtain a copy of the License at
+                 *
+                 *       http://www.apache.org/licenses/LICENSE-2.0
+                 *
+                 * Unless required by applicable law or agreed to in writing, software
+                 * distributed under the License is distributed on an "AS IS" BASIS,
+                 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                 * See the License for the specific language governing permissions and
+                 * limitations under the License.
+                 */
 
-				/**
-				 * @name GeolocationMarker for Google Maps v3
-				 * @version version 1.0
-				 * @author Chad Killingsworth [chadkillingsworth at missouristate.edu]
-				 * Copyright 2012 Missouri State University
-				 * @fileoverview
-				 * This library uses geolocation to add a marker and accuracy circle to a map.
-				 * The marker position is automatically updated as the user position changes.
-				 */
+                /**
+                 * @name GeolocationMarker for Google Maps v3
+                 * @version version 1.0
+                 * @author Chad Killingsworth [chadkillingsworth at missouristate.edu]
+                 * Copyright 2012 Missouri State University
+                 * @fileoverview
+                 * This library uses geolocation to add a marker and accuracy circle to a map.
+                 * The marker position is automatically updated as the user position changes.
+                 */
 
-				/**
-				 * @constructor
-				 * @extends {google.maps.MVCObject}
-				 * @param {google.maps.Map=} opt_map
-				 * @param {(google.maps.MarkerOptions|Object.<string>)=} opt_markerOpts
-				 * @param {(google.maps.CircleOptions|Object.<string>)=} opt_circleOpts
-				 */
+                /**
+                 * @constructor
+                 * @extends {google.maps.MVCObject}
+                 * @param {google.maps.Map=} opt_map
+                 * @param {(google.maps.MarkerOptions|Object.<string>)=} opt_markerOpts
+                 * @param {(google.maps.CircleOptions|Object.<string>)=} opt_circleOpts
+                 */
 
-				function GeolocationMarker(opt_map, opt_markerOpts, opt_circleOpts) {
+                function GeolocationMarker(opt_map, opt_markerOpts, opt_circleOpts) {
 
-				  var markerOpts = {
-				    'clickable': false,
-				    'cursor': 'pointer',
-				    'draggable': false,
-				    'flat': true,
-				    'icon': {
-				        'url': CGMPGlobal.customMarkersUri  + 'gpsloc.png',
-				        'size': new google.maps.Size(34, 34),
-				        'scaledSize': new google.maps.Size(17, 17),
-				        'origin': new google.maps.Point(0, 0),
-				        'anchor': new google.maps.Point(8, 8)
-				    },
-				    // This marker may move frequently - don't force canvas tile redraw
-				    'optimized': false, 
-				    'position': new google.maps.LatLng(0, 0),
-				    'title': 'Current location',
-				    'zIndex': 2
-				  };
+                    var markerOpts = {
+                        'clickable': false,
+                        'cursor': 'pointer',
+                        'draggable': false,
+                        'flat': true,
+                        'icon': {
+                            'url': CGMPGlobal.customMarkersUri + 'gpsloc.png',
+                            'size': new google.maps.Size(34, 34),
+                            'scaledSize': new google.maps.Size(17, 17),
+                            'origin': new google.maps.Point(0, 0),
+                            'anchor': new google.maps.Point(8, 8)
+                        },
+                        // This marker may move frequently - don't force canvas tile redraw
+                        'optimized': false,
+                        'position': new google.maps.LatLng(0, 0),
+                        'title': 'Current location',
+                        'zIndex': 2
+                    };
 
-				  if(opt_markerOpts) {
-				    markerOpts = this.copyOptions_(markerOpts, opt_markerOpts);
-				  }
+                    if (opt_markerOpts) {
+                        markerOpts = this.copyOptions_(markerOpts, opt_markerOpts);
+                    }
 
-				  var circleOpts = {
-				    'clickable': false,
-				    'radius': 0,
-				    'strokeColor': '1bb6ff',
-				    'strokeOpacity': .4,
-				    'fillColor': '61a0bf',
-				    'fillOpacity': .4,
-				    'strokeWeight': 1,
-				    'zIndex': 1
-				  };
+                    var circleOpts = {
+                        'clickable': false,
+                        'radius': 0,
+                        'strokeColor': '1bb6ff',
+                        'strokeOpacity': .4,
+                        'fillColor': '61a0bf',
+                        'fillOpacity': .4,
+                        'strokeWeight': 1,
+                        'zIndex': 1
+                    };
 
-				  if(opt_circleOpts) {
-				    circleOpts = this.copyOptions_(circleOpts, opt_circleOpts);
-				  }
+                    if (opt_circleOpts) {
+                        circleOpts = this.copyOptions_(circleOpts, opt_circleOpts);
+                    }
 
-				  this.marker_ = new google.maps.Marker(markerOpts);
-				  this.circle_ = new google.maps.Circle(circleOpts);
+                    this.marker_ = new google.maps.Marker(markerOpts);
+                    this.circle_ = new google.maps.Circle(circleOpts);
 
-				  /**
-				   * @expose
-				   * @type {number?}
-				   */
-				  this.accuracy = null;
+                    /**
+                     * @expose
+                     * @type {number?}
+                     */
+                    this.accuracy = null;
 
-				  /**
-				   * @expose
-				   * @type {google.maps.LatLng?}
-				   */
-				  this.position = null;
+                    /**
+                     * @expose
+                     * @type {google.maps.LatLng?}
+                     */
+                    this.position = null;
 
-				  /**
-				   * @expose
-				   * @type {google.maps.Map?}
-				   */
-				  this.map = null;
-				  
-				  this.set('minimum_accuracy', null);
-				  
-				  this.set('position_options', /** GeolocationPositionOptions */
-				      ({enableHighAccuracy: true, maximumAge: 1000}));
+                    /**
+                     * @expose
+                     * @type {google.maps.Map?}
+                     */
+                    this.map = null;
 
-				  this.circle_.bindTo('map', this.marker_);
+                    this.set('minimum_accuracy', null);
 
-				  if(opt_map) {
-				    this.setMap(opt_map);
-				  }
-				}
-				GeolocationMarker.prototype = new google.maps.MVCObject;
+                    this.set('position_options', /** GeolocationPositionOptions */
+                        ({enableHighAccuracy: true, maximumAge: 1000}));
 
-				/**
-				 * @override
-				 * @expose
-				 * @param {string} key
-				 * @param {*} value
-				 */
-				GeolocationMarker.prototype.set = function(key, value) {
-				  if (/^(?:position|accuracy)$/i.test(key)) {
-				    throw '\'' + key + '\' is a read-only property.';
-				  } else if (/map/i.test(key)) {
-				    this.setMap(/** @type {google.maps.Map} */ (value));
-				  } else {
-				    google.maps.MVCObject.prototype.set.apply(this, arguments);
-				  }
-				};
+                    this.circle_.bindTo('map', this.marker_);
 
-				/**
-				 * @private
-				 * @type {google.maps.Marker}
-				 */
-				GeolocationMarker.prototype.marker_ = null;
+                    if (opt_map) {
+                        this.setMap(opt_map);
+                    }
+                }
 
-				/**
-				 * @private
-				 * @type {google.maps.Circle}
-				 */
-				GeolocationMarker.prototype.circle_ = null;
+                GeolocationMarker.prototype = new google.maps.MVCObject;
 
-				/** @return {google.maps.Map} */
-				GeolocationMarker.prototype.getMap = function() {
-				  return this.map;
-				};
+                /**
+                 * @override
+                 * @expose
+                 * @param {string} key
+                 * @param {*} value
+                 */
+                GeolocationMarker.prototype.set = function (key, value) {
+                    if (/^(?:position|accuracy)$/i.test(key)) {
+                        throw '\'' + key + '\' is a read-only property.';
+                    } else if (/map/i.test(key)) {
+                        this.setMap(/** @type {google.maps.Map} */ (value));
+                    } else {
+                        google.maps.MVCObject.prototype.set.apply(this, arguments);
+                    }
+                };
 
-				/** @return {GeolocationPositionOptions} */
-				GeolocationMarker.prototype.getPositionOptions = function() {
-				  return /** @type GeolocationPositionOptions */(this.get('position_options'));
-				};
+                /**
+                 * @private
+                 * @type {google.maps.Marker}
+                 */
+                GeolocationMarker.prototype.marker_ = null;
 
-				/** @param {GeolocationPositionOptions|Object.<string, *>} positionOpts */
-				GeolocationMarker.prototype.setPositionOptions = function(positionOpts) {
-				  this.set('position_options', positionOpts);
-				};
+                /**
+                 * @private
+                 * @type {google.maps.Circle}
+                 */
+                GeolocationMarker.prototype.circle_ = null;
 
-				/** @return {google.maps.LatLng?} */
-				GeolocationMarker.prototype.getPosition = function() {
-				  return this.position;
-				};
+                /** @return {google.maps.Map} */
+                GeolocationMarker.prototype.getMap = function () {
+                    return this.map;
+                };
 
-				/** @return {google.maps.LatLngBounds?} */
-				GeolocationMarker.prototype.getBounds = function() {
-				  if (this.position) {
-				    return this.circle_.getBounds();
-				  } else {
-				    return null;
-				  }
-				};
+                /** @return {GeolocationPositionOptions} */
+                GeolocationMarker.prototype.getPositionOptions = function () {
+                    return /** @type GeolocationPositionOptions */(this.get('position_options'));
+                };
 
-				/** @return {number?} */
-				GeolocationMarker.prototype.getAccuracy = function() {
-				  return this.accuracy;
-				};
+                /** @param {GeolocationPositionOptions|Object.<string, *>} positionOpts */
+                GeolocationMarker.prototype.setPositionOptions = function (positionOpts) {
+                    this.set('position_options', positionOpts);
+                };
 
-				/** @return {number?} */
-				GeolocationMarker.prototype.getMinimumAccuracy = function() {
-				  return /** @type {number?} */ (this.get('minimum_accuracy'));
-				};
+                /** @return {google.maps.LatLng?} */
+                GeolocationMarker.prototype.getPosition = function () {
+                    return this.position;
+                };
 
-				/** @param {number?} accuracy */
-				GeolocationMarker.prototype.setMinimumAccuracy = function(accuracy) {
-				  this.set('minimum_accuracy', accuracy);
-				};
+                /** @return {google.maps.LatLngBounds?} */
+                GeolocationMarker.prototype.getBounds = function () {
+                    if (this.position) {
+                        return this.circle_.getBounds();
+                    } else {
+                        return null;
+                    }
+                };
 
-				/**
-				 * @private
-				 * @type {number}
-				 */
-				GeolocationMarker.prototype.watchId_ = -1;
+                /** @return {number?} */
+                GeolocationMarker.prototype.getAccuracy = function () {
+                    return this.accuracy;
+                };
 
-				/** @param {google.maps.Map} map */
-				GeolocationMarker.prototype.setMap = function(map) {
-				  this.map = map;
-				  this.notify('map');
-				  if (map) {
-				    this.watchPosition_();
-				  } else {
-				    this.marker_.unbind('position');
-				    this.circle_.unbind('center');
-				    this.circle_.unbind('radius');
-				    this.accuracy = null;
-				    this.position = null;
-				    navigator.geolocation.clearWatch(this.watchId_);
-				    this.watchId_ = -1;
-				    this.marker_.setMap(map);
-				  }
-				};
+                /** @return {number?} */
+                GeolocationMarker.prototype.getMinimumAccuracy = function () {
+                    return /** @type {number?} */ (this.get('minimum_accuracy'));
+                };
 
-				/** @param {google.maps.MarkerOptions|Object.<string>} markerOpts */
-				GeolocationMarker.prototype.setMarkerOptions = function(markerOpts) {
-				  this.marker_.setOptions(this.copyOptions_({}, markerOpts));
-				};
+                /** @param {number?} accuracy */
+                GeolocationMarker.prototype.setMinimumAccuracy = function (accuracy) {
+                    this.set('minimum_accuracy', accuracy);
+                };
 
-				/** @param {google.maps.CircleOptions|Object.<string>} circleOpts */
-				GeolocationMarker.prototype.setCircleOptions = function(circleOpts) {
-				  this.circle_.setOptions(this.copyOptions_({}, circleOpts));
-				};
+                /**
+                 * @private
+                 * @type {number}
+                 */
+                GeolocationMarker.prototype.watchId_ = -1;
 
-				/**
-				 * @private 
-				 * @param {GeolocationPosition} position
-				 */
-				GeolocationMarker.prototype.updatePosition_ = function(position) {
-				  var newPosition = new google.maps.LatLng(position.coords.latitude,
-				      position.coords.longitude), mapNotSet = this.marker_.getMap() == null;
+                /** @param {google.maps.Map} map */
+                GeolocationMarker.prototype.setMap = function (map) {
+                    this.map = map;
+                    this.notify('map');
+                    if (map) {
+                        this.watchPosition_();
+                    } else {
+                        this.marker_.unbind('position');
+                        this.circle_.unbind('center');
+                        this.circle_.unbind('radius');
+                        this.accuracy = null;
+                        this.position = null;
+                        navigator.geolocation.clearWatch(this.watchId_);
+                        this.watchId_ = -1;
+                        this.marker_.setMap(map);
+                    }
+                };
 
-				  if(mapNotSet) {
-				    if (this.getMinimumAccuracy() != null &&
-				        position.coords.accuracy > this.getMinimumAccuracy()) {
-				      return;
-				    }
-				    this.marker_.setMap(this.map);
-				    this.marker_.bindTo('position', this);
-				    this.circle_.bindTo('center', this, 'position');
-				    this.circle_.bindTo('radius', this, 'accuracy');
-				  }
+                /** @param {google.maps.MarkerOptions|Object.<string>} markerOpts */
+                GeolocationMarker.prototype.setMarkerOptions = function (markerOpts) {
+                    this.marker_.setOptions(this.copyOptions_({}, markerOpts));
+                };
 
-				  if (this.accuracy != position.coords.accuracy) {
-				    // The local set method does not allow accuracy to be updated
-				    google.maps.MVCObject.prototype.set.call(this, 'accuracy', position.coords.accuracy);
-				  }
+                /** @param {google.maps.CircleOptions|Object.<string>} circleOpts */
+                GeolocationMarker.prototype.setCircleOptions = function (circleOpts) {
+                    this.circle_.setOptions(this.copyOptions_({}, circleOpts));
+                };
 
-				  if (mapNotSet || this.position == null ||
-				      !this.position.equals(newPosition)) {
-				        // The local set method does not allow position to be updated
-				    google.maps.MVCObject.prototype.set.call(this, 'position', newPosition);
-				  }
-				};
+                /**
+                 * @private
+                 * @param {GeolocationPosition} position
+                 */
+                GeolocationMarker.prototype.updatePosition_ = function (position) {
+                    var newPosition = new google.maps.LatLng(position.coords.latitude,
+                        position.coords.longitude), mapNotSet = this.marker_.getMap() == null;
 
-				/**
-				 * @private
-				 * @return {undefined}
-				 */
-				GeolocationMarker.prototype.watchPosition_ = function() {
-				  var self = this;
+                    if (mapNotSet) {
+                        if (this.getMinimumAccuracy() != null &&
+                            position.coords.accuracy > this.getMinimumAccuracy()) {
+                            return;
+                        }
+                        this.marker_.setMap(this.map);
+                        this.marker_.bindTo('position', this);
+                        this.circle_.bindTo('center', this, 'position');
+                        this.circle_.bindTo('radius', this, 'accuracy');
+                    }
 
-				  if(navigator.geolocation) {
-				    this.watchId_ = navigator.geolocation.watchPosition(
-				        function(position) { self.updatePosition_(position); },
-				        function(e) { google.maps.event.trigger(self, "geolocation_error", e); },
-				        this.getPositionOptions());
-				  }
-				};
+                    if (this.accuracy != position.coords.accuracy) {
+                        // The local set method does not allow accuracy to be updated
+                        google.maps.MVCObject.prototype.set.call(this, 'accuracy', position.coords.accuracy);
+                    }
 
-				/**
-				 * @private
-				 * @param {Object.<string,*>} target
-				 * @param {Object.<string,*>} source
-				 * @return {Object.<string,*>}
-				 */
-				GeolocationMarker.prototype.copyOptions_ = function(target, source) {
-				  for(var opt in source) {
-				    if(GeolocationMarker.DISALLOWED_OPTIONS[opt] !== true) {
-				      target[opt] = source[opt];
-				    }
-				  }
-				  return target;
-				};
+                    if (mapNotSet || this.position == null || !this.position.equals(newPosition)) {
+                        // The local set method does not allow position to be updated
+                        google.maps.MVCObject.prototype.set.call(this, 'position', newPosition);
+                    }
+                };
 
-				/**
-				 * @const
-				 * @type {Object.<string, boolean>}
-				 */
-				GeolocationMarker.DISALLOWED_OPTIONS = {
-					'map': true,
-				  	'position': true,
-				  	'radius': true
-				};
-				
-				var locate = function locate() {  
-					var geolocationMarker = new GeolocationMarker();      
-			        geolocationMarker.setCircleOptions({fillColor: '#808080'});
+                /**
+                 * @private
+                 * @return {undefined}
+                 */
+                GeolocationMarker.prototype.watchPosition_ = function () {
+                    var self = this;
 
-			        google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function() {
-			        	googleMap.setCenter(this.getPosition());
-			          	//googleMap.fitBounds(this.getBounds());
-					  	googleMap.setZoom(googleMap.getZoom()); 
-			        });
+                    if (navigator.geolocation) {
+                        this.watchId_ = navigator.geolocation.watchPosition(
+                            function (position) {
+                                self.updatePosition_(position);
+                            },
+                            function (e) {
+                                google.maps.event.trigger(self, "geolocation_error", e);
+                            },
+                            this.getPositionOptions());
+                    }
+                };
 
-			        google.maps.event.addListener(geolocationMarker, 'geolocation_error', function(e) {
-			        	alert(e.message);
-			        });
-			        geolocationMarker.setMap(googleMap);
+                /**
+                 * @private
+                 * @param {Object.<string,*>} target
+                 * @param {Object.<string,*>} source
+                 * @return {Object.<string,*>}
+                 */
+                GeolocationMarker.prototype.copyOptions_ = function (target, source) {
+                    for (var opt in source) {
+                        if (GeolocationMarker.DISALLOWED_OPTIONS[opt] !== true) {
+                            target[opt] = source[opt];
+                        }
+                    }
+                    return target;
+                };
 
-			        return geolocationMarker;
+                /**
+                 * @const
+                 * @type {Object.<string, boolean>}
+                 */
+                GeolocationMarker.DISALLOWED_OPTIONS = {
+                    'map': true,
+                    'position': true,
+                    'radius': true
+                };
+
+                var locate = function locate() {
+                    var geolocationMarker = new GeolocationMarker();
+                    geolocationMarker.setCircleOptions({fillColor: '#808080'});
+
+                    google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
+                        googleMap.setCenter(this.getPosition());
+                        //googleMap.fitBounds(this.getBounds());
+                        googleMap.setZoom(googleMap.getZoom());
+                    });
+
+                    google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
+                        alert(e.message);
+                    });
+                    geolocationMarker.setMap(googleMap);
+
+                    return geolocationMarker;
                 }
 
                 return {
-                	init: init,
-                	locate: locate
+                    init: init,
+                    locate: locate
                 }
             };
 
@@ -1242,40 +1247,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             })();
 
 
-
             var Logger = (function () {
                 var info = function info(message) {
-                        var msg = "Info :: " + message;
-                        print(msg);
-                    }
+                    var msg = "Info :: " + message;
+                    print(msg);
+                }
                 var raw = function raw(msg) {
-                        print(msg);
-                    }
+                    print(msg);
+                }
                 var warn = function warn(message) {
-                        var msg = "Warning :: " + message;
-                        print(msg);
-                    }
+                    var msg = "Warning :: " + message;
+                    print(msg);
+                }
                 var error = function error(message) {
-                        var msg = "Error :: " + message;
-                        print(msg);
-                    }
+                    var msg = "Error :: " + message;
+                    print(msg);
+                }
                 var fatal = function fatal(message) {
-                        var msg = "Fatal :: " + message;
-                        print(msg);
-                    }
+                    var msg = "Fatal :: " + message;
+                    print(msg);
+                }
                 var print = function print(message) {
-                        if ($.browser.msie) {
-                            //Die... die... die.... why dont you just, die???
-                        } else {
-                            if ($.browser.mozilla && parseInt($.browser.version) >= 1) {
-                                console.log(message);
-                            } else if ($.browser.webkit && parseInt($.browser.version) >= 534) {
-                                console.log(message);
-                            } else if ($.browser.opera && parseInt($.browser.version) >= 11) {
-                                console.log(message);
-                            }
+                    if ($.browser.msie) {
+                        //Die... die... die.... why dont you just, die???
+                    } else {
+                        if ($.browser.mozilla && parseInt($.browser.version) >= 1) {
+                            console.log(message);
+                        } else if ($.browser.webkit && parseInt($.browser.version) >= 534) {
+                            console.log(message);
+                        } else if ($.browser.opera && parseInt($.browser.version) >= 11) {
+                            console.log(message);
                         }
                     }
+                }
 
                 return {
                     info: info,
@@ -1291,69 +1295,69 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
                 var alertError = function alertError(content) {
 
-                        var mask = $('<div id="cgmp-popup-mask"/>');
-                        var id = Math.random().toString(36).substring(3);
-                        var shortcode_dialog = $('<div id="' + id + '" class="cgmp-popup-shortcode-dialog cgmp-popup-window">');
-                        shortcode_dialog.html("<div class='dismiss-container'><a class='dialog-dismiss' href='javascript:void(0)'>Ã—</a></div><p style='text-align: left; padding: 10px 10px 0 10px'>" + content + "</p><div align='center'><input type='button' class='close-dialog' value='Close' /></div>");
+                    var mask = $('<div id="cgmp-popup-mask"/>');
+                    var id = Math.random().toString(36).substring(3);
+                    var shortcode_dialog = $('<div id="' + id + '" class="cgmp-popup-shortcode-dialog cgmp-popup-window">');
+                    shortcode_dialog.html("<div class='dismiss-container'><a class='dialog-dismiss' href='javascript:void(0)'>Ã—</a></div><p style='text-align: left; padding: 10px 10px 0 10px'>" + content + "</p><div align='center'><input type='button' class='close-dialog' value='Close' /></div>");
 
-                        $('body').append(mask);
-                        $('body').append(shortcode_dialog);
+                    $('body').append(mask);
+                    $('body').append(shortcode_dialog);
 
+                    var maskHeight = $(document).height();
+                    var maskWidth = $(window).width();
+                    $('#cgmp-popup-mask').css({
+                        'width': maskWidth,
+                        'height': maskHeight,
+                        'opacity': 0.1
+                    });
+
+                    if ($("#cgmp-popup-mask").length == 1) {
+                        $('#cgmp-popup-mask').show();
+                    }
+
+                    var winH = $(window).height();
+                    var winW = $(window).width();
+                    $("div#" + id).css('top', winH / 2 - $("div#" + id).height() / 2);
+                    $("div#" + id).css('left', winW / 2 - $("div#" + id).width() / 2);
+                    $("div#" + id).fadeIn(500);
+                    $('.cgmp-popup-window .close-dialog').click(function (e) {
+                        close_dialog(e, $(this));
+                    });
+                    $('.cgmp-popup-window .dialog-dismiss').click(function (e) {
+                        close_dialog(e, $(this));
+                    });
+
+                    function close_dialog(e, object) {
+                        e.preventDefault();
+
+                        var parentDialog = $(object).closest("div.cgmp-popup-shortcode-dialog");
+                        if (parentDialog) {
+                            $(parentDialog).remove();
+                        }
+
+                        if ($("div.cgmp-popup-shortcode-dialog").length == 0) {
+                            $('#cgmp-popup-mask').remove();
+                        }
+                    }
+
+                    $('#cgmp-popup-mask').click(function () {
+                        $(this).remove();
+                        $('.cgmp-popup-window').remove();
+                    });
+                    $(window).resize(function () {
+                        var box = $('.window');
                         var maskHeight = $(document).height();
                         var maskWidth = $(window).width();
                         $('#cgmp-popup-mask').css({
                             'width': maskWidth,
-                            'height': maskHeight,
-                            'opacity': 0.1
+                            'height': maskHeight
                         });
-
-                        if ($("#cgmp-popup-mask").length == 1) {
-                            $('#cgmp-popup-mask').show();
-                        }
-
                         var winH = $(window).height();
                         var winW = $(window).width();
-                        $("div#" + id).css('top', winH / 2 - $("div#" + id).height() / 2);
-                        $("div#" + id).css('left', winW / 2 - $("div#" + id).width() / 2);
-                        $("div#" + id).fadeIn(500);
-                        $('.cgmp-popup-window .close-dialog').click(function (e) {
-                            close_dialog(e, $(this));
-                        });
-                        $('.cgmp-popup-window .dialog-dismiss').click(function (e) {
-                            close_dialog(e, $(this));
-                        });
-
-                        function close_dialog(e, object) {
-                            e.preventDefault();
-
-                            var parentDialog = $(object).closest("div.cgmp-popup-shortcode-dialog");
-                            if (parentDialog) {
-                                $(parentDialog).remove();
-                            }
-
-                            if ($("div.cgmp-popup-shortcode-dialog").length == 0) {
-                                $('#cgmp-popup-mask').remove();
-                            }
-                        }
-
-                        $('#cgmp-popup-mask').click(function () {
-                            $(this).remove();
-                            $('.cgmp-popup-window').remove();
-                        });
-                        $(window).resize(function () {
-                            var box = $('.window');
-                            var maskHeight = $(document).height();
-                            var maskWidth = $(window).width();
-                            $('#cgmp-popup-mask').css({
-                                'width': maskWidth,
-                                'height': maskHeight
-                            });
-                            var winH = $(window).height();
-                            var winW = $(window).width();
-                            box.css('top', winH / 2 - box.height() / 2);
-                            box.css('left', winW / 2 - box.width() / 2);
-                        });
-                    }
+                        box.css('top', winH / 2 - box.height() / 2);
+                        box.css('left', winW / 2 - box.width() / 2);
+                    });
+                }
 
                 return {
                     alertError: alertError
@@ -1433,7 +1437,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         LayerBuilder.init(googleMap);
 
                         var markerBuilder = new MarkerBuilder();
-                        markerBuilder.init(googleMap, json.bubbleautopan, true); //json.enablegeolocator
+                        markerBuilder.init(googleMap, json.bubbleautopan, json.enablegeolocationmarker);
 
                         var controlOptions = {
                             mapTypeControl: (json.maptypecontrol === 'true'),
@@ -1475,24 +1479,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 Errors.alertError(CGMPGlobal.errors.msgMissingMarkers);
                             }
                         }
-	                    // An attempt to resolve a problem of Google Maps & jQuery Tabs
-	                    if ($('div#' + json.id).children().length > 0) {
-	                        setTimeout(function () {
-	                            if (googleMap) {
-	                                var oldZoom = googleMap.getZoom();
-	                                var oldCenter = googleMap.getCenter();
-	                                google.maps.event.trigger(googleMap, "resize");
-	                                googleMap.setZoom(oldZoom);
-	                                googleMap.setCenter(oldCenter);
-	                            }
-	                        }, 1500);
-	                    }
+                        // An attempt to resolve a problem of Google Maps & jQuery Tabs
+                        if ($('div#' + json.id).children().length > 0) {
+                            setTimeout(function () {
+                                if (googleMap) {
+                                    var oldZoom = googleMap.getZoom();
+                                    var oldCenter = googleMap.getCenter();
+                                    google.maps.event.trigger(googleMap, "resize");
+                                    googleMap.setZoom(oldZoom);
+                                    googleMap.setCenter(oldCenter);
+                                }
+                            }, 1500);
+                        }
                     } else {
                         //Logger.fatal("It looks like the map DIV placeholder ID [" + json.id + "] does not exist in the page!");
                     }
                 });
 
             }
+
             //});
         }(jQueryObj));
     }

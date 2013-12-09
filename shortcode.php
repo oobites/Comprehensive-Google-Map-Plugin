@@ -47,6 +47,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 				'directionhint' => 'false',
 				'mapalign' => 'center',
 				'panoramiouid' => '',
+                'enablegeolocationmarker' => 'false',
 				'addmarkermashup' => 'false',
 				'language' => 'default',
 				'poweredby' => 'false',
