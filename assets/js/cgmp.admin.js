@@ -185,7 +185,7 @@ function buildShortcode(id, $) {
 
 		function initMarkerInputDataFieldsEvent()  {
 
-			$("input.marker-text-details").live("focus", function () {
+            $(document).on("focus", "input.marker-text-details", function () {
 
 				if ($(this).val().indexOf("Enter marker") != -1) {
 					$(this).val("");
@@ -195,7 +195,7 @@ function buildShortcode(id, $) {
 				}
 			});
 
-			$("input.marker-text-details").live("blur", function () {
+            $(document).on("blur", "input.marker-text-details", function () {
 				var value = $(this).val().replace(/^\s+|\s+$/g, '');
 				if (value == "") {
 
@@ -214,7 +214,7 @@ function buildShortcode(id, $) {
 
 		function initAddLocationEevent()  {
 
-			$("input.add-additonal-location").live("click", function (source) {
+            $(document).on("click", "input.add-additonal-location", function (source) {
 
 				var listId = $(this).attr("id") + "list";
 				var tokenList = {};
@@ -254,7 +254,7 @@ function buildShortcode(id, $) {
 
 						$(customIconListId + " img#default-marker-icon").attr("style", "cursor: default; ");
 						$(customIconListId + " img#default-marker-icon").addClass('selected-marker-image');
-						$(customIconListId + " input#default-marker-icon-radio").attr('checked', 'checked');
+						$(customIconListId + " input#default-marker-icon-radio").prop('checked', true);
 
 						$(iconHolderInput).attr("style", "");
 						$(iconHolderInput).addClass("default-marker-icon");
@@ -301,19 +301,19 @@ function buildShortcode(id, $) {
 
 		function initMarkerIconEvents() {
 
-			$("div.custom-icons-placeholder a img").live("click", function () {
+            $(document).on("click", "div.custom-icons-placeholder a img", function () {
 				var currentSrc = $(this).attr('src');
 				if (currentSrc != null) {
 
 					var parentDiv = $(this).closest("div.custom-icons-placeholder");
 					resetPreviousIconSelection(parentDiv);
-					$(this).parent("a").siblings('input[name="custom-icons-radio"]').attr("checked", "checked");
+					$(this).parent("a").siblings('input[name="custom-icons-radio"]').prop("checked", true);
 					doMarkerIconUpdateOnSelection(parentDiv, $(this));
 				}
 			});
 
 
-			$("input[name='custom-icons-radio']").live("click", function () {
+            $(document).on("click", "input[name='custom-icons-radio']", function () {
 
 				var img = $(this).siblings("a").children('img');
 				var currentSrc = $(img).attr('src');
@@ -333,14 +333,14 @@ function buildShortcode(id, $) {
 			var currentSrc = $(img).attr('src');
 			var inputId = $(parentDiv).attr("id").replace("icons", "input");
 			$("#" + inputId).attr("style", "background: url('" + currentSrc + "') no-repeat scroll 0px 0px transparent !important");
-			$("#" + inputId).attr("readonly", "readonly");
+			$("#" + inputId).prop("readonly", true);
 			$("#" + inputId).removeClass("default-marker-icon");
 			//$("#" + inputId).focus();
 		}
 
 		function initTooltips()  {
 
-			$('a.google-map-tooltip-marker').live("hover", function() {
+            $(document).on("hover", 'a.google-map-tooltip-marker', function() {
 			var tooltip_marker_id = $(this).attr('id');
 
 				$("a#" + tooltip_marker_id + "[title]").tooltip({
@@ -353,7 +353,7 @@ function buildShortcode(id, $) {
 					}
 				});
 
-				$("a#" + tooltip_marker_id).live("mouseout", function(event) {
+                $(document).on("mouseout", "a#" + tooltip_marker_id, function(event) {
 					if ($(this).data('tooltip')) {
 						$(this).data('tooltip').hide();
 					}
@@ -363,7 +363,7 @@ function buildShortcode(id, $) {
 
 		function initGeoMashupEvent() {
 
-			$("input.marker-geo-mashup").live("change", function (source) {
+            $(document).on("change", "input.marker-geo-mashup", function (source) {
 				var checkboxId = $(this).attr("id");
 				var customIconsId = checkboxId.replace("mashup", "icons");
 				var kmlId = checkboxId.replace("addmarkermashup", "kml");
@@ -402,7 +402,7 @@ function buildShortcode(id, $) {
 
         function initGPSMarkerEvent() {
 
-            $("input.gps-location-marker").live("change", function (source) {
+            $(document).on("change", "input.gps-location-marker", function (source) {
                 var checkboxId = $(this).attr("id");
 
                 if ($(this).is(":checked")) {
@@ -418,7 +418,7 @@ function buildShortcode(id, $) {
                 var checkboxId = $(this).attr("id");
                 var hiddenIdVal = $("#" + checkboxId + "hidden").val();
                 if (hiddenIdVal === "true") {
-                    $(this).attr("checked", "checked");
+                    $(this).prop("checked", true);
                 } else {
                     $(this).removeAttr("checked");
                 }

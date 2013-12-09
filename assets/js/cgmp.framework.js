@@ -21,7 +21,7 @@
         var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js";
+        script.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js";
 
         script.onload = script.onreadystatechange = function () {
             if (!done && (!this.readyState || /loaded|complete/.test(script.readyState))) {
@@ -310,6 +310,10 @@
                     $(dirDivId + ' input#b_address').val('');
                     $(dirDivId + ' input#a_address').removeClass('d_error');
                     $(dirDivId + ' input#b_address').removeClass('d_error');
+                    $('input#' + mapDivId + '_avoid_hway').prop("checked", false);
+                    $('input#' + mapDivId + '_avoid_tolls').prop("checked", false);
+                    $('input#' + mapDivId + '_radio_km').prop("checked", false);
+                    $('input#' + mapDivId + '_radio_miles').prop("checked", true);
                 }
 
                 function attachEventlistener(marker, markersElement) {
@@ -347,7 +351,7 @@
                     addy = addy.replace("Lat/Long: ", "");
 
                     var geoMarkerPosition = geolocationMarker == null ? '' : geolocationMarker.getPosition();
-                    $(parentInfoBubble + ' a.dirToHereTrigger').live("click", function () {
+                    $(document).on("click", parentInfoBubble + ' a.dirToHereTrigger', function () {
                         var thisId = this.id;
                         if (thisId === 'toHere-' + localBubbleData.bubbleHolderId) {
                             $(dirDivId).fadeIn();
@@ -363,7 +367,7 @@
                         }
                     });
 
-                    $(parentInfoBubble + ' a.dirFromHereTrigger').live("click", function () {
+                    $(document).on("click", parentInfoBubble + ' a.dirFromHereTrigger', function () {
                         var thisId = this.id;
                         if (thisId === 'fromHere-' + localBubbleData.bubbleHolderId) {
                             $(dirDivId).fadeIn();
@@ -380,7 +384,7 @@
                         }
                     });
 
-                    $(dirDivId + ' div.d_close-wrapper').live("click", function (event) {
+                    $(document).on("click", dirDivId + ' div.d_close-wrapper', function (event) {
 
                         resetDirectionAddressFields(dirDivId);
 
@@ -400,8 +404,7 @@
                     streetViewService.getPanoramaByLocation(marker.position, 50, function (streetViewPanoramaData, status) {
                         if (status === google.maps.StreetViewStatus.OK) {
                             // ok
-                            $('a#trigger-' + localBubbleData.bubbleHolderId).live("click", function () {
-
+                            $(document).on("click", 'a#trigger-' + localBubbleData.bubbleHolderId, function () {
                                 var panoramaOptions = {
                                     navigationControl: true,
                                     enableCloseButton: true,
@@ -449,7 +452,7 @@
                         } else {
                             // no street view available in this range, or some error occurred
                             //Logger.warn("There is not street view available for this marker location: " + marker.position + " status: " + status);
-                            $('a#trigger-' + localBubbleData.bubbleHolderId).live("click", function (e) {
+                            $(document).on("click", 'a#trigger-' + localBubbleData.bubbleHolderId, function (e) {
                                 e.preventDefault();
                             });
                             $('a#trigger-' + localBubbleData.bubbleHolderId).attr("style", "text-decoration: none !important; color: #ddd !important");
@@ -468,7 +471,7 @@
                     var dirDivId = 'div#direction-controls-placeholder-' + mapDivId;
                     var targetDiv = $("div#rendered-directions-placeholder-" + mapDivId);
 
-                    $(dirDivId + ' a#reverse-btn').live("click", function (e) {
+                    $(document).on("click", dirDivId + ' a#reverse-btn', function (e) {
 
                         var old_a_addr = $(dirDivId + ' input#a_address').val();
                         var old_b_addr = $(dirDivId + ' input#b_address').val();
@@ -478,14 +481,14 @@
                         return false;
                     });
 
-                    $(dirDivId + ' a#d_options_show').live("click", function () {
+                    $(document).on("click", dirDivId + ' a#d_options_show', function () {
                         $(dirDivId + ' a#d_options_hide').show();
                         $(dirDivId + ' a#d_options_show').hide();
                         $(dirDivId + ' div#d_options').show();
                         return false;
                     });
 
-                    $(dirDivId + ' a#d_options_hide').live("click", function () {
+                    $(document).on("click", dirDivId + ' a#d_options_hide', function () {
                         $(dirDivId + ' a#d_options_hide').hide();
                         $(dirDivId + ' a#d_options_show').show();
                         $(dirDivId + ' div#d_options').hide();
@@ -496,7 +499,7 @@
                         return false;
                     });
 
-                    $(dirDivId + ' button#d_sub').live("click", function () {
+                    $(document).on("click", dirDivId + ' button#d_sub', function () {
                         var old_a_addr = $(dirDivId + ' input#a_address').val();
                         var old_b_addr = $(dirDivId + ' input#b_address').val();
                         var halt = false;
@@ -567,7 +570,7 @@
                     });
 
                     //http://asnsblues.blogspot.com/2011/11/google-maps-query-string-parameters.html
-                    $(dirDivId + ' button#print_sub').live("click", function () {
+                    $(document).on("click", dirDivId + ' button#print_sub', function () {
                         var old_a_addr = $(dirDivId + ' input#a_address').val();
                         var old_b_addr = $(dirDivId + ' input#b_address').val();
 
@@ -600,18 +603,18 @@
                         return false;
                     });
 
-                    $(dirDivId + ' input#a_address').live("change focus", function () {
+                    $(document).on("change focus", dirDivId + ' input#a_address', function () {
                         $(dirDivId + ' input#a_address').removeClass('d_error');
                         return false;
                     });
 
-                    $(dirDivId + ' input#b_address').live("change focus", function () {
+                    $(document).on("change focus", dirDivId + ' input#b_address', function () {
                         $(dirDivId + ' input#b_address').removeClass('d_error');
                         return false;
                     });
 
 
-                    $(dirDivId + ' .kd-button').live("click", function () {
+                    $(document).on("click", dirDivId + ' .kd-button', function () {
                         var thisId = this.id;
 
                         if (thisId == 'dir_d_btn') {
@@ -1296,16 +1299,10 @@
                     print(msg);
                 }
                 var print = function print(message) {
-                    if ($.browser.msie) {
+                    if (navigator.userAgent.match(/msie|trident/i)) {
                         //Die... die... die.... why dont you just, die???
                     } else {
-                        if ($.browser.mozilla && parseInt($.browser.version) >= 1) {
-                            console.log(message);
-                        } else if ($.browser.webkit && parseInt($.browser.version) >= 534) {
-                            console.log(message);
-                        } else if ($.browser.opera && parseInt($.browser.version) >= 11) {
-                            console.log(message);
-                        }
+                        console.log(message);
                     }
                 }
 
@@ -1517,7 +1514,7 @@
                                     googleMap.setZoom(oldZoom);
                                     googleMap.setCenter(oldCenter);
                                 }
-                            }, 1500);
+                            }, 2000);
                         }
                     } else {
                         //Logger.fatal("It looks like the map DIV placeholder ID [" + json.id + "] does not exist in the page!");
