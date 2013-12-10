@@ -35,15 +35,15 @@ img{-moz-user-select:none;border:0 none;margin:0;padding:0}
 .direction-controls-placeholder .dir-wp .dir-wp-hl{margin-left:8px;margin-right:26px;padding:3px 0}
 .direction-controls-placeholder .d-hl .dir-wp-hl{background:none repeat scroll 0 0 #FFF1A8;border-radius:3px 3px 3px 3px}
 .direction-controls-placeholder .dir-wp .dir-m{height:24px;left:15px;position:absolute;top:5px;width:24px}
-.direction-controls-placeholder .dir-input{margin:0 3px 0 36px;padding:1px 6px;text-align:left}
-.direction-controls-placeholder .dir-input .wp{line-height:16px;margin:-1px -6px;padding:3px 5px;width:95%}
+.direction-controls-placeholder .dir-input{margin:0 3px 0 35px;padding:1px 6px;text-align:left}
+.direction-controls-placeholder .dir-input .wp{line-height:16px !important;margin:-1px -6px;padding:3px 5px;width:95%}
 .direction-controls-placeholder .wp:focus + .ml-input{background-color:#999;border-color:#7F7F7F;border-radius:1px 1px 1px 1px;color:#FFF;width:auto}
 .direction-controls-placeholder .kd-input-text{background-color:#FFF;border-color:silver #D9D9D9 #D9D9D9;border-radius:1px 1px 1px 1px;border-right:1px solid #D9D9D9;border-style:solid;border-width:1px;padding-left:8px}
 .direction-controls-placeholder .ml-input{background-color:#FFF;border:1px solid #FFF;color:#666;font-size:85%;font-weight:700;height:15px;left:46px;line-height:15px;padding:1px 6px;position:absolute;top:6px}
 .direction-controls-placeholder .dir-ml-img{display:inline;height:9px;margin-right:3px;width:9px}
 .direction-controls-placeholder #dir_rev{cursor:pointer;padding:5px;position:absolute;right:8px;top:-20px;z-index:1}
 .direction-controls-placeholder #dir_rev .kd-button{height:16px;min-width:18px;padding:0;width:18px}
-.direction-controls-placeholder #dir_controls{margin:0 51px 0 44px}
+.direction-controls-placeholder #dir_controls{padding-left: 45px;}
 .direction-controls-placeholder .d_links{font-size:100%;text-align:left}
 .direction-controls-placeholder .dir-sub-cntn{height:29px;position:relative;text-align:left}
 .direction-controls-placeholder #d_sub{height:22px;line-height:16px;margin:2px 0 0;padding:2px 5px !important;position:absolute;text-transform:uppercase}
@@ -62,9 +62,8 @@ img{-moz-user-select:none;border:0 none;margin:0;padding:0}
 .google-map-placeholder .bubble-content p.geo-mashup-post-title a{font-size:15px !important;font-weight:700}
 .google-map-placeholder .bubble-content p.geo-mashup-post-excerpt{font-size:12px !important;line-height:130% !important;padding-left:6px !important;padding-right:0px !important}
 .direction-controls-placeholder{font-family:Arial,Tahoma,Verdana !important;font-size:12px !important;line-height:160% !important}
-.direction-controls-placeholder input{font-family:Arial,Tahoma,Verdana !important;font-size:12px !important;line-height:160% !important;margin:0 !important}
+.direction-controls-placeholder input{font-family:Arial,Tahoma,Verdana !important;font-size:12px !important;line-height:160% !important}
 .direction-controls-placeholder #d_options{color:#222 !important}
-.direction-controls-placeholder #d_options input{width:5% !important}
 .direction-controls-placeholder input[type="text"]{box-shadow:none !important;color:#000 !important}
 .direction-controls-placeholder .d_error{background-color:#FFC0CB !important}
 .direction-controls-placeholder img{max-width:100% !important}

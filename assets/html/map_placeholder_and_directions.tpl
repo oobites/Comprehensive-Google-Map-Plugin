@@ -61,7 +61,7 @@
 					   	<b><span style="color: blue">LABEL_ADDITIONAL_OPTIONS</span></b>
 					</span>
 				</div>
-				<div id="d_options" style="background-color: #ddd; margin-bottom: 3px; text-align: left; padding: 3px;">
+				<div id="d_options" style="margin-bottom: 5px; text-align: left;">
 					<input type="checkbox" tabindex="5" name="MAP_PLACEHOLDER_ID_TOKEN_avoid_hway" id="MAP_PLACEHOLDER_ID_TOKEN_avoid_hway" />
 					<label for="MAP_PLACEHOLDER_ID_TOKEN_avoid_hway">LABEL_AVOID_HIGHWAYS</label>
 					<input type="checkbox" tabindex="5" name="MAP_PLACEHOLDER_ID_TOKEN_avoid_tolls" id="MAP_PLACEHOLDER_ID_TOKEN_avoid_tolls" />
