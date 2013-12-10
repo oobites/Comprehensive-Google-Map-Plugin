@@ -237,9 +237,9 @@
                         });
 
                         google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
-                            alert('There was an error obtaining your position. Message: ' + e.message);
+                            Logger.error('There was an error obtaining your position. Message: ' + e.message);
                         });
-                        geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 5000, maximumAge: 0});
+                        geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 6000, maximumAge: 0});
                         geolocationMarker.setMap(googleMap);
                     }
 

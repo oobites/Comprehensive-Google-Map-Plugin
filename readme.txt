@@ -93,7 +93,7 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 == Changelog ==
 
 = 8.0.4 =
-* TBD
+* Enhancement: Making use of the library by Chad Killingsworth to add end-user's current GPS location as a marker. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker. This feature  will function in browsers supporting the W3C Geolocation API. This excludes Internet Explorer versions 8 and older.
 
 = 8.0.3 =
 * Enhancement: Made sure the plugin is compatible with jQuery 1.9+ (.live() -> .on(), .attr() -> .prop() where required)
@@ -107,7 +107,6 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 * Bug: In jQuery 1.8, the behaviour of .ajaxSuccess() changed, which caused an issue when saving widgets
 * Bug: When trying to print directions in KM, the print view was showing miles
 * Experimental: An attempt to resolve a problem of Google Maps & jQuery Tabs: resizing the map one second after it has been loaded
-* Experimental: Making use of the library by Chad Killingsworth to add end-user's current GPS location as a marker. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker (themc)
 
 = 8.0.1 =
 * Bug: Commented out on PHP function parsing the shortcode and rendering a map  
