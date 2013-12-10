@@ -230,6 +230,7 @@
 
                     if (enableGeoLocation === "true") {
                         geolocationMarker = new GeolocationMarker();
+
                         google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
                             googleMap.setCenter(this.getPosition());
                             googleMap.fitBounds(this.getBounds());
@@ -238,7 +239,7 @@
                         google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
                             alert('There was an error obtaining your position. Message: ' + e.message);
                         });
-
+                        geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 5000, maximumAge: 0});
                         geolocationMarker.setMap(googleMap);
                     }
 
@@ -975,7 +976,7 @@
                             'anchor': new google.maps.Point(8, 8)
                         },
                         // This marker may move frequently - don't force canvas tile redraw
-                        'optimized': true,
+                        'optimized': false,
                         'position': new google.maps.LatLng(0, 0),
                         'title': 'Current location',
                         'zIndex': 2
