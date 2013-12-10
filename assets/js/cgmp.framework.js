@@ -228,10 +228,18 @@
                     bubbleAutoPan = autoPan;
                     defaultUnits = units;
 
-                    if (enableGeoLocation === "true" && CGMPGlobal.isMobileDevice === "true") {
-                        var geoLocator = new GeoLocator();
-                        geoLocator.init(googleMap);
-                        geolocationMarker = geoLocator.locate();
+                    if (enableGeoLocation === "true") {
+                        geolocationMarker = new GeolocationMarker();
+                        google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
+                            googleMap.setCenter(this.getPosition());
+                            googleMap.fitBounds(this.getBounds());
+                        });
+
+                        google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
+                            alert('There was an error obtaining your position. Message: ' + e.message);
+                        });
+
+                        geolocationMarker.setMap(googleMap);
                     }
 
                     google.maps.event.addListener(googleMap, 'click', function () {
@@ -828,10 +836,12 @@
 
                     if (fitToBounds) {
                         if (isGeolocationMarker) {
-                            bounds.extend(geolocationMarker.getPosition());
+                            if (geolocationMarker.getPosition() != null) {
+                                bounds.extend(geolocationMarker.getPosition());
+                            }
                         }
                         originalExtendedBounds = bounds;
-                        if (bounds != null) {
+                        if (!isGeolocationMarker && bounds != null) {
                             googleMap.fitBounds(bounds);
                         }
                     }
@@ -920,21 +930,6 @@
                     return new google.maps.MarkerImage(url, new google.maps.Size(sizeX, sizeY), new google.maps.Point(pointAX, pointAY), new google.maps.Point(pointBX, pointBY));
                 }
 
-                return {
-                    init: init,
-                    buildAddressMarkers: buildAddressMarkers,
-                    isBuildAddressMarkersCalled: isBuildAddressMarkersCalled
-                }
-            };
-
-
-            var GeoLocator = function () {
-                var googleMap = {};
-
-                var init = function init(map) {
-                    googleMap = map;
-                }
-
                 /*
                  * Licensed under the Apache License, Version 2.0 (the "License");
                  * you may not use this file except in compliance with the License.
@@ -948,7 +943,6 @@
                  * See the License for the specific language governing permissions and
                  * limitations under the License.
                  */
-
                 /**
                  * @name GeolocationMarker for Google Maps v3
                  * @version version 1.0
@@ -966,7 +960,6 @@
                  * @param {(google.maps.MarkerOptions|Object.<string>)=} opt_markerOpts
                  * @param {(google.maps.CircleOptions|Object.<string>)=} opt_circleOpts
                  */
-
                 function GeolocationMarker(opt_map, opt_markerOpts, opt_circleOpts) {
 
                     var markerOpts = {
@@ -982,7 +975,7 @@
                             'anchor': new google.maps.Point(8, 8)
                         },
                         // This marker may move frequently - don't force canvas tile redraw
-                        'optimized': false,
+                        'optimized': true,
                         'position': new google.maps.LatLng(0, 0),
                         'title': 'Current location',
                         'zIndex': 2
@@ -1222,27 +1215,10 @@
                     'radius': true
                 };
 
-                var locate = function locate() {
-                    var geolocationMarker = new GeolocationMarker();
-                    geolocationMarker.setCircleOptions({fillColor: '#808080'});
-
-                    google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
-                        googleMap.setCenter(this.getPosition());
-                        //googleMap.fitBounds(this.getBounds());
-                        googleMap.setZoom(googleMap.getZoom());
-                    });
-
-                    google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
-                        alert(e.message);
-                    });
-                    geolocationMarker.setMap(googleMap);
-
-                    return geolocationMarker;
-                }
-
                 return {
                     init: init,
-                    locate: locate
+                    buildAddressMarkers: buildAddressMarkers,
+                    isBuildAddressMarkersCalled: isBuildAddressMarkersCalled
                 }
             };
 
@@ -1389,8 +1365,6 @@
                 }
             })();
 
-
-            //$(document).ready(function() {
             if ($('object#global-data-placeholder').length == 0) {
                 //Logger.fatal("The global HTML <object> element is undefined. Aborting map generation .. d[-_-]b");
                 return;
@@ -1504,26 +1478,53 @@
                                 Errors.alertError(CGMPGlobal.errors.msgMissingMarkers);
                             }
                         }
+
                         // An attempt to resolve a problem of Google Maps & jQuery Tabs
-                        if ($('div#' + json.id).children().length > 0) {
-                            setTimeout(function () {
+                        $(document).ready(function () {
+                            var mapPlaceholder = 'div#' + json.id;
+                            if ($(mapPlaceholder).children().length > 0) {
+                                if ($(mapPlaceholder).closest('.ui-tabs-panel').length > 0) {
+                                    var parentTab = $(mapPlaceholder).closest('.ui-tabs-panel');
+                                    resizeMapWhenParentVisible(parentTab);
+                                } else {
+                                    setTimeout(function () {
+                                        resize_map(googleMap);
+                                    }, 2000);
+                                }
+                            }
+
+                            var timer = null;
+
+                            function resizeMapWhenParentVisible(parentTab) {
+                                if ($(parentTab).is(":visible")) {
+                                    if (timer != null) {
+                                        clearTimeout(timer);
+                                    }
+                                    setTimeout(function () {
+                                        resize_map(googleMap);
+                                    }, 500);
+                                } else {
+                                    timer = setTimeout(resizeMapWhenParentVisible(parentTab), 1000);
+                                }
+                            }
+
+                            function resize_map(googleMap) {
                                 if (googleMap) {
                                     var oldZoom = googleMap.getZoom();
+                                    var oldBounds = googleMap.getBounds();
                                     var oldCenter = googleMap.getCenter();
                                     google.maps.event.trigger(googleMap, "resize");
                                     googleMap.setZoom(oldZoom);
                                     googleMap.setCenter(oldCenter);
+                                    googleMap.getBounds(oldBounds);
                                 }
-                            }, 2000);
-                        }
+                            }
+                        });
                     } else {
-                        //Logger.fatal("It looks like the map DIV placeholder ID [" + json.id + "] does not exist in the page!");
+                        Logger.fatal("It looks like the map DIV placeholder ID [" + json.id + "] does not exist in the page!");
                     }
                 });
-
             }
-
-            //});
         }(jQueryObj));
     }
 })();

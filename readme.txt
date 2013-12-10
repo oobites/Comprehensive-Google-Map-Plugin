@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.3.2
 Tested up to: 3.7.1
-Stable tag: 8.0.3
+Stable tag: 8.0.4
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -16,7 +16,7 @@ A simple and intuitive, yet elegant and fully documented Google map plugin that 
 * With over 250 amazing custom marker icons to choose from!
 * Aggregate all your post markers in one map - Marker Geo Mashup!
 * Help tooltips enabled, which makes your configuration hassle free
-* Add mobile device user's current GPS location to the map! Useful for end-users that want to find directions from their current location to map's markers
+* Add end-user's current GPS location to the map! Useful for end-users that want to find directions from their current location to map's markers
 * Google-like directions: driving and walking, distance shown in miles or KM, avoid tolls and highways options, direction print functionality
 * Info window can display marker's street view within itself.
 * Plugin is fully documented. If help tooltips are not enough, you can always refer to the full documentation about each of the settings
@@ -91,6 +91,9 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 9. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
 
 == Changelog ==
+
+= 8.0.4 =
+* TBD
 
 = 8.0.3 =
 * Enhancement: Made sure the plugin is compatible with jQuery 1.9+ (.live() -> .on(), .attr() -> .prop() where required)
