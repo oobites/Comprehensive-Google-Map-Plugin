@@ -94,6 +94,7 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 
 = 8.0.4 =
 * Enhancement: Making use of the library by Chad Killingsworth to add end-user's current GPS location as a marker. The marker position is automatically updated as the user position changes. Useful for users on mobile devices that want to find directions from their current location to map's marker. This feature  will function in browsers supporting the W3C Geolocation API. This excludes Internet Explorer versions 8 and older.
+* Enhancement: CSS tweaks in directions dialog
 
 = 8.0.3 =
 * Enhancement: Made sure the plugin is compatible with jQuery 1.9+ (.live() -> .on(), .attr() -> .prop() where required)
