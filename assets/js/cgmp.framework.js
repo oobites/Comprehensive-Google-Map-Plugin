@@ -231,7 +231,7 @@
                     if (enableGeoLocation === "true") {
                         geolocationMarker = new GeolocationMarker();
 
-                        google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
+                        google.maps.event.addListener(geolocationMarker, 'position_changed', function () {
                             googleMap.setCenter(this.getPosition());
                             googleMap.fitBounds(this.getBounds());
                         });
@@ -303,12 +303,12 @@
                 function resetMap() {
                     if (originalExtendedBounds != null) {
                         if (googleMap.getCenter() != originalExtendedBounds.getCenter()) {
-                            //Logger.info("Panning map back to its original bounds center: " + originalExtendedBounds.getCenter());
+                            Logger.info("Panning map back to its original bounds center: " + originalExtendedBounds.getCenter());
                             googleMap.fitBounds(originalExtendedBounds);
                             googleMap.setCenter(originalExtendedBounds.getCenter());
                         }
                     } else if (originalMapCenter != null) {
-                        //Logger.info("Panning map back to its original center: " + originalMapCenter  + " and updated zoom: " + updatedZoom);
+                        Logger.info("Panning map back to its original center: " + originalMapCenter  + " and updated zoom: " + updatedZoom);
                         googleMap.setCenter(originalMapCenter);
                         googleMap.setZoom(updatedZoom);
                     }
@@ -460,7 +460,7 @@
                             });
                         } else {
                             // no street view available in this range, or some error occurred
-                            //Logger.warn("There is not street view available for this marker location: " + marker.position + " status: " + status);
+                            Logger.warn("There is not street view available for this marker location: " + marker.position + " status: " + status);
                             $(document).on("click", 'a#trigger-' + localBubbleData.bubbleHolderId, function (e) {
                                 e.preventDefault();
                             });
@@ -568,7 +568,7 @@
                                     infowindow.close();
 
                                 } else {
-                                    //Logger.error('Could not route directions from "' + old_a_addr + '" to "' + old_b_addr + '", got result from Google: ' + status);
+                                    Logger.error('Could not route directions from "' + old_a_addr + '" to "' + old_b_addr + '", got result from Google: ' + status);
                                     targetDiv.html("<span style='font-size: 12px; font-weight: bold; color: red'>Could not route directions from<br />'" + old_a_addr + "' to<br />'" + old_b_addr + "'<br />Got result from Google: [" + status + "]</span>");
 
                                     $(dirDivId + ' button#print_sub').hide();
@@ -628,14 +628,14 @@
 
                         if (thisId == 'dir_d_btn') {
                             if ($(dirDivId + ' a#dir_d_btn').hasClass('selected')) {
-                                //Logger.warn("Driving travel mode is already selected");
+                                Logger.warn("Driving travel mode is already selected");
                             } else {
                                 $(dirDivId + ' a#dir_d_btn').addClass('selected');
                                 $(dirDivId + ' a#dir_w_btn').removeClass('selected');
                             }
                         } else if (thisId == 'dir_w_btn') {
                             if ($(dirDivId + ' a#dir_w_btn').hasClass('selected')) {
-                                //Logger.warn("Walking travel mode is already selected");
+                                Logger.warn("Walking travel mode is already selected");
                             } else {
                                 $(dirDivId + ' a#dir_w_btn').addClass('selected');
                                 $(dirDivId + ' a#dir_d_btn').removeClass('selected');
@@ -648,23 +648,14 @@
                 }
 
                 function buildBubble(contentFromMarker, markersElement) {
-
-                    var localBubbleData = [];
                     var randomNumber = Math.floor(Math.random() * 111111);
-
                     randomNumber = randomNumber + "-" + mapDivId;
 
                     var bubble = "<div id='bubble-" + randomNumber + "' style='height: 130px !important; width: 300px !important;' class='bubble-content'>";
-                    //var bubble = document.createElement("div");
-                    //bubble.id = "bubble-" + randomNumber;
-                    //bubble.setAttribute("class", "bubble-content");
-                    //bubble.style.cssText = "height: 330px !important; width: 300px !important;";
-
                     if (!markersElement.geoMashup) {
                         bubble += "<h4>" + CGMPGlobal.translations.address + ":</h4>";
                         bubble += "<p class='custom-bubble-text'>" + contentFromMarker + "</p>";
                         if (markersElement.customBubbleText != '') {
-                            //var decodedHtml = $("<p></p>").html(markersElement.customBubbleText).text();
                             bubble += "<p class='custom-bubble-text'>" + markersElement.customBubbleText + "</p>";
                         }
                     } else {
@@ -687,13 +678,13 @@
                 function parseCsv() {
                     var locations = csvString.split("|");
 
-                    //Logger.info("Exploded CSV into locations: " + locations);
+                    Logger.info("Exploded CSV into locations: " + locations);
                     for (var i = 0; i < locations.length; i++) {
                         var target = locations[i];
                         if (target != null && target != "") {
                             target = Utils.trim(target);
                             if (target == "") {
-                                //Logger.warn("Given extra marker address is empty");
+                                Logger.warn("Given extra marker address is empty");
                                 continue;
                             }
                             pushGeoDestination(target, (i + 1));
@@ -708,7 +699,7 @@
                         if (this.excerpt == null) {
                             this.excerpt = '';
                         }
-                        //Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.addy + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
+                        Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.addy + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
                         var targetArr = this.addy.split(CGMPGlobal.sep);
                         targetArr[0] = this.location;
                         addGeoPoint(index, targetArr, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
@@ -727,7 +718,7 @@
                         storeAddress(index, targetArr, '', '', '', false);
                     } else {
                         storeAddress(index, targetArr, '', '', '', false);
-                        //Logger.warn("Unknown type of geo destination in regexp: " + targetArr[0] + ", fallingback to store it as an address");
+                        Logger.warn("Unknown type of geo destination in regexp: " + targetArr[0] + ", fallingback to store it as an address");
                     }
                 }
 
@@ -740,13 +731,14 @@
                     } else {
                         targetArr[2] = '';
                     }
-                    //Logger.info("Storing address: " + targetArr[0] + " for marker-to-be for the map ID: " + mapDivId);
+                    Logger.info("Storing address: " + targetArr[0] + " for marker-to-be for the map ID: " + mapDivId);
                     storedAddresses.push({
                         address: targetArr[0],
                         animation: google.maps.Animation.DROP,
                         zIndex: zIndex,
                         markerIcon: targetArr[1],
                         customBubbleText: targetArr[2],
+                        markerHoverText: '',
                         postTitle: postTitle,
                         postLink: postLink,
                         postExcerpt: postExcerpt,
@@ -764,7 +756,7 @@
                     }
 
                     if (latlngArr.length == 0) {
-                        //Logger.warn("Exploded lat/long array has length of zero");
+                        Logger.warn("Exploded lat/long array has length of zero");
                         return false;
                     }
 
@@ -772,7 +764,7 @@
                     latlngArr[1] = Utils.trim(latlngArr[1]);
 
                     if (latlngArr[0] == '' || latlngArr[1] == '') {
-                        //Logger.warn("Lat or Long are empty string");
+                        Logger.warn("Lat or Long are empty string");
                         return false;
                     }
 
@@ -786,11 +778,11 @@
                         var element = storedAddresses.shift();
 
                         if (element.address instanceof google.maps.LatLng) {
-                            //Logger.info("No need to query Geo service for [" + element.address + "]. Have left " + storedAddresses.length + " items to process!");
+                            Logger.info("No need to query Geo service for [" + element.address + "]. Have left " + storedAddresses.length + " items to process!");
                             buildLocationFromCoords(element);
                             //setBounds();
                         } else {
-                            //Logger.info("Passing [" + element.address + "] to Geo service. Have left " + storedAddresses.length + " items to process!");
+                            Logger.info("Passing [" + element.address + "] to Geo service. Have left " + storedAddresses.length + " items to process!");
                             var geocoderRequest = {
                                 "address": element.address
                             };
@@ -850,8 +842,9 @@
 
                 function buildLocationFromCoords(element) {
                     var addressPoint = element.address;
-
-                    element.address = "Lat/Long: " + addressPoint.lat().toFixed(6) + ", " + addressPoint.lng().toFixed(6);
+                    var formattedAddress = addressPoint.lat().toFixed(6) + ", " + addressPoint.lng().toFixed(6);
+                    element.address = "Lat/Long: " + formattedAddress;
+                    element.markerHoverText =  element.customBubbleText + formattedAddress;
                     instrumentMarker(addressPoint, element);
                     queryGeocoderService();
                 }
@@ -859,18 +852,21 @@
                 function geocoderCallback(results, status, element) {
                     if (status == google.maps.GeocoderStatus.OK) {
                         var addressPoint = results[0].geometry.location;
+                        element.markerHoverText =  element.customBubbleText + " (" + element.address + ")";
                         instrumentMarker(addressPoint, element);
                         timeout = setTimeout(function () {
                             queryGeocoderService();
                         }, 330);
                     } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        Logger.warn("GeocoderStatus.OVER_QUERY_LIMIT");
                         setBounds();
                         storedAddresses.push(element);
                         timeout = setTimeout(function () {
                             queryGeocoderService();
                         }, 3000);
                     } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        //Logger.warn("Got ZERO results for [" + element.address + "]. Have left " + markers.length + " items to process");
+                        Logger.warn("GeocoderStatus.ZERO_RESULTS");
+                        Logger.warn("Got ZERO results for [" + element.address + "]. Have left " + markers.length + " items to process");
                         badAddresses.push(element.address);
                         timeout = setTimeout(function () {
                             queryGeocoderService();
@@ -883,7 +879,7 @@
                 function instrumentMarker(point, element) {
                     var marker = new google.maps.Marker({
                         position: point,
-                        title: element.address.replace("<br />", " :: "),
+                        title: element.markerHoverText,
                         content: element.address,
                         zIndex: (element.zIndex + 1000),
                         map: googleMap
@@ -1236,8 +1232,6 @@
                 }
 
                 var trim = function trim(subject) {
-                    var leftTrimRegex = /^\s\s*/;
-                    var rightTrimRegex = /\s\s*$/;
                     var trimRegex = /^\s+|\s+$/g;
                     return subject.replace(trimRegex, '');
                 }
@@ -1367,7 +1361,7 @@
             })();
 
             if ($('object#global-data-placeholder').length == 0) {
-                //Logger.fatal("The global HTML <object> element is undefined. Aborting map generation .. d[-_-]b");
+                Logger.fatal("The global HTML <object> element is undefined. Aborting map generation .. d[-_-]b");
                 return;
             }
 
@@ -1391,17 +1385,17 @@
             var versionMinor = parseFloat($.fn.jquery.split(".")[1]);
             if ((versionMajor < 1) || (versionMajor >= 1 && versionMajor < 2 && versionMinor < 3)) {
                 alert(CGMPGlobal.errors.oldJquery);
-                //Logger.fatal("Client uses jQuery older than the version 1.3.0. Aborting map generation ..");
+                Logger.fatal("Client uses jQuery older than the version 1.3.0. Aborting map generation ..");
                 return false;
             }
 
             if (typeof google === "undefined" || !google) {
                 Errors.alertError(CGMPGlobal.errors.msgNoGoogle);
-                //Logger.fatal("We do not have reference to Google API. Aborting map generation ..");
+                Logger.fatal("We do not have reference to Google API. Aborting map generation ..");
                 return false;
             } else if (typeof GMap2 !== "undefined" && GMap2) {
                 Errors.alertError(CGMPGlobal.errors.msgApiV2);
-                //Logger.fatal("It looks like the webpage has reference to GMap2 object from Google API v2. Aborting map generation ..");
+                Logger.fatal("It looks like the webpage has reference to GMap2 object from Google API v2. Aborting map generation ..");
                 return false;
             }
 
@@ -1425,7 +1419,7 @@
                     var json = parseJson(jsonString);
 
                     if (typeof json === "undefined" || !json) {
-                        //Logger.fatal("We did not parse JSON from OBJECT param. Aborting map generation ..");
+                        Logger.fatal("We did not parse JSON from OBJECT param. Aborting map generation ..");
                         return false;
                     }
 
@@ -1495,7 +1489,6 @@
                             }
 
                             var timer = null;
-
                             function resizeMapWhenParentVisible(parentTab) {
                                 if ($(parentTab).is(":visible")) {
                                     if (timer != null) {

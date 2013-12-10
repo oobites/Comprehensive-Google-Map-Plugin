@@ -2,9 +2,9 @@
 .powered-by a {color: #444444; cursor: pointer; font-weight: normal !important; text-decoration: underline; font-size: 10px !important; font-family: Arial,Helvetica,sans-serif; }
 .cgmp-directions-hint {display: block !important}
 .direction-controls-placeholder #d_close{background-color:#eee;height:20px;position:absolute;right:12px;top:-5px;width:20px}
-.direction-controls-placeholder #d_close .close{margin:5px;opacity:0.7px}
+.direction-controls-placeholder #d_close .close{margin:5px;opacity:0.7}
 .direction-controls-placeholder #d_close:hover{background-color:#ccc}
-.direction-controls-placeholder #d_close:hover .close{opacity:1px}
+.direction-controls-placeholder #d_close:hover .close{opacity:0.6}
 .direction-controls-placeholder .dir-tm{direction:ltr;margin:0 29px 0 44px}
 .direction-controls-placeholder .dir-tm .kd-button{min-width:50px;padding:0;width:50px}
 .direction-controls-placeholder .dir-tm .kd-button:focus{-moz-transition:all 0 ease 0;border-color:#4D90FE;outline:medium none;z-index:2}
@@ -22,11 +22,11 @@
 .direction-controls-placeholder .kd-button-share{background-color:#3D9400;background-image:none;border:1px solid #29691D;color:#FFF;text-shadow:0 1px rgba(0, 0, 0, 0.1)}
 .direction-controls-placeholder .kd-button-share:hover{background-color:#368200;background-image:none;border:1px solid #2D6200;color:#FFF;text-shadow:0 1px rgba(0, 0, 0, 0.3)}
 .direction-controls-placeholder .ml-loading-img{background-image:url("assets/css/images/my_location_button_spinner.gif");height:10px !important;width:10px !important}
-.direction-controls-placeholder .dir-tm .kd-button img{opacity:0.667px;vertical-align:2px; display: inline !important}
-.direction-controls-placeholder .kd-button img{display:inline-block !important;margin:-3px 0 0;opacity:0.55px;vertical-align:middle}
+.direction-controls-placeholder .dir-tm .kd-button img{opacity:0.6;vertical-align:2px; display: inline !important}
+.direction-controls-placeholder .kd-button img{display:inline-block !important;margin:-3px 0 0;opacity:0.6;vertical-align:middle}
 .direction-controls-placeholder .dir-tm-d{background:url("assets/css/images/directions.png") no-repeat scroll 0 -96px transparent !important;height:12px !important;width:15px !important}
 .direction-controls-placeholder .dir-tm-w{background:url("assets/css/images/directions.png") no-repeat scroll 0 -489px transparent !important;height:16px !important;width:10px !important}
-.direction-controls-placeholder .close{background:url("assets/css/images/utilbuttons.png") no-repeat scroll -108px -26px transparent !important;height:10px !important;opacity:0.7px;overflow:hidden;width:10px !important}
+.direction-controls-placeholder .close{background:url("assets/css/images/utilbuttons.png") no-repeat scroll -108px -26px transparent !important;height:10px !important;opacity:0.7;overflow:hidden;width:9px !important}
 img{-moz-user-select:none;border:0 none;margin:0;padding:0}
 .direction-controls-placeholder .dir-reverse{background:url("assets/css/images/directions.png") no-repeat scroll -10px -489px transparent !important;height:12px !important;margin-top:-15px !important;width:10px !important}
 .direction-controls-placeholder .dir-clear{clear:both;font-size:1px;height:0;line-height:0}
@@ -36,7 +36,7 @@ img{-moz-user-select:none;border:0 none;margin:0;padding:0}
 .direction-controls-placeholder .d-hl .dir-wp-hl{background:none repeat scroll 0 0 #FFF1A8;border-radius:3px 3px 3px 3px}
 .direction-controls-placeholder .dir-wp .dir-m{height:24px;left:15px;position:absolute;top:5px;width:24px}
 .direction-controls-placeholder .dir-input{margin:0 3px 0 36px;padding:1px 6px;text-align:left}
-.direction-controls-placeholder .dir-input .wp{height:18px;line-height:16px;margin:-1px -6px;padding:3px 5px;width:95%}
+.direction-controls-placeholder .dir-input .wp{line-height:16px;margin:-1px -6px;padding:3px 5px;width:95%}
 .direction-controls-placeholder .wp:focus + .ml-input{background-color:#999;border-color:#7F7F7F;border-radius:1px 1px 1px 1px;color:#FFF;width:auto}
 .direction-controls-placeholder .kd-input-text{background-color:#FFF;border-color:silver #D9D9D9 #D9D9D9;border-radius:1px 1px 1px 1px;border-right:1px solid #D9D9D9;border-style:solid;border-width:1px;padding-left:8px}
 .direction-controls-placeholder .ml-input{background-color:#FFF;border:1px solid #FFF;color:#666;font-size:85%;font-weight:700;height:15px;left:46px;line-height:15px;padding:1px 6px;position:absolute;top:6px}
@@ -50,20 +50,20 @@ img{-moz-user-select:none;border:0 none;margin:0;padding:0}
 .direction-controls-placeholder #print_sub{height:22px;line-height:16px;margin:2px 0 0 125px;padding:2px 5px !important;position:absolute;text-transform:uppercase}
 .google-map-placeholder{border:1px solid #333}
 /** Override styles   */.google-map-placeholder img{background-color:transparent !important;margin:0 !important;max-height:none !important;max-width:none !important;padding:0 !important;visibility:inherit !important}
-.google-map-placeholder div{overflow:none !important}
+.google-map-placeholder div{overflow: none !important}
 .google-map-placeholder div.gmnoprint{right:none !important}
 /** Override styles   */.google-map-placeholder .bubble-content{font-family:Arial,Tahoma,Verdana !important;font-size:13px !important;line-height:160% !important;margin:0 !important;padding:0 !important}
 .google-map-placeholder .bubble-content h4{background:none !important;border:none !important;color:#111 !important;font-family:Arial,Tahoma,Verdana !important;font-size:14px !important;font-weight:700;line-height:120% !important;margin:0 0 8px !important;padding:0 !important;text-align:left !important}
 .google-map-placeholder .bubble-content p{color:#555;font-family:Arial,Tahoma,Verdana;font-size:13px;line-height:160%;margin:0;padding:0;text-align:left}
 .google-map-placeholder .bubble-content hr{background-color:#CCC !important;border:0 none !important;height:1px !important;margin-bottom:5px !important;margin-top:8px !important}
 .google-map-placeholder .bubble-content a{color:#1982D1 !important;font-weight:400;text-decoration:none !important}
-.google-map-placeholder .bubble-content p {margin-bottom:7px !important;}
+.google-map-placeholder .bubble-content p {color: #555 !important; margin-bottom:7px !important;}
 .google-map-placeholder .bubble-content p.custom-bubble-text{margin-bottom:5px !important;margin-top:5px !important}
 .google-map-placeholder .bubble-content p.geo-mashup-post-title a{font-size:15px !important;font-weight:700}
 .google-map-placeholder .bubble-content p.geo-mashup-post-excerpt{font-size:12px !important;line-height:130% !important;padding-left:6px !important;padding-right:0px !important}
 .direction-controls-placeholder{font-family:Arial,Tahoma,Verdana !important;font-size:12px !important;line-height:160% !important}
 .direction-controls-placeholder input{font-family:Arial,Tahoma,Verdana !important;font-size:12px !important;line-height:160% !important;margin:0 !important}
-.direction-controls-placeholder #d_options{color:#22222 !important}
+.direction-controls-placeholder #d_options{color:#222 !important}
 .direction-controls-placeholder #d_options input{width:5% !important}
 .direction-controls-placeholder input[type="text"]{box-shadow:none !important;color:#000 !important}
 .direction-controls-placeholder .d_error{background-color:#FFC0CB !important}

@@ -239,7 +239,7 @@
         "dbParameterId": "enablegeolocationmarker",
         "dbParameterName": "enablegeolocationmarker",
         "htmlInputElementType": "checkbox",
-        "htmlLabelValue": "Enable end-user's current GPS location on <b>mobile devices</b> by adding a Geo marker to the map",
+        "htmlLabelValue": "Enable end-user's current GPS location by adding a Geo marker to the map.<br /><b>This feature will function in browsers supporting the W3C Geolocation API.<br />This excludes Internet Explorer versions 8 and older.</b> ",
         "templateTokenNameSuffix": "enablegeolocationmarker"
     },
     {
