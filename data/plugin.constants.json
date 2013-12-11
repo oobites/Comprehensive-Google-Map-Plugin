@@ -30,6 +30,7 @@
     "CGMP_JSON_DATA_HTML_ELEMENTS_FORM_PARAMS" : "html.elements.form.params.json",
     "CGMP_JSON_DATA_HTML_GLOBAL_ERROR_MESSAGES" : "html.global.error.messages.json",
     "CGMP_NAME" : "cgmp",
+    "CGMP_NO_BUBBLE_DESC" : "No description provided",
     "CGMP_PLUGIN_ASSETS_DIR" : "CGMP_PLUGIN_DIR/assets",
     "CGMP_PLUGIN_ASSETS_URI" : "CGMP_PLUGIN_URIassets",
     "CGMP_PLUGIN_CSS" : "CGMP_PLUGIN_URIassets/css",

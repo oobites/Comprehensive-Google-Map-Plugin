@@ -298,9 +298,61 @@
                         queryGeocoderService();
 
                     } else if (isGeoMashap == null || isGeoMashap === "false") {
-                        parseCsv();
-                        queryGeocoderService();
+                        createGoogleMarkersFromCsvAddressData();
                     }
+                }
+
+                function createGoogleMarkersFromCsvAddressData() {
+                    var locations = csvString.split("|");
+
+                    Logger.info("Exploded CSV into locations: " + locations);
+                    for (var i = 0; i < locations.length; i++) {
+                        var target = locations[i];
+                        if (target != null && target != "") {
+                            // Will always be of size 4
+                            var targetArr = target.split(CGMPGlobal.sep);
+                            var userInputAddress = targetArr[0];
+                            var markerIcon = targetArr[1];
+                            var markerBubbleDescription = targetArr[2];
+                            var rawCoordinates = targetArr[3];
+
+                            if (markerBubbleDescription.indexOf(CGMPGlobal.noBubbleDescriptionProvided) != -1) {
+                                markerBubbleDescription = '';
+                            }
+                            Logger.info("Storing address: " + userInputAddress + " for marker-to-be for the map ID: " + mapDivId);
+                            var element = {
+                                address: userInputAddress,
+                                animation: google.maps.Animation.DROP,
+                                zIndex: (i + 1),
+                                markerIcon: markerIcon,
+                                customBubbleText: markerBubbleDescription,
+                                markerHoverText: markerBubbleDescription + " (" + userInputAddress + ")",
+                                postTitle: '',
+                                postLink: '',
+                                postExcerpt: '',
+                                geoMashup: false
+                            };
+
+                            var latlngArr = [];
+                            if (rawCoordinates.indexOf(",") != -1) {
+                                latlngArr = rawCoordinates.split(",");
+                            } else if (rawCoordinates.indexOf(";") != -1) {
+                                latlngArr = rawCoordinates.split(";");
+                            }
+                            latlngArr[0] = Utils.trim(latlngArr[0]);
+                            latlngArr[1] = Utils.trim(latlngArr[1]);
+
+                            if (latlngArr[0] === "" || latlngArr[1] === "") {
+                                Logger.warn("Lat or Long are empty string");
+                                return false;
+                            }
+
+                            var latLngPoint = new google.maps.LatLng(parseFloat(latlngArr[0]).toFixed(8), parseFloat(latlngArr[1]).toFixed(8));
+                            instrumentMarker(latLngPoint, element);
+                        }
+                    }
+
+                    setBounds();
                 }
 
                 function resetMap() {
@@ -679,23 +731,6 @@
                     };
                 }
 
-                function parseCsv() {
-                    var locations = csvString.split("|");
-
-                    Logger.info("Exploded CSV into locations: " + locations);
-                    for (var i = 0; i < locations.length; i++) {
-                        var target = locations[i];
-                        if (target != null && target != "") {
-                            target = Utils.trim(target);
-                            if (target == "") {
-                                Logger.warn("Given extra marker address is empty");
-                                continue;
-                            }
-                            pushGeoDestination(target, (i + 1));
-                        }
-                    }
-                }
-
                 function parseJsonStructure(json, infoBubbleContainPostLink) {
 
                     var index = 1;
@@ -712,19 +747,6 @@
                     Logger.info("Have " + (index - 1) + " destinations for marker Geo mashup..");
                 }
 
-                function pushGeoDestination(target, index) {
-
-                    var targetArr = target.split(CGMPGlobal.sep);
-
-                    if (Utils.isNumeric(targetArr[0])) {
-                        addGeoPoint(index, targetArr, '', '', '', false);
-                    } else if (Utils.isAlphaNumeric(targetArr[0])) {
-                        storeAddress(index, targetArr, '', '', '', false);
-                    } else {
-                        storeAddress(index, targetArr, '', '', '', false);
-                        Logger.warn("Unknown type of geo destination in regexp: " + targetArr[0] + ", fallingback to store it as an address");
-                    }
-                }
 
                 function storeAddress(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup) {
 
@@ -1380,6 +1402,7 @@
             head.appendChild(link);
 
             CGMPGlobal.sep = $("object#global-data-placeholder").find("param#sep").val();
+            CGMPGlobal.noBubbleDescriptionProvided = $("object#global-data-placeholder").find("param#noBubbleDescriptionProvided").val();
             CGMPGlobal.customMarkersUri = $("object#global-data-placeholder").find("param#customMarkersUri").val();
             CGMPGlobal.errors = $("object#global-data-placeholder").find("param#errors").val();
 
@@ -1489,18 +1512,18 @@
 
                             if ($(mapPlaceholder).is(":hidden")) {
                                 Logger.warn("Map placeholder DIV is hidden, must resize the map!");
-                                resizeMapWhenPlaceholderHidden();
+                                resizeMapWhenPlaceholderBecomesVisible();
                             } else {
                                 // Just to be on a safe side lets resize
                                 setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
                             }
 
-                            function resizeMapWhenPlaceholderHidden() {
+                            function resizeMapWhenPlaceholderBecomesVisible() {
                                 if (timeout != null) {
                                     clearTimeout(timeout);
                                 }
                                 if ($(mapPlaceholder).is(":hidden")) {
-                                    timeout = setTimeout(resizeMapWhenPlaceholderHidden, timeoutDelay);
+                                    timeout = setTimeout(resizeMapWhenPlaceholderBecomesVisible, timeoutDelay);
                                 } else {
                                     setTimeout(function () {resize_map(googleMap);}, timeoutDelay);
                                 }

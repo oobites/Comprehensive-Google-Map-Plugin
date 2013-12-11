@@ -92,7 +92,6 @@ if ( !function_exists('cgmp_geocode_address') ):
       $server_api = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=";
       $full_server_api = $server_api.urlencode($address_to_geocode);
 
-      $results = array();
       $json_response = FALSE;
       if (function_exists('curl_init')) {
          $c = curl_init();
@@ -104,6 +103,7 @@ if ( !function_exists('cgmp_geocode_address') ):
          $json_response = file_get_contents($full_server_api);
       }
 
+      $results = array();
       if ($json_response) {
          $json = json_decode($json_response, true);
          if ($json['status'] == 'OK') {
@@ -1029,6 +1029,36 @@ function cgmp_do_serverside_address_validation($geomashup_locations) {
    }
    return $validated_addresses;
 }
+endif;
+
+if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
+    function cgmp_do_serverside_address_validation_2($market_list) {
+
+        $splitted_marker_list = explode("|", $market_list);
+
+        $validated_addresses = array();
+        foreach($splitted_marker_list as $marker_data_with_cgmp_sep) {
+
+            $marker_data_segments = explode(CGMP_SEP, $marker_data_with_cgmp_sep);
+            $address = $marker_data_segments[0];
+            $icon = isset($marker_data_segments[1]) && trim($marker_data_segments[1]) != "" ? CGMP_SEP.$marker_data_segments[1] : CGMP_SEP."1-default.png";
+            $description = isset($marker_data_segments[2]) && trim($marker_data_segments[2]) != "" ? CGMP_SEP.$marker_data_segments[2] : CGMP_SEP.CGMP_NO_BUBBLE_DESC;
+
+            if (preg_match('/[a-zA-Z]/', $address) !== 0) {
+                $result_from_google = cgmp_geocode_address($address);
+                if ($result_from_google && is_array($result_from_google)) {
+                    $formatted_address = $result_from_google['formatted_address'];
+                    $lat = $result_from_google['location']['lat'];
+                    $lng = $result_from_google['location']['lng'];
+                    $location = $lat.",".$lng;
+                    $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$location;
+                }
+            } else {
+                $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;
+            }
+        }
+        return implode("|", $validated_addresses);
+    }
 endif;
 
 ?>

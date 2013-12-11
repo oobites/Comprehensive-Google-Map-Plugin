@@ -79,7 +79,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		$id = md5(time().' '.rand());
 		$map_data_properties['id'] = $id;
-		$map_data_properties['markerlist'] = $addmarkerlisthidden;
+		$map_data_properties['markerlist'] = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
 		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
 		$map_data_properties['enablegeolocationmarker'] = $enablegeolocationmarkerhidden;
 		$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
