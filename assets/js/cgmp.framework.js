@@ -133,7 +133,7 @@
                 }
 
                 var buildPanoramioLayer = function buildPanoramioLayer(userId) {
-                    if (typeof google.maps.panoramio == "undefined" || !google.maps.panoramio || google.maps.panoramio == null) {
+                    if (typeof google.maps.panoramio === "undefined" || !google.maps.panoramio || google.maps.panoramio == null) {
                         Logger.error("We cannot access Panoramio library. Aborting..");
                         return false;
                     }
@@ -222,27 +222,11 @@
             var MarkerBuilder = function () {
                 var markers, storedAddresses, badAddresses, defaultUnits, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
                 var geolocationMarker = null;
-                var init = function init(map, autoPan, units, enableGeoLocation) {
+                var init = function init(map, autoPan, units) {
                     googleMap = map;
                     mapDivId = googleMap.getDiv().id;
                     bubbleAutoPan = autoPan;
                     defaultUnits = units;
-
-                    if (enableGeoLocation === "true") {
-                        geolocationMarker = new GeolocationMarker();
-
-                        google.maps.event.addListener(geolocationMarker, 'position_changed', function () {
-                            googleMap.setCenter(this.getPosition());
-                            googleMap.fitBounds(this.getBounds());
-                        });
-
-                        google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
-                            Logger.error('There was an error obtaining your position. Message: ' + e.message);
-                        });
-                        geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 6000, maximumAge: 0});
-                        geolocationMarker.setMap(googleMap);
-                    }
-
                     google.maps.event.addListener(googleMap, 'click', function () {
                         resetMap();
                     });
@@ -272,6 +256,25 @@
                     };
                     directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
                     directionsRenderer.setPanel(document.getElementById('rendered-directions-placeholder-' + mapDivId));
+                }
+
+                var setGeoLocationIfEnabled = function setGeoLocationIfEnabled(enableGeoLocation) {
+                    if (enableGeoLocation === "true") {
+                        geolocationMarker = new GeolocationMarker();
+
+                        google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
+                            googleMap.setCenter(this.getPosition());
+                            googleMap.fitBounds(this.getBounds());
+                        });
+
+                        google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
+                            alert('There was an error creating Geolocation marker: ' + e.message + "\n\nProceeding with normal map generation..");
+                            Logger.error('There was an error obtaining your position. Message: ' + e.message);
+                            geolocationMarker = null; // Makes sure that the map is rendered when there was a problem with Geo marker
+                        });
+                        geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 6000, maximumAge: 0});
+                        geolocationMarker.setMap(googleMap);
+                    }
                 }
 
                 var isBuildAddressMarkersCalled = function isBuildAddressMarkersCalled() {
@@ -359,7 +362,8 @@
 
                     addy = addy.replace("Lat/Long: ", "");
 
-                    var geoMarkerPosition = geolocationMarker == null ? '' : geolocationMarker.getPosition();
+                    var isGeolocationMarker = geolocationMarker == null ? false : true;
+                    var geoMarkerPosition = isGeolocationMarker == false || geolocationMarker.getPosition() == null ? '' : geolocationMarker.getPosition();
                     $(document).on("click", parentInfoBubble + ' a.dirToHereTrigger', function () {
                         var thisId = this.id;
                         if (thisId === 'toHere-' + localBubbleData.bubbleHolderId) {
@@ -808,7 +812,7 @@
 
                 function setBounds() {
                     var fitToBounds = false;
-                    var isGeolocationMarker = geolocationMarker != null ? true : false;
+                    var isGeolocationMarker = geolocationMarker == null ? false : true;
                     if (markers.length > 1) {
                         $.each(markers, function (index, marker) {
                             if (!bounds.contains(marker.position)) {
@@ -830,11 +834,12 @@
                     if (fitToBounds) {
                         if (isGeolocationMarker) {
                             if (geolocationMarker.getPosition() != null) {
+                                Logger.info("Extended bounds with Geo marker position: " + geolocationMarker.getPosition());
                                 bounds.extend(geolocationMarker.getPosition());
                             }
                         }
                         originalExtendedBounds = bounds;
-                        if (!isGeolocationMarker && bounds != null) {
+                        if (bounds != null) {
                             googleMap.fitBounds(bounds);
                         }
                     }
@@ -1214,6 +1219,7 @@
 
                 return {
                     init: init,
+                    setGeoLocationIfEnabled: setGeoLocationIfEnabled,
                     buildAddressMarkers: buildAddressMarkers,
                     isBuildAddressMarkersCalled: isBuildAddressMarkersCalled
                 }
@@ -1431,7 +1437,8 @@
                         LayerBuilder.init(googleMap);
 
                         var markerBuilder = new MarkerBuilder();
-                        markerBuilder.init(googleMap, json.bubbleautopan, json.distanceunits, json.enablegeolocationmarker);
+                        markerBuilder.init(googleMap, json.bubbleautopan, json.distanceunits);
+                        markerBuilder.setGeoLocationIfEnabled(json.enablegeolocationmarker);
 
                         var controlOptions = {
                             mapTypeControl: (json.maptypecontrol === 'true'),
@@ -1476,29 +1483,34 @@
 
                         // An attempt to resolve a problem of Google Maps & jQuery Tabs
                         $(document).ready(function () {
+                            var timeout = null;
+                            var timeoutDelay = 500;
                             var mapPlaceholder = 'div#' + json.id;
+                            var parentTab = $(mapPlaceholder).closest('.ui-tabs-panel');
                             if ($(mapPlaceholder).children().length > 0) {
-                                if ($(mapPlaceholder).closest('.ui-tabs-panel').length > 0) {
-                                    var parentTab = $(mapPlaceholder).closest('.ui-tabs-panel');
-                                    resizeMapWhenParentVisible(parentTab);
+                                if (parentTab != null && typeof parentTab !== "undefined") {
+                                    Logger.warn("Is parent jQuery TAB around map DIV visible: " + $(parentTab).is(":visible"));
+
+                                    if ($(parentTab).is(":visible")) {
+                                        // Just to be on a safe side lets resize
+                                        setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
+                                    } else {
+                                        resizeMapWhenParentVisible();
+                                    }
                                 } else {
-                                    setTimeout(function () {
-                                        resize_map(googleMap);
-                                    }, 2000);
+                                    // Just to be on a safe side lets resize
+                                    setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
                                 }
                             }
 
-                            var timer = null;
-                            function resizeMapWhenParentVisible(parentTab) {
+                            function resizeMapWhenParentVisible() {
+                                if (timeout != null) {
+                                    clearTimeout(timeout);
+                                }
                                 if ($(parentTab).is(":visible")) {
-                                    if (timer != null) {
-                                        clearTimeout(timer);
-                                    }
-                                    setTimeout(function () {
-                                        resize_map(googleMap);
-                                    }, 500);
+                                    setTimeout(function () {resize_map(googleMap);}, timeoutDelay);
                                 } else {
-                                    timer = setTimeout(resizeMapWhenParentVisible(parentTab), 1000);
+                                    timeout = setTimeout(resizeMapWhenParentVisible, timeoutDelay);
                                 }
                             }
 
