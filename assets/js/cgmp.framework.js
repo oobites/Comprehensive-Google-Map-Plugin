@@ -1486,31 +1486,23 @@
                             var timeout = null;
                             var timeoutDelay = 500;
                             var mapPlaceholder = 'div#' + json.id;
-                            var parentTab = $(mapPlaceholder).closest('.ui-tabs-panel');
-                            if ($(mapPlaceholder).children().length > 0) {
-                                if (parentTab != null && typeof parentTab !== "undefined") {
-                                    Logger.warn("Is parent jQuery TAB around map DIV visible: " + $(parentTab).is(":visible"));
 
-                                    if ($(parentTab).is(":visible")) {
-                                        // Just to be on a safe side lets resize
-                                        setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
-                                    } else {
-                                        resizeMapWhenParentVisible();
-                                    }
-                                } else {
-                                    // Just to be on a safe side lets resize
-                                    setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
-                                }
+                            if ($(mapPlaceholder).is(":hidden")) {
+                                Logger.warn("Map placeholder DIV is hidden, must resize the map!");
+                                resizeMapWhenPlaceholderHidden();
+                            } else {
+                                // Just to be on a safe side lets resize
+                                setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
                             }
 
-                            function resizeMapWhenParentVisible() {
+                            function resizeMapWhenPlaceholderHidden() {
                                 if (timeout != null) {
                                     clearTimeout(timeout);
                                 }
-                                if ($(parentTab).is(":visible")) {
-                                    setTimeout(function () {resize_map(googleMap);}, timeoutDelay);
+                                if ($(mapPlaceholder).is(":hidden")) {
+                                    timeout = setTimeout(resizeMapWhenPlaceholderHidden, timeoutDelay);
                                 } else {
-                                    timeout = setTimeout(resizeMapWhenParentVisible, timeoutDelay);
+                                    setTimeout(function () {resize_map(googleMap);}, timeoutDelay);
                                 }
                             }
 
