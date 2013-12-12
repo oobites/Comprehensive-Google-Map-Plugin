@@ -92,26 +92,36 @@ if ( !function_exists('cgmp_geocode_address') ):
       $server_api = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=";
       $full_server_api = $server_api.urlencode($address_to_geocode);
 
+      $attempts = 0;
+      $results = array();
       $json_response = FALSE;
-      if (function_exists('curl_init')) {
-         $c = curl_init();
-         curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($c, CURLOPT_URL, $full_server_api);
-         $json_response = curl_exec($c);
-         curl_close($c);
-      } else {
-         $json_response = file_get_contents($full_server_api);
+      while ($attempts < 5) {
+          if (function_exists('curl_init')) {
+             $c = curl_init();
+             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+             curl_setopt($c, CURLOPT_URL, $full_server_api);
+             $json_response = curl_exec($c);
+             curl_close($c);
+          } else {
+             $json_response = file_get_contents($full_server_api);
+          }
+
+          if ($json_response) {
+             $json = json_decode($json_response, true);
+             if ($json['status'] == 'OK') {
+                $results['location'] = $json['results'][0]['geometry']['location'];
+                $results['formatted_address'] = $json['results'][0]['formatted_address'];
+                break;
+             } else {
+                 $attempts++;
+                 usleep(CGMP_GEOSERVICE_THROTTLING_IN_MICROS); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+             }
+          } else {
+              $attempts++;
+              usleep(CGMP_GEOSERVICE_THROTTLING_IN_MICROS); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+          }
       }
 
-      $results = array();
-      if ($json_response) {
-         $json = json_decode($json_response, true);
-         if ($json['status'] == 'OK') {
-            $results['location'] = $json['results'][0]['geometry']['location'];
-            $results['formatted_address'] = $json['results'][0]['formatted_address'];
-            return $results;
-         }
-      }
       return $results;                                     
    }                                                                                                                    
 endif;
@@ -823,6 +833,8 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
                 $markers = $post_data['markers'];
                 $excerpt = $post_data['excerpt'];
 
+                $bad_entities = array("&quot;", "&#039;", "'", "\"");
+                $bad_characters = array("\r\n", "\r", "\n", "<br>", "<BR>", "<br />", "<BR />");
                 foreach($markers as $full_loc) {
 
                     $tobe_filtered_loc = $full_loc;
@@ -830,12 +842,10 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
                         $loc_arr = explode(CGMP_SEP, $full_loc);
                         $tobe_filtered_loc = $loc_arr[0];
                     }
-                    $tobe_filtered_loc = trim($tobe_filtered_loc);
+                    $tobe_filtered_loc = str_replace($bad_entities, "", str_replace($bad_characters, " ", $tobe_filtered_loc));
                     if (!isset($filtered[$tobe_filtered_loc])) {
                         $filtered[$tobe_filtered_loc]['validated_address_csv_data'] = cgmp_do_serverside_address_validation_2($full_loc);
                         $filtered[$tobe_filtered_loc]['permalink'] = $permalink;
-
-                        $bad_entities = array("&quot;", "&#039;", "'", "\"");
 
                         if (isset($title) &&  trim($title) != "")  {
                             $title = str_replace($bad_entities, "", $title);
@@ -843,7 +853,7 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
                         }
                         $filtered[$tobe_filtered_loc]['title'] = $title;
                         if (isset($excerpt) &&  trim($excerpt) != "") {
-                            $excerpt = str_replace($bad_entities, "", $excerpt);
+                            $excerpt = str_replace($bad_entities, "", str_replace($bad_characters, " ", $excerpt));
                             $excerpt = trim($excerpt);
                         }
 
@@ -859,11 +869,16 @@ endif;
 
 
 if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
-    function cgmp_do_serverside_address_validation_2($market_list) {
+    function cgmp_do_serverside_address_validation_2($markers_data) {
 
-        $splitted_marker_list = explode("|", $market_list);
+        $bad_entities = array("&quot;", "&#039;", "'", "\"");
+        $bad_characters = array("\r\n", "\r", "\n", "<br>", "<BR>", "<br />", "<BR />");
+        $markers_data = str_replace($bad_entities, "", str_replace($bad_characters, " ", $markers_data));
+
+        $splitted_marker_list = explode("|", $markers_data);
 
         $validated_addresses = array();
+        $google_request_counter = 0;
         foreach($splitted_marker_list as $marker_data_with_cgmp_sep) {
 
             $marker_data_segments = explode(CGMP_SEP, $marker_data_with_cgmp_sep);
@@ -875,15 +890,28 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                 $result_from_google = cgmp_geocode_address($address);
 
                 if ($result_from_google && is_array($result_from_google)) {
-                    $formatted_address = $result_from_google['formatted_address'];
                     $lat = $result_from_google['location']['lat'];
                     $lng = $result_from_google['location']['lng'];
                     $location = $lat.",".$lng;
                     $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$location;
+                } else {
+                    // cgmp_geocode_address() returned an empty array, most probably some unhandled error received from Google geo service
                 }
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;
             }
+            $google_request_counter++;
+
+            // Some basic throttling...
+            if ($google_request_counter == 10) {
+                $google_request_counter = 0;
+                usleep(CGMP_GEOSERVICE_THROTTLING_IN_MICROS); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+            } else {
+                // https://developers.google.com/maps/documentation/business/articles/usage_limits
+                // Google allows a rate limit or 10 QPS (queries per second), checked on 11/December/2013 using above link
+                usleep(100000); //wait 100k microseconds (or 100 milliseconds) between each request
+            }
+
         }
         return implode("|", $validated_addresses);
     }

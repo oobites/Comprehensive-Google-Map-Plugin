@@ -289,7 +289,6 @@
 
                     if (isGeoMashap === "true") {
                         var json = parseJson(csvString);
-
                         if (isBubbleContainsPostLink === "true") {
                             createGoogleMarkersFromGeomashupJson(json, true);
                         } else if (isBubbleContainsPostLink === "false") {
@@ -307,7 +306,10 @@
                         if (this.excerpt == null) {
                             this.excerpt = '';
                         }
-                        //Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.validated_address + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
+                        if (typeof this.validated_address_csv_data === "undefined" || this.validated_address_csv_data === "") {
+                            Logger.error("Validated address on page: " + this.permalink + " returned empty, perhaps OVER_QUERY_LIMIT when validating on the server..");
+                        }
+
                         createGoogleMarkersFromCsvAddressData(this.validated_address_csv_data, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink, true);
                         index++;
                     });
@@ -315,8 +317,11 @@
                 }
 
                 function createGoogleMarkersFromCsvAddressData(csvString, postTitle, postLink, postExcerpt, infoBubbleContainPostLink, geoMashup) {
-                    var locations = csvString.split("|");
+                    if (typeof csvString === "undefined" || csvString === "") {
+                        Logger.fatal("Not parsing empty validated address csv data.. Skipping");
+                    }
 
+                    var locations = csvString.split("|");
                     Logger.info("CGMP CSV: " + locations);
                     for (var i = 0; i < locations.length; i++) {
                         var target = locations[i];

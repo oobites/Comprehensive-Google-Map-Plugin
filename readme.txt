@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.6
 Tested up to: 3.7.1
-Stable tag: 8.0.6
+Stable tag: 9.0.0
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -93,10 +93,10 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 
 == Changelog ==
 
-= 8.0.6 =
+= 9.0.0 =
 * Enhancement: Doing server side geo address validation using Google's service to reduce the work on the client side
 * Enhancement: Revisited GeoMashup functionality
-* Bug: Markers were disappearing from the map when GeoMashup was enabled
+* Bug: Markers were disappearing in GeoMashup as a result of Google's geo service returning OVER_QUERY_LIMIT during address validation when too many requests per second were sent. Some basic request throttling and retry mechanism have been put in place to remedy requests-per-second
 
 = 8.0.5.1 =
 * Enhancement: Revisited workaround of the conflict between the plugin and jQuery tabs. Now resizing the map the moment placeholder DIV is not hidden
