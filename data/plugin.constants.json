@@ -1,10 +1,12 @@
-[ { "CGMP_DB_OPTION_NAME" : "cgmp_marker_locations",
+[ {
     "CGMP_DB_POST_COUNT" : "cgmp_total_published_posts",
     "CGMP_DB_PUBLISHED_POST_MARKERS" : "cgmp_published_post_markers",
 	"CGMP_DB_PUBLISHED_POST_IDS" : "cgmp_published_post_ids",
 	"CGMP_DB_PUBLISHED_PAGE_IDS" : "cgmp_published_page_ids",
 	"CGMP_DB_GEOMASHUP_CONTENT" : "cgmp_geomashup_content",
 	"CGMP_DB_PURGE_GEOMASHUP_CACHE" : "cgmp_purge_geomashup_cache",
+
+
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
 	"CGMP_DB_SETTINGS_CUSTOM_POST_TYPES" : "cgmp_settings_custom_post_types",
@@ -42,5 +44,5 @@
     "CGMP_PLUGIN_INCLUDE_DIR" : "CGMP_PLUGIN_DIR/include",
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
-    "CGMP_VERSION" : "8.0.5.1"
+    "CGMP_VERSION" : "8.0.6"
   } ]

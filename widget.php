@@ -68,7 +68,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$addmarkermashuphidden = isset($addmarkermashuphidden) ? $addmarkermashuphidden : "false";
         $enablegeolocationmarkerhidden = isset($enablegeolocationmarkerhidden) ? $enablegeolocationmarkerhidden : "false";
 		if ($addmarkermashuphidden == "true") {
-			$addmarkerlisthidden = make_marker_geo_mashup();
+			$addmarkerlisthidden = make_marker_geo_mashup_2();
 		} else if ($addmarkermashuphidden == "false") {
 			$addmarkerlisthidden = update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $addmarkerlisthidden);
 			$addmarkerlisthidden = htmlspecialchars($addmarkerlisthidden);
@@ -79,7 +79,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		$id = md5(time().' '.rand());
 		$map_data_properties['id'] = $id;
-		$map_data_properties['markerlist'] = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
+        $map_data_properties['markerlist'] = $addmarkermashuphidden == 'true' ? $addmarkerlisthidden : cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
 		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
 		$map_data_properties['enablegeolocationmarker'] = $enablegeolocationmarkerhidden;
 		$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);

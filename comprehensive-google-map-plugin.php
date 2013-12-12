@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 8.0.5.1
+Version: 8.0.6
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -64,7 +64,6 @@ endif;
 if ( !function_exists('cgmp_register_hooks') ):
 	function cgmp_register_hooks() {
 		register_activation_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_activate_hook');
-		register_deactivation_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_deactivation_hook');
 		register_uninstall_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_uninstall_hook');
 	}
 endif;
@@ -82,8 +81,6 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('admin_menu', 'cgmp_google_map_plugin_menu');
 		add_action('widgets_init', create_function('', 'return register_widget("ComprehensiveGoogleMap_Widget");'));
 		add_action('wp_head', 'cgmp_google_map_deregister_scripts', 200);
-		add_action('publish_post', 'cgmp_publish_post_hook' );
-		add_action('publish_page', 'cgmp_publish_page_hook' );
 	}
 endif;
 
@@ -104,19 +101,14 @@ if ( !function_exists('cgmp_init_db_settings') ):
 	function cgmp_init_db_settings() {
 		$current_theme_name = wp_get_theme();
 
-		$problematic_themes = array("mingle");
+		$problematic_themes = array("mingle", "skeleton", "skeletonplus", "super-skeleton", "super-skeleton-child");
 		//Extremly ugly hack. Some theme developers do some funky stuff with footer calls in their themes, 
 		//which messes things up, while working normally in other themes
 		if (in_array(strtolower($current_theme_name), $problematic_themes)) {
 
-			$should_base_object_render = get_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER);
-			$was_base_object_rendered = get_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
-
-			if ($should_base_object_render == trim("false") && $was_base_object_rendered == trim("true")) {
-				update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "true");
-				update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
-				add_action('wp_footer', 'cgmp_google_map_init_scripts');
-			}
+            update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "true");
+            update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
+            add_action('wp_footer', 'cgmp_google_map_init_scripts');
 
 		} else {
 			//Makes sure that there are no plugin scripts in the footer of the page that does not have a shortcode or widget

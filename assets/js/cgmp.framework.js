@@ -291,21 +291,33 @@
                         var json = parseJson(csvString);
 
                         if (isBubbleContainsPostLink === "true") {
-                            parseJsonStructure(json, true);
+                            createGoogleMarkersFromGeomashupJson(json, true);
                         } else if (isBubbleContainsPostLink === "false") {
-                            parseJsonStructure(json, false);
+                            createGoogleMarkersFromGeomashupJson(json, false);
                         }
-                        queryGeocoderService();
-
                     } else if (isGeoMashap == null || isGeoMashap === "false") {
-                        createGoogleMarkersFromCsvAddressData();
+                        createGoogleMarkersFromCsvAddressData(csvString, '', '', '', false, false);
                     }
+                    setBounds();
                 }
 
-                function createGoogleMarkersFromCsvAddressData() {
+                function createGoogleMarkersFromGeomashupJson(json, infoBubbleContainPostLink) {
+                    var index = 1;
+                    $.each(json, function () {
+                        if (this.excerpt == null) {
+                            this.excerpt = '';
+                        }
+                        //Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.validated_address + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
+                        createGoogleMarkersFromCsvAddressData(this.validated_address_csv_data, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink, true);
+                        index++;
+                    });
+                    Logger.info("Have " + (index - 1) + " destinations for marker Geo mashup..");
+                }
+
+                function createGoogleMarkersFromCsvAddressData(csvString, postTitle, postLink, postExcerpt, infoBubbleContainPostLink, geoMashup) {
                     var locations = csvString.split("|");
 
-                    Logger.info("Exploded CSV into locations: " + locations);
+                    Logger.info("CGMP CSV: " + locations);
                     for (var i = 0; i < locations.length; i++) {
                         var target = locations[i];
                         if (target != null && target != "") {
@@ -319,7 +331,7 @@
                             if (markerBubbleDescription.indexOf(CGMPGlobal.noBubbleDescriptionProvided) != -1) {
                                 markerBubbleDescription = '';
                             }
-                            Logger.info("Storing address: " + userInputAddress + " for marker-to-be for the map ID: " + mapDivId);
+
                             var element = {
                                 address: userInputAddress,
                                 animation: google.maps.Animation.DROP,
@@ -327,10 +339,11 @@
                                 markerIcon: markerIcon,
                                 customBubbleText: markerBubbleDescription,
                                 markerHoverText: markerBubbleDescription + " (" + userInputAddress + ")",
-                                postTitle: '',
-                                postLink: '',
-                                postExcerpt: '',
-                                geoMashup: false
+                                postTitle: postTitle,
+                                postLink: postLink,
+                                postExcerpt: postExcerpt,
+                                infoBubbleContainPostLink: infoBubbleContainPostLink,
+                                geoMashup: geoMashup
                             };
 
                             var latlngArr = [];
@@ -348,11 +361,97 @@
                             }
 
                             var latLngPoint = new google.maps.LatLng(parseFloat(latlngArr[0]).toFixed(8), parseFloat(latlngArr[1]).toFixed(8));
+                            Logger.info("Have marker to instrument for: " + userInputAddress + " for location: " + latLngPoint);
+
                             instrumentMarker(latLngPoint, element);
                         }
                     }
+                }
 
-                    setBounds();
+                function instrumentMarker(point, element) {
+                    var marker = new google.maps.Marker({
+                        position: point,
+                        title: element.markerHoverText,
+                        content: element.address,
+                        zIndex: (element.zIndex + 1000),
+                        map: googleMap
+                    });
+                    if (marker) {
+                        Logger.info("Marker instrumented for: " + element.address + " for location: " + point);
+                        if (element.markerIcon) {
+                            var markerIcon = element.markerIcon;
+                            if (typeof markerIcon == "undefined" || markerIcon === "undefined") {
+                                markerIcon = '1-default.png';
+                            }
+                            marker.setIcon(CGMPGlobal.customMarkersUri + markerIcon);
+
+                            var shadow = null;
+                            var defaultMarkers = ['1-default.png', '2-default.png'];
+                            var defaultPins = ['4-default.png', '5-default.png', '6-default.png', '7-default.png'];
+
+                            if ($.inArray(markerIcon, defaultMarkers) != -1) {
+                                var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
+                                shadow = buildMarkerImage(url, 59, 32, 0, 0, 16, 33);
+                            } else if ($.inArray(markerIcon, defaultPins) != -1) {
+                                var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
+                                shadow = buildMarkerImage(url, 59, 32, 0, 0, 21, 34);
+                            } else if (markerIcon.indexOf('3-default') != -1) {
+                                var url = CGMPGlobal.customMarkersUri + "beachflag_shadow.png";
+                                shadow = buildMarkerImage(url, 37, 32, 0, 0, 10, 33);
+                            } else {
+                                shadow = buildMarkerImage(CGMPGlobal.customMarkersUri + "shadow.png", 68, 37, 0, 0, 32, 38);
+                            }
+
+                            marker.setShadow(shadow);
+                        }
+
+                        attachEventlistener(marker, element);
+                        if (!directionControlsBinded) {
+                            bindDirectionControlsToEvents();
+                            directionControlsBinded = true;
+                        }
+
+                        markers.push(marker);
+                    }
+                }
+
+                function buildMarkerImage(url, sizeX, sizeY, pointAX, pointAY, pointBX, pointBY) {
+                    return new google.maps.MarkerImage(url, new google.maps.Size(sizeX, sizeY), new google.maps.Point(pointAX, pointAY), new google.maps.Point(pointBX, pointBY));
+                }
+
+                function setBounds() {
+                    var fitToBounds = false;
+                    var isGeolocationMarker = geolocationMarker == null ? false : true;
+                    if (markers.length > 1) {
+                        $.each(markers, function (index, marker) {
+                            if (!bounds.contains(marker.position)) {
+                                bounds.extend(marker.position);
+                            }
+                        });
+                        fitToBounds = true;
+                    } else if (markers.length == 1) {
+                        if (isGeolocationMarker) {
+                            bounds.extend(markers[0].position);
+                            fitToBounds = true;
+                        } else {
+                            googleMap.setCenter(markers[0].position);
+                            updatedZoom = googleMap.getZoom();
+                            originalMapCenter = googleMap.getCenter();
+                        }
+                    }
+
+                    if (fitToBounds) {
+                        if (isGeolocationMarker) {
+                            if (geolocationMarker.getPosition() != null) {
+                                Logger.info("Extended bounds with Geo marker position: " + geolocationMarker.getPosition());
+                                bounds.extend(geolocationMarker.getPosition());
+                            }
+                        }
+                        originalExtendedBounds = bounds;
+                        if (bounds != null) {
+                            googleMap.fitBounds(bounds);
+                        }
+                    }
                 }
 
                 function resetMap() {
@@ -397,7 +496,7 @@
                         $(dirDivId + ' button#print_sub').hide();
 
                         validateMarkerStreetViewExists(marker, localBubbleData, dirDivId);
-                        attachEventstoDirectionControls(marker, localBubbleData, dirDivId, targetDiv);
+                        attachDirectionControlsEvents(marker, localBubbleData, dirDivId, targetDiv);
 
                         infowindow.setContent(localBubbleData.bubbleContent);
                         infowindow.setOptions({
@@ -407,7 +506,7 @@
                     });
                 }
 
-                function attachEventstoDirectionControls(marker, localBubbleData, dirDivId, targetDiv) {
+                function attachDirectionControlsEvents(marker, localBubbleData, dirDivId, targetDiv) {
 
                     var parentInfoBubble = 'div#bubble-' + localBubbleData.bubbleHolderId;
                     var addy = marker.content;
@@ -708,7 +807,7 @@
                     randomNumber = randomNumber + "-" + mapDivId;
 
                     var bubble = "<div id='bubble-" + randomNumber + "' style='height: 130px !important; width: 300px !important;' class='bubble-content'>";
-                    if (!markersElement.geoMashup) {
+                    if ((!markersElement.geoMashup || (markersElement.geoMashup && !markersElement.infoBubbleContainPostLink))) {
                         bubble += "<h4>" + CGMPGlobal.translations.address + ":</h4>";
                         bubble += "<p class='custom-bubble-text'>" + contentFromMarker + "</p>";
                         if (markersElement.customBubbleText != '') {
@@ -731,228 +830,6 @@
                     };
                 }
 
-                function parseJsonStructure(json, infoBubbleContainPostLink) {
-
-                    var index = 1;
-                    $.each(json, function () {
-                        if (this.excerpt == null) {
-                            this.excerpt = '';
-                        }
-                        Logger.info("Looping over JSON object:\n\tTitle: " + this.title + "\n\tAddy: " + this.addy + "\n\tLink: " + this.permalink + "\n\tExcerpt: " + this.excerpt);
-                        var targetArr = this.addy.split(CGMPGlobal.sep);
-                        targetArr[0] = this.location;
-                        addGeoPoint(index, targetArr, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink);
-                        index++;
-                    });
-                    Logger.info("Have " + (index - 1) + " destinations for marker Geo mashup..");
-                }
-
-
-                function storeAddress(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup) {
-
-                    if (targetArr[2] != null) {
-                        if (targetArr[2].indexOf("No description provided") != -1) {
-                            targetArr[2] = '';
-                        }
-                    } else {
-                        targetArr[2] = '';
-                    }
-                    Logger.info("Storing address: " + targetArr[0] + " for marker-to-be for the map ID: " + mapDivId);
-                    storedAddresses.push({
-                        address: targetArr[0],
-                        animation: google.maps.Animation.DROP,
-                        zIndex: zIndex,
-                        markerIcon: targetArr[1],
-                        customBubbleText: targetArr[2],
-                        markerHoverText: '',
-                        postTitle: postTitle,
-                        postLink: postLink,
-                        postExcerpt: postExcerpt,
-                        geoMashup: geoMashup
-                    });
-                }
-
-                function addGeoPoint(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup) {
-
-                    var latlngArr = [];
-                    if (targetArr[0].indexOf(",") != -1) {
-                        latlngArr = targetArr[0].split(",");
-                    } else if (targetArr[0].indexOf(";") != -1) {
-                        latlngArr = targetArr[0].split(";");
-                    }
-
-                    if (latlngArr.length == 0) {
-                        Logger.warn("Exploded lat/long array has length of zero");
-                        return false;
-                    }
-
-                    latlngArr[0] = Utils.trim(latlngArr[0]);
-                    latlngArr[1] = Utils.trim(latlngArr[1]);
-
-                    if (latlngArr[0] == '' || latlngArr[1] == '') {
-                        Logger.warn("Lat or Long are empty string");
-                        return false;
-                    }
-
-                    targetArr[0] = new google.maps.LatLng(parseFloat(latlngArr[0]), parseFloat(latlngArr[1]));
-                    storeAddress(zIndex, targetArr, postTitle, postLink, postExcerpt, geoMashup);
-                }
-
-                function queryGeocoderService() {
-                    clearTimeout(timeout);
-                    if (storedAddresses.length > 0) {
-                        var element = storedAddresses.shift();
-
-                        if (element.address instanceof google.maps.LatLng) {
-                            Logger.info("No need to query Geo service for [" + element.address + "]. Have left " + storedAddresses.length + " items to process!");
-                            buildLocationFromCoords(element);
-                            //setBounds();
-                        } else {
-                            Logger.info("Passing [" + element.address + "] to Geo service. Have left " + storedAddresses.length + " items to process!");
-                            var geocoderRequest = {
-                                "address": element.address
-                            };
-                            geocoder.geocode(geocoderRequest, function (results, status) {
-                                geocoderCallback(results, status, element);
-                            });
-                        }
-                    } else {
-
-                        setBounds();
-
-                        if (badAddresses.length > 0) {
-                            var msg = "";
-                            $.each(badAddresses, function (index, addy) {
-                                msg += "&nbsp;&nbsp;&nbsp;<b>" + (1 + index) + ". " + addy + "</b><br />";
-                            });
-
-                            Errors.alertError(CGMPGlobal.errors.badAddresses.replace('[REPLACE]', msg));
-                        }
-                        badAddresses = [];
-                    }
-                }
-
-                function setBounds() {
-                    var fitToBounds = false;
-                    var isGeolocationMarker = geolocationMarker == null ? false : true;
-                    if (markers.length > 1) {
-                        $.each(markers, function (index, marker) {
-                            if (!bounds.contains(marker.position)) {
-                                bounds.extend(marker.position);
-                            }
-                        });
-                        fitToBounds = true;
-                    } else if (markers.length == 1) {
-                        if (isGeolocationMarker) {
-                            bounds.extend(markers[0].position);
-                            fitToBounds = true;
-                        } else {
-                            googleMap.setCenter(markers[0].position);
-                            updatedZoom = googleMap.getZoom();
-                            originalMapCenter = googleMap.getCenter();
-                        }
-                    }
-
-                    if (fitToBounds) {
-                        if (isGeolocationMarker) {
-                            if (geolocationMarker.getPosition() != null) {
-                                Logger.info("Extended bounds with Geo marker position: " + geolocationMarker.getPosition());
-                                bounds.extend(geolocationMarker.getPosition());
-                            }
-                        }
-                        originalExtendedBounds = bounds;
-                        if (bounds != null) {
-                            googleMap.fitBounds(bounds);
-                        }
-                    }
-                }
-
-                function buildLocationFromCoords(element) {
-                    var addressPoint = element.address;
-                    var formattedAddress = addressPoint.lat().toFixed(6) + ", " + addressPoint.lng().toFixed(6);
-                    element.address = "Lat/Long: " + formattedAddress;
-                    element.markerHoverText =  element.customBubbleText + formattedAddress;
-                    instrumentMarker(addressPoint, element);
-                    queryGeocoderService();
-                }
-
-                function geocoderCallback(results, status, element) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        var addressPoint = results[0].geometry.location;
-                        element.markerHoverText =  element.customBubbleText + " (" + element.address + ")";
-                        instrumentMarker(addressPoint, element);
-                        timeout = setTimeout(function () {
-                            queryGeocoderService();
-                        }, 330);
-                    } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                        Logger.warn("GeocoderStatus.OVER_QUERY_LIMIT");
-                        setBounds();
-                        storedAddresses.push(element);
-                        timeout = setTimeout(function () {
-                            queryGeocoderService();
-                        }, 3000);
-                    } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        Logger.warn("GeocoderStatus.ZERO_RESULTS");
-                        Logger.warn("Got ZERO results for [" + element.address + "]. Have left " + markers.length + " items to process");
-                        badAddresses.push(element.address);
-                        timeout = setTimeout(function () {
-                            queryGeocoderService();
-                        }, 400);
-                    }
-
-                }
-
-
-                function instrumentMarker(point, element) {
-                    var marker = new google.maps.Marker({
-                        position: point,
-                        title: element.markerHoverText,
-                        content: element.address,
-                        zIndex: (element.zIndex + 1000),
-                        map: googleMap
-                    });
-                    if (marker) {
-
-                        if (element.markerIcon) {
-                            var markerIcon = element.markerIcon;
-                            if (typeof markerIcon == "undefined" || markerIcon === "undefined") {
-                                markerIcon = '1-default.png';
-                            }
-                            marker.setIcon(CGMPGlobal.customMarkersUri + markerIcon);
-
-                            var shadow = null;
-                            var defaultMarkers = ['1-default.png', '2-default.png'];
-                            var defaultPins = ['4-default.png', '5-default.png', '6-default.png', '7-default.png'];
-
-                            if ($.inArray(markerIcon, defaultMarkers) != -1) {
-                                var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
-                                shadow = buildMarkerImage(url, 59, 32, 0, 0, 16, 33);
-                            } else if ($.inArray(markerIcon, defaultPins) != -1) {
-                                var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
-                                shadow = buildMarkerImage(url, 59, 32, 0, 0, 21, 34);
-                            } else if (markerIcon.indexOf('3-default') != -1) {
-                                var url = CGMPGlobal.customMarkersUri + "beachflag_shadow.png";
-                                shadow = buildMarkerImage(url, 37, 32, 0, 0, 10, 33);
-                            } else {
-                                shadow = buildMarkerImage(CGMPGlobal.customMarkersUri + "shadow.png", 68, 37, 0, 0, 32, 38);
-                            }
-
-                            marker.setShadow(shadow);
-                        }
-
-                        attachEventlistener(marker, element);
-                        if (!directionControlsBinded) {
-                            bindDirectionControlsToEvents();
-                            directionControlsBinded = true;
-                        }
-
-                        markers.push(marker);
-                    }
-                }
-
-                function buildMarkerImage(url, sizeX, sizeY, pointAX, pointAY, pointBX, pointBY) {
-                    return new google.maps.MarkerImage(url, new google.maps.Size(sizeX, sizeY), new google.maps.Point(pointAX, pointAY), new google.maps.Point(pointBX, pointBY));
-                }
 
                 /*
                  * Licensed under the Apache License, Version 2.0 (the "License");

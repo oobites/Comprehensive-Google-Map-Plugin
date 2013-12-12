@@ -62,7 +62,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 
 			$addmarkerlist = strip_tags($addmarkerlist);
 			if ($addmarkermashup == 'true') {
-				$addmarkerlist = make_marker_geo_mashup();
+				$addmarkerlist = make_marker_geo_mashup_2();
 			} else if ($addmarkermashup == 'false') {
 				$addmarkerlist = update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $addmarkerlist);
 				$addmarkerlist = htmlspecialchars($addmarkerlist);
@@ -87,7 +87,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 			}
 
 			$map_data_properties['id'] = $id;
-			$map_data_properties['markerlist'] = cgmp_do_serverside_address_validation_2($addmarkerlist);
+			$map_data_properties['markerlist'] = $addmarkermashup == 'true' ? $addmarkerlist : cgmp_do_serverside_address_validation_2($addmarkerlist);
 
 			$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
 			$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
