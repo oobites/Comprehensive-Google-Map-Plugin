@@ -1397,7 +1397,7 @@
                                 resizeMapWhenPlaceholderBecomesVisible();
                             } else {
                                 // Just to be on a safe side lets resize
-                                setTimeout(function () {resize_map(googleMap); }, timeoutDelay);
+                                setTimeout(function () { resizeMapWhenPlaceholderBecomesVisible(); }, (timeoutDelay * 4));
                             }
 
                             function resizeMapWhenPlaceholderBecomesVisible() {
