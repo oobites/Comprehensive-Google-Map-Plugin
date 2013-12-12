@@ -6,6 +6,9 @@
 	"CGMP_DB_PURGE_GEOMASHUP_CACHE" : "cgmp_purge_geomashup_cache",
 
 
+    "CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX" : "cgmp_geomashup_data_cache_post_prefix_",
+    "CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX" : "cgmp_geomashup_data_cache_page_prefix_",
+    "CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX" : "cgmp_geomashup_data_cache_widget_prefix_",
     "CGMP_DB_GEOMASHUP_DATA_CACHE" : "cgmp_geomashup_data_cache",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
@@ -45,5 +48,6 @@
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
     "CGMP_GEOSERVICE_THROTTLING_IN_MICROS" : 150000,
-    "CGMP_VERSION" : "9.0.1"
+    "CGMP_GEO_VALIDATION_CLIENT_REVALIDATE" : "REVALIDATE",
+    "CGMP_VERSION" : "9.0.2"
   } ]

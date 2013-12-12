@@ -89,7 +89,7 @@ endif;
 
 if ( !function_exists('cgmp_geocode_address') ):                                                            
    function cgmp_geocode_address($address_to_geocode) {                                     
-      $server_api = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=";
+      $server_api = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
       $full_server_api = $server_api.urlencode($address_to_geocode);
 
       $attempts = 0;
@@ -114,11 +114,11 @@ if ( !function_exists('cgmp_geocode_address') ):
                 break;
              } else {
                  $attempts++;
-                 usleep(CGMP_GEOSERVICE_THROTTLING_IN_MICROS); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+                 usleep(300000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
              }
           } else {
               $attempts++;
-              usleep(CGMP_GEOSERVICE_THROTTLING_IN_MICROS); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+              usleep(300000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
           }
       }
 
@@ -813,6 +813,7 @@ if ( !function_exists('cgmp_post_changed_handler') ):
     function cgmp_post_changed_handler($postID)  {
         $post = get_post($postID);
         if (isset($post)) {
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$postID, "");
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         }
     }
@@ -822,6 +823,7 @@ if ( !function_exists('cgmp_page_changed_handler') ):
     function cgmp_page_changed_handler($pageID)  {
         $page = get_page($pageID);
         if (isset($page)) {
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$pageID, "");
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         }
     }
@@ -830,8 +832,44 @@ endif;
 if ( !function_exists('cgmp_post_or_page_status_changed_handler') ):
     function cgmp_post_or_page_status_changed_handler($obj)  {
         if (isset($obj)) {
+            $post_page_type = $obj->post_type;
+            $post_page_id = $obj->ID;
+            $post_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$post_page_id;
+            $page_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$post_page_id;
+
+            if ($post_page_type == "post") {
+                update_option($post_db_cache_key, "");
+            } else if ($post_page_type == "page") {
+                update_option($page_db_cache_key, "");
+            }
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         }
+    }
+endif;
+
+if ( !function_exists('cgmp_get_post_page_cached_markerlist') ):
+    function cgmp_get_post_page_cached_markerlist($post_page_id, $post_page_type, $markerlist)  {
+        $post_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$post_page_id;
+        $page_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$post_page_id;
+
+        $cached_marker_data_json = "";
+        if ($post_page_type == "post") {
+            $cached_marker_data_json = get_option($post_db_cache_key);
+        } else if ($post_page_type == "page") {
+            $cached_marker_data_json = get_option($page_db_cache_key);
+        }
+
+        if (isset($cached_marker_data_json) && trim($cached_marker_data_json) != "") {
+            return $cached_marker_data_json;
+        }
+
+        $validated_marker_list = cgmp_do_serverside_address_validation_2($markerlist);
+        if ($post_page_type == "post") {
+            update_option($post_db_cache_key, $validated_marker_list);
+        } else if ($post_page_type == "page") {
+            update_option($page_db_cache_key, $validated_marker_list);
+        }
+        return $validated_marker_list;
     }
 endif;
 
@@ -929,7 +967,8 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                     $location = $lat.",".$lng;
                     $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$location;
                 } else {
-                    // cgmp_geocode_address() returned an empty array, most probably some unhandled error received from Google geo service
+                    // cgmp_geocode_address() returned an empty array, most probably some error received, ie.: OVER_QUERY_LIMIT
+                    // $validated_addresses[] = $address.$icon.$description.CGMP_SEP.CGMP_GEO_VALIDATION_CLIENT_REVALIDATE;
                 }
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;

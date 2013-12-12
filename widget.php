@@ -77,9 +77,19 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$addmarkerlisthidden = str_replace($bad_entities, "", $addmarkerlisthidden);
 		$addmarkerlisthidden = cgmp_parse_wiki_style_links($addmarkerlisthidden);
 
+        if ($addmarkermashuphidden == 'false') {
+            $cached_marker_data_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id);
+            if (isset($cached_marker_data_json) && trim($cached_marker_data_json) != "") {
+                $addmarkerlisthidden = $cached_marker_data_json;
+            } else {
+                $addmarkerlisthidden = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
+                update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id, $addmarkerlisthidden);
+            }
+        }
+
 		$id = md5(time().' '.rand());
 		$map_data_properties['id'] = $id;
-        $map_data_properties['markerlist'] = $addmarkermashuphidden == 'true' ? $addmarkerlisthidden : cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
+        $map_data_properties['markerlist'] = $addmarkerlisthidden;
 		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
 		$map_data_properties['enablegeolocationmarker'] = $enablegeolocationmarkerhidden;
 		$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
@@ -105,6 +115,8 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		foreach ($new_instance as $key => $val) {
 			$instance[$key] = strip_tags($new_instance[$key]);
 		}
+
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id, "");
 
 		return $instance;
 	}
