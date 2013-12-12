@@ -647,6 +647,7 @@ if ( !function_exists('cgmp_on_uninstall_hook') ):
 			if ( CGMP_PLUGIN_BOOTSTRAP != WP_UNINSTALL_PLUGIN ) {
 				return;
 			}
+            remove_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
 
 			//legacy
 			remove_option(CGMP_DB_PUBLISHED_POST_MARKERS);
@@ -808,11 +809,41 @@ if ( !function_exists('find_for_regex') ):
 	}
 endif;
 
+if ( !function_exists('cgmp_post_changed_handler') ):
+    function cgmp_post_changed_handler($postID)  {
+        $post = get_post($postID);
+        if (isset($post)) {
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        }
+    }
+endif;
+
+if ( !function_exists('cgmp_page_changed_handler') ):
+    function cgmp_page_changed_handler($pageID)  {
+        $page = get_page($pageID);
+        if (isset($page)) {
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        }
+    }
+endif;
+
+if ( !function_exists('cgmp_post_or_page_status_changed_handler') ):
+    function cgmp_post_or_page_status_changed_handler($obj)  {
+        if (isset($obj)) {
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        }
+    }
+endif;
+
 
 if ( !function_exists('make_marker_geo_mashup_2') ):
 
     function make_marker_geo_mashup_2()   {
 
+        $cached_geomashup_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
+        if (isset($cached_geomashup_json) && trim($cached_geomashup_json) != "" && is_array(json_decode($cached_geomashup_json, true))) {
+            return $cached_geomashup_json;
+        }
         $post_ids = extract_ids_from_all_containing_shortcode("post");
         $wp_query_args = cgmp_build_query_args("post", $post_ids);
         $posts = get_posts($wp_query_args);
@@ -862,7 +893,10 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
                 }
             }
 
-            return json_encode($filtered);
+            $geomashup_json = json_encode($filtered);
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, $geomashup_json);
+
+            return $geomashup_json;
         }
     }
 endif;

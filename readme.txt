@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.6
 Tested up to: 3.7.1
-Stable tag: 9.0.0
+Stable tag: 9.0.1
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -92,6 +92,9 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 9. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
 
 == Changelog ==
+
+= 9.0.1 =
+* Enhancement: Added caching mechanism to GeoMashup functionality
 
 = 9.0.0 =
 * Enhancement: Doing server side geo address validation using Google's service to reduce the work on the client side

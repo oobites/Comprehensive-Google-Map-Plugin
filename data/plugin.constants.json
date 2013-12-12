@@ -3,10 +3,10 @@
     "CGMP_DB_PUBLISHED_POST_MARKERS" : "cgmp_published_post_markers",
 	"CGMP_DB_PUBLISHED_POST_IDS" : "cgmp_published_post_ids",
 	"CGMP_DB_PUBLISHED_PAGE_IDS" : "cgmp_published_page_ids",
-	"CGMP_DB_GEOMASHUP_CONTENT" : "cgmp_geomashup_content",
 	"CGMP_DB_PURGE_GEOMASHUP_CACHE" : "cgmp_purge_geomashup_cache",
 
 
+    "CGMP_DB_GEOMASHUP_DATA_CACHE" : "cgmp_geomashup_data_cache",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
 	"CGMP_DB_SETTINGS_CUSTOM_POST_TYPES" : "cgmp_settings_custom_post_types",
@@ -45,5 +45,5 @@
     "CGMP_PLUGIN_JS" : "CGMP_PLUGIN_URIassets/js",
     "CGMP_SEP" : "{}",
     "CGMP_GEOSERVICE_THROTTLING_IN_MICROS" : 150000,
-    "CGMP_VERSION" : "9.0.0"
+    "CGMP_VERSION" : "9.0.1"
   } ]
