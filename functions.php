@@ -592,44 +592,31 @@ if ( !function_exists('cgmp_plugin_row_meta') ):
 endif;
 
 
-if ( !function_exists('cgmp_build_query_args') ):
+if ( !function_exists('extract_published_content_containing_shortcode') ):
+    function extract_published_content_containing_shortcode($content_type)  {
 
-		function cgmp_build_query_args($content_type, $ids = array())  {
+        $counter = wp_count_posts($content_type, "readable");
+        $published_items = isset($counter->publish) ? $counter->publish : 1;
+        $limit = ($content_type == "post" ? "numberposts" : "number");
+        $args = array(
+            'post_type'      => $content_type,
+            $limit           => $published_items,
+            'post_status'    => 'publish' );
 
-			$counter = wp_count_posts($content_type);
-			$published_items = isset($counter->publish) ? $counter->publish : 1;
+        $posts = ($content_type == "post" ? get_posts($args) : get_pages($args));
+        $function_used = ($content_type == "post" ? "get_posts" : "get_pages");
 
-			$limit = ($content_type == "post" ? "numberposts" : "number");
-			$args = array(
-					'post_type'      => $content_type,
-					$limit           => $published_items,
-					'post_status'    => 'publish' );
+        $extracted = array();
+        $pattern = "/\[google-map-v3[^\]]*\]/";
+        foreach($posts as $post)  {
+            preg_match_all($pattern, $post->post_content, $matches);
+            if (is_array($matches[0]) && count($matches[0]) > 0) {
+                $extracted[$post->ID] = $post;
+            }
+        }
 
-			if (sizeof($ids) > 0) {
-				$args['post__in'] = array_keys($ids);
-			}
-			return $args;
-		}
-
-endif;
-
-
-if ( !function_exists('extract_ids_from_all_containing_shortcode') ):
-		function extract_ids_from_all_containing_shortcode($content_type)  {
-
-			$args = cgmp_build_query_args($content_type);
-			$posts = ($content_type == "post" ? get_posts($args) : get_pages($args));
-			$ids = array();
-			$pattern = "/\[google-map-v3[^\]]*\]/";
-			foreach($posts as $post)  {
-				preg_match_all($pattern, $post->post_content, $matches);
-				if (is_array($matches[0]) && count($matches[0]) > 0) {
-					$ids[$post->ID] = $post->ID;
-				}
-			}
-
-			return $ids;
-		}
+        return array("extracted" => $extracted, "query" => array("wp_count_posts" => $published_items, "function" => $function_used, "fetched_published_count" => count($posts), "fetched_with_shortcode_count" => count($extracted)));
+    }
 endif;
 
 
@@ -945,19 +932,18 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
 
         $cached_geomashup_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
         if (isset($cached_geomashup_json) && trim($cached_geomashup_json) != "" && is_array(json_decode($cached_geomashup_json, true))) {
-
             $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
             return array("data" => $cached_geomashup_json, "debug" => array("state" => "cached", "since" => $cache_time, "geo_errors" => array()));
         }
-        $post_ids = extract_ids_from_all_containing_shortcode("post");
-        $wp_query_args = cgmp_build_query_args("post", $post_ids);
-        $posts = get_posts($wp_query_args);
 
-        $page_ids = extract_ids_from_all_containing_shortcode("page");
-        $wp_query_args = cgmp_build_query_args("page", $page_ids);
-        $pages = get_pages($wp_query_args);
+        $query_debug_data = array();
+        $post_data = extract_published_content_containing_shortcode("post");
+        $query_debug_data["post"] = $post_data["query"];
 
-        $extracted_published_markers =  array_merge(process_collection_of_contents($posts), process_collection_of_contents($pages));
+        $page_data = extract_published_content_containing_shortcode("page");
+        $query_debug_data["page"] = $page_data["query"];
+
+        $extracted_published_markers =  array_merge(process_collection_of_contents($post_data["extracted"]), process_collection_of_contents($page_data["extracted"]));
 
         if (is_array($extracted_published_markers) && count($extracted_published_markers) > 0) {
 
@@ -1008,7 +994,7 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, $geomashup_json);
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, time());
 
-            return array("data" => $geomashup_json, "debug" => array("state" => "fresh", "since" => time(), "geo_errors" => $geo_errors));
+            return array("data" => $geomashup_json, "debug" => array("state" => "fresh", "since" => time(), "query" => $query_debug_data, "geo_errors" => $geo_errors));
         }
     }
 endif;
