@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 9.0.2
+Version: 9.0.3
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -82,15 +82,16 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('widgets_init', create_function('', 'return register_widget("ComprehensiveGoogleMap_Widget");'));
 		add_action('wp_head', 'cgmp_google_map_deregister_scripts', 200);
 
-        add_action('save_post', 'cgmp_post_changed_handler' );
-        add_action('publish_post', 'cgmp_post_changed_handler' );
-        add_action('deleted_post', 'cgmp_post_changed_handler' );
+        add_action('save_post', 'cgmp_save_post_hook' );
+        add_action('save_page', 'cgmp_save_page_hook' );
 
-        add_action('save_page', 'cgmp_page_changed_handler' );
-        add_action('publish_page', 'cgmp_page_changed_handler' );
-        add_action('deleted_page', 'cgmp_page_changed_handler' );
+        add_action('publish_post', 'cgmp_publish_post_hook' );
+        add_action('publish_page', 'cgmp_publish_page_hook' );
 
-        add_action('publish_to_draft', 'cgmp_post_or_page_status_changed_handler' );
+        add_action('deleted_post', 'cgmp_deleted_post_hook' );
+        add_action('deleted_page', 'cgmp_deleted_page_hook' );
+
+        add_action('publish_to_draft', 'cgmp_publish_to_draft_hook' );
 	}
 endif;
 

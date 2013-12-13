@@ -68,7 +68,9 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$addmarkermashuphidden = isset($addmarkermashuphidden) ? $addmarkermashuphidden : "false";
         $enablegeolocationmarkerhidden = isset($enablegeolocationmarkerhidden) ? $enablegeolocationmarkerhidden : "false";
 		if ($addmarkermashuphidden == "true") {
-			$addmarkerlisthidden = make_marker_geo_mashup_2();
+            $json_data_arr = make_marker_geo_mashup_2();
+            $addmarkerlisthidden = $json_data_arr["data"];
+            $map_data_properties['debug'] = $json_data_arr["debug"];
 		} else if ($addmarkermashuphidden == "false") {
 			$addmarkerlisthidden = update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $addmarkerlisthidden);
 			$addmarkerlisthidden = htmlspecialchars($addmarkerlisthidden);
@@ -77,13 +79,18 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$addmarkerlisthidden = str_replace($bad_entities, "", $addmarkerlisthidden);
 		$addmarkerlisthidden = cgmp_parse_wiki_style_links($addmarkerlisthidden);
 
-        if ($addmarkermashuphidden == 'false') {
+        if ($addmarkermashuphidden == 'false' && trim($addmarkerlisthidden) != "") {
             $cached_marker_data_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id);
             if (isset($cached_marker_data_json) && trim($cached_marker_data_json) != "") {
                 $addmarkerlisthidden = $cached_marker_data_json;
+                $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX.$this->id);
+                $map_data_properties['debug'] = array("state" => "cached", "since" => $cache_time, "geo_errors" => array());
             } else {
-                $addmarkerlisthidden = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
+                $execution_results = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
+                $addmarkerlisthidden = $execution_results["validated_addresses"];
+                $map_data_properties['debug'] = array("state" => "fresh", "since" => time(), "geo_errors" => $execution_results["errors"]);
                 update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id, $addmarkerlisthidden);
+                update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX.$this->id, time());
             }
         }
 
@@ -117,6 +124,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		}
 
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX.$this->id, "");
 
 		return $instance;
 	}

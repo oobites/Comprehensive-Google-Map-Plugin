@@ -94,6 +94,7 @@ if ( !function_exists('cgmp_geocode_address') ):
 
       $attempts = 0;
       $results = array();
+      $errors = array();
       $json_response = FALSE;
       while ($attempts < 5) {
           if (function_exists('curl_init')) {
@@ -113,16 +114,18 @@ if ( !function_exists('cgmp_geocode_address') ):
                 $results['formatted_address'] = $json['results'][0]['formatted_address'];
                 break;
              } else {
+                 $errors[$address_to_geocode] = $json['status'];
                  $attempts++;
                  usleep(300000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
              }
           } else {
+              $errors[$address_to_geocode."_attempt_".$attempts] = "No JSON response from Geo service";
               $attempts++;
               usleep(300000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
           }
       }
 
-      return $results;                                     
+      return array("results" => $results, "errors" => $errors);
    }                                                                                                                    
 endif;
 
@@ -634,8 +637,12 @@ endif;
 if ( !function_exists('cgmp_on_activate_hook') ):
 
 		function cgmp_on_activate_hook()  {
+            //global $wpdb;
+            //$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '".CGMP_DB_GEOMASHUP_DATA_CACHE."%'" );
 			update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "false");
 			update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
         }
 endif;
 
@@ -648,6 +655,11 @@ if ( !function_exists('cgmp_on_uninstall_hook') ):
 				return;
 			}
             remove_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
+            remove_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
+
+            // Remove cache of posts, pages and widgets
+            global $wpdb;
+            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '".CGMP_DB_GEOMASHUP_DATA_CACHE."%'" );
 
 			//legacy
 			remove_option(CGMP_DB_PUBLISHED_POST_MARKERS);
@@ -809,67 +821,118 @@ if ( !function_exists('find_for_regex') ):
 	}
 endif;
 
-if ( !function_exists('cgmp_post_changed_handler') ):
-    function cgmp_post_changed_handler($postID)  {
-        $post = get_post($postID);
-        if (isset($post)) {
-            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$postID, "");
-            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
-        }
+if ( !function_exists('cgmp_save_post_hook') ):
+    function cgmp_save_post_hook($postID)  {
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$postID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_TIME_PREFIX.$postID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
     }
 endif;
 
-if ( !function_exists('cgmp_page_changed_handler') ):
-    function cgmp_page_changed_handler($pageID)  {
-        $page = get_page($pageID);
-        if (isset($page)) {
-            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$pageID, "");
-            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
-        }
+if ( !function_exists('cgmp_save_page_hook') ):
+    function cgmp_save_page_hook($pageID)  {
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$pageID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_TIME_PREFIX.$pageID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
     }
 endif;
 
-if ( !function_exists('cgmp_post_or_page_status_changed_handler') ):
-    function cgmp_post_or_page_status_changed_handler($obj)  {
+if ( !function_exists('cgmp_publish_post_hook') ):
+    function cgmp_publish_post_hook($postID)  {
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$postID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_TIME_PREFIX.$postID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
+    }
+endif;
+
+if ( !function_exists('cgmp_publish_page_hook') ):
+    function cgmp_publish_page_hook($pageID)  {
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$pageID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_TIME_PREFIX.$pageID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
+    }
+endif;
+
+if ( !function_exists('cgmp_deleted_post_hook') ):
+    function cgmp_deleted_post_hook($postID)  {
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$postID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_POST_TIME_PREFIX.$postID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
+    }
+endif;
+
+if ( !function_exists('cgmp_deleted_page_hook') ):
+    function cgmp_deleted_page_hook($pageID)  {
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$pageID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_TIME_PREFIX.$pageID, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
+    }
+endif;
+
+if ( !function_exists('cgmp_publish_to_draft_hook') ):
+    function cgmp_publish_to_draft_hook($obj)  {
         if (isset($obj)) {
             $post_page_type = $obj->post_type;
             $post_page_id = $obj->ID;
             $post_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$post_page_id;
+            $post_db_cache_time_key = CGMP_DB_GEOMASHUP_DATA_CACHE_POST_TIME_PREFIX.$post_page_id;
+
             $page_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$post_page_id;
+            $page_db_cache_time_key = CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_TIME_PREFIX.$post_page_id;
 
             if ($post_page_type == "post") {
                 update_option($post_db_cache_key, "");
+                update_option($post_db_cache_time_key, "");
             } else if ($post_page_type == "page") {
                 update_option($page_db_cache_key, "");
+                update_option($page_db_cache_time_key, "");
             }
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
         }
     }
 endif;
 
 if ( !function_exists('cgmp_get_post_page_cached_markerlist') ):
     function cgmp_get_post_page_cached_markerlist($post_page_id, $post_page_type, $markerlist)  {
+
         $post_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX.$post_page_id;
+        $post_db_cache_time_key = CGMP_DB_GEOMASHUP_DATA_CACHE_POST_TIME_PREFIX.$post_page_id;
+
         $page_db_cache_key = CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX.$post_page_id;
+        $page_db_cache_time_key = CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_TIME_PREFIX.$post_page_id;
 
         $cached_marker_data_json = "";
+        $cached_marker_data_time = "";
         if ($post_page_type == "post") {
             $cached_marker_data_json = get_option($post_db_cache_key);
+            $cached_marker_data_time = get_option($post_db_cache_time_key);
         } else if ($post_page_type == "page") {
             $cached_marker_data_json = get_option($page_db_cache_key);
+            $cached_marker_data_time = get_option($page_db_cache_time_key);
         }
 
         if (isset($cached_marker_data_json) && trim($cached_marker_data_json) != "") {
-            return $cached_marker_data_json;
+            return array("data" => $cached_marker_data_json, "debug" => array("state" => "cached", "since" => $cached_marker_data_time, "geo_errors" => array()));
         }
 
-        $validated_marker_list = cgmp_do_serverside_address_validation_2($markerlist);
+        $execution_results = cgmp_do_serverside_address_validation_2($markerlist);
+        $validated_marker_list = $execution_results["validated_addresses"];
         if ($post_page_type == "post") {
             update_option($post_db_cache_key, $validated_marker_list);
+            update_option($post_db_cache_time_key, time());
         } else if ($post_page_type == "page") {
             update_option($page_db_cache_key, $validated_marker_list);
+            update_option($page_db_cache_time_key, time());
         }
-        return $validated_marker_list;
+
+        return array("data" => $validated_marker_list, "debug" => array("state" => "fresh", "since" => time(), "geo_errors" => $execution_results["errors"]));
     }
 endif;
 
@@ -880,7 +943,9 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
 
         $cached_geomashup_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
         if (isset($cached_geomashup_json) && trim($cached_geomashup_json) != "" && is_array(json_decode($cached_geomashup_json, true))) {
-            return $cached_geomashup_json;
+
+            $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
+            return array("data" => $cached_geomashup_json, "debug" => array("state" => "cached", "since" => $cache_time, "geo_errors" => array()));
         }
         $post_ids = extract_ids_from_all_containing_shortcode("post");
         $wp_query_args = cgmp_build_query_args("post", $post_ids);
@@ -894,6 +959,7 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
 
         if (is_array($extracted_published_markers) && count($extracted_published_markers) > 0) {
 
+            $geo_errors = array();
             $filtered = array();
             foreach($extracted_published_markers as $postID => $post_data) {
 
@@ -913,7 +979,12 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
                     }
                     $tobe_filtered_loc = str_replace($bad_entities, "", str_replace($bad_characters, " ", $tobe_filtered_loc));
                     if (!isset($filtered[$tobe_filtered_loc])) {
-                        $filtered[$tobe_filtered_loc]['validated_address_csv_data'] = cgmp_do_serverside_address_validation_2($full_loc);
+                        $execution_results = cgmp_do_serverside_address_validation_2($full_loc);
+                        if (is_array($execution_results["errors"]) && !empty($execution_results["errors"])) {
+                            $geo_errors[$tobe_filtered_loc] = $execution_results["errors"];
+                        }
+
+                        $filtered[$tobe_filtered_loc]['validated_address_csv_data'] = $execution_results["validated_addresses"];
                         $filtered[$tobe_filtered_loc]['permalink'] = $permalink;
 
                         if (isset($title) &&  trim($title) != "")  {
@@ -933,8 +1004,9 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
 
             $geomashup_json = json_encode($filtered);
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, $geomashup_json);
+            update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, time());
 
-            return $geomashup_json;
+            return array("data" => $geomashup_json, "debug" => array("state" => "fresh", "since" => time(), "geo_errors" => $geo_errors));
         }
     }
 endif;
@@ -949,6 +1021,7 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
 
         $splitted_marker_list = explode("|", $markers_data);
 
+        $geo_errors = array();
         $validated_addresses = array();
         $google_request_counter = 0;
         foreach($splitted_marker_list as $marker_data_with_cgmp_sep) {
@@ -959,9 +1032,10 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
             $description = isset($marker_data_segments[2]) && trim($marker_data_segments[2]) != "" ? CGMP_SEP.$marker_data_segments[2] : CGMP_SEP.CGMP_NO_BUBBLE_DESC;
 
             if (preg_match('/[a-zA-Z]/', $address) !== 0) {
-                $result_from_google = cgmp_geocode_address($address);
+                $execution_results = cgmp_geocode_address($address);
 
-                if ($result_from_google && is_array($result_from_google)) {
+                $result_from_google = $execution_results["results"];
+                if (is_array($result_from_google) && !empty($result_from_google)) {
                     $lat = $result_from_google['location']['lat'];
                     $lng = $result_from_google['location']['lng'];
                     $location = $lat.",".$lng;
@@ -969,6 +1043,7 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                 } else {
                     // cgmp_geocode_address() returned an empty array, most probably some error received, ie.: OVER_QUERY_LIMIT
                     // $validated_addresses[] = $address.$icon.$description.CGMP_SEP.CGMP_GEO_VALIDATION_CLIENT_REVALIDATE;
+                    $geo_errors[$address] = $execution_results["errors"];
                 }
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;
@@ -986,7 +1061,7 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
             }
 
         }
-        return implode("|", $validated_addresses);
+        return array("validated_addresses" => implode("|", $validated_addresses),  "errors" => $geo_errors);
     }
 endif;
 
