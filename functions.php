@@ -637,8 +637,9 @@ endif;
 if ( !function_exists('cgmp_on_activate_hook') ):
 
 		function cgmp_on_activate_hook()  {
-            //global $wpdb;
-            //$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '".CGMP_DB_GEOMASHUP_DATA_CACHE."%'" );
+            global $wpdb;
+            $options_table = $wpdb->options;
+            $wpdb->query( "DELETE FROM ".$options_table." WHERE option_name LIKE 'cgmp_%'" );
 			update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "false");
 			update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
@@ -659,7 +660,8 @@ if ( !function_exists('cgmp_on_uninstall_hook') ):
 
             // Remove cache of posts, pages and widgets
             global $wpdb;
-            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '".CGMP_DB_GEOMASHUP_DATA_CACHE."%'" );
+            $options_table = $wpdb->options;
+            $wpdb->query( "DELETE FROM ".$options_table." WHERE option_name LIKE 'cgmp_%'" );
 
 			//legacy
 			remove_option(CGMP_DB_PUBLISHED_POST_MARKERS);
