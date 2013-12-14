@@ -313,12 +313,13 @@
                         createGoogleMarkersFromCsvAddressData(this.validated_address_csv_data, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink, true);
                         index++;
                     });
-                    Logger.info("Have " + (index - 1) + " destinations for marker Geo mashup..");
+                    Logger.info("Have " + (markers.length) + " destinations for marker Geo mashup..");
                 }
 
                 function createGoogleMarkersFromCsvAddressData(csvString, postTitle, postLink, postExcerpt, infoBubbleContainPostLink, geoMashup) {
                     if (typeof csvString === "undefined" || csvString === "") {
                         Logger.fatal("Not parsing empty validated address csv data.. Skipping");
+                        return;
                     }
 
                     var locations = csvString.split("|");

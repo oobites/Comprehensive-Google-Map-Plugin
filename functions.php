@@ -595,17 +595,9 @@ endif;
 if ( !function_exists('extract_published_content_containing_shortcode') ):
     function extract_published_content_containing_shortcode($content_type)  {
 
-        $counter = wp_count_posts($content_type, "readable");
-        $published_items = isset($counter->publish) ? $counter->publish : 1;
         $limit = ($content_type == "post" ? "numberposts" : "number");
-        $args = array(
-            'post_type'      => $content_type,
-            $limit           => $published_items,
-            'post_status'    => 'publish' );
-
+        $args = array('post_type' => $content_type, 'post_status' => 'publish', $limit => 1000);
         $posts = ($content_type == "post" ? get_posts($args) : get_pages($args));
-        $function_used = ($content_type == "post" ? "get_posts" : "get_pages");
-
         $extracted = array();
         $pattern = "/\[google-map-v3[^\]]*\]/";
         foreach($posts as $post)  {
@@ -615,10 +607,10 @@ if ( !function_exists('extract_published_content_containing_shortcode') ):
             }
         }
 
-        return array("extracted" => $extracted, "query" => array("wp_count_posts" => $published_items, "function" => $function_used, "fetched_published_count" => count($posts), "fetched_with_shortcode_count" => count($extracted)));
+        $function_used = ($content_type == "post" ? "get_posts" : "get_pages");
+        return array("extracted" => $extracted, "query" => array("function" => $function_used, "fetched_published" => count($posts), "have_shortcode_within" => count($extracted)));
     }
 endif;
-
 
 
 if ( !function_exists('cgmp_on_activate_hook') ):
@@ -674,14 +666,16 @@ if ( !function_exists('process_collection_of_contents') ):
 
 					$bad_entities = array("&quot;", "&#039;", "'", "\"");
 					if (count($extracted) > 0) {
-							$post_title = $post->post_title;
-							$post_title = strip_tags($post_title);
-							$post_title = str_replace($bad_entities, "", $post_title);
-							$post_title = preg_replace("/\r\n|\n\r|\n/", " ", $post_title);
-							$db_markers[$post->ID]['markers'] = $extracted;
-							$db_markers[$post->ID]['title'] = $post_title;
-							$db_markers[$post->ID]['permalink'] = $post->guid;
-							$db_markers[$post->ID]['excerpt'] = '';
+
+                        $marker = array();
+                        $post_title = $post->post_title;
+                        $post_title = strip_tags($post_title);
+                        $post_title = str_replace($bad_entities, "", $post_title);
+                        $post_title = preg_replace("/\r\n|\n\r|\n/", " ", $post_title);
+                        $marker[$post->ID]['markers'] = $extracted;
+                        $marker[$post->ID]['title'] = $post_title;
+                        $marker[$post->ID]['permalink'] = $post->guid;
+                        $marker[$post->ID]['excerpt'] = '';
 
 						$clean = "";
 						if (isset($post->post_excerpt) && trim($post->post_excerpt) != '') {
@@ -691,8 +685,9 @@ if ( !function_exists('process_collection_of_contents') ):
 						}
 						if ( trim($clean) != '' ) {
 							$excerpt = mb_substr($clean, 0, 175);
-							$db_markers[$post->ID]['excerpt'] = $excerpt."..";
-						} 
+                            $marker[$post->ID]['excerpt'] = $excerpt."..";
+						}
+                        $db_markers[] = $marker[$post->ID];
 					}
 				}
 				return $db_markers;
@@ -943,13 +938,14 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
         $page_data = extract_published_content_containing_shortcode("page");
         $query_debug_data["page"] = $page_data["query"];
 
-        $extracted_published_markers =  array_merge(process_collection_of_contents($post_data["extracted"]), process_collection_of_contents($page_data["extracted"]));
+        $extracted_published_markers =  process_collection_of_contents($post_data["extracted"]) + process_collection_of_contents($page_data["extracted"]);
 
         if (is_array($extracted_published_markers) && count($extracted_published_markers) > 0) {
 
             $geo_errors = array();
             $filtered = array();
-            foreach($extracted_published_markers as $postID => $post_data) {
+            $duplicates = array();
+            foreach($extracted_published_markers as $post_data) {
 
                 $title = $post_data['title'];
                 $permalink = $post_data['permalink'];
@@ -986,15 +982,24 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
                         }
 
                         $filtered[$tobe_filtered_loc]['excerpt'] = $excerpt;
+                    } else {
+                        if (isset($duplicates[$tobe_filtered_loc]) && is_numeric($duplicates[$tobe_filtered_loc])) {
+                            $duplicates[$tobe_filtered_loc]++;
+                        } else {
+                            $duplicates[$tobe_filtered_loc] = 1;
+                        }
                     }
                 }
             }
 
+            $debug_data = array("since" => time(), "query" => $query_debug_data, "geo_errors" => $geo_errors, "duplicate_addresses_extracted" => $duplicates);
+            $filtered["live_debug"] = $debug_data;
             $geomashup_json = json_encode($filtered);
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, $geomashup_json);
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, time());
 
-            return array("data" => $geomashup_json, "debug" => array("state" => "fresh", "since" => time(), "query" => $query_debug_data, "geo_errors" => $geo_errors));
+            $debug_data["state"] = "fresh";
+            return array("data" => $geomashup_json, "debug" => $debug_data);
         }
     }
 endif;
