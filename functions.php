@@ -595,20 +595,39 @@ endif;
 if ( !function_exists('extract_published_content_containing_shortcode') ):
     function extract_published_content_containing_shortcode($content_type)  {
 
-        $limit = ($content_type == "post" ? "numberposts" : "number");
-        $args = array('post_type' => $content_type, 'post_status' => 'publish', $limit => 1000);
-        $posts = ($content_type == "post" ? get_posts($args) : get_pages($args));
+        $count_posts = wp_count_posts($content_type);
+        $total_published = $count_posts->publish;
+
+        // To avoid cases where plugin's like Ultimate Category Excluder messes around with the main query by using filter 'pre_get_posts' to exclude posts
+        global $wpdb;
+        $table = $wpdb->posts;
+        $query = "SELECT * FROM $table WHERE $table.post_type = '".$content_type."' AND $table.post_status = 'publish' LIMIT 1000"; // For 1000 should be more than enough, really who has a map with 1000+ markers?
+        $posts = $wpdb->get_results($query);
+
         $extracted = array();
         $pattern = "/\[google-map-v3[^\]]*\]/";
+        $addresses = array();
         foreach($posts as $post)  {
             preg_match_all($pattern, $post->post_content, $matches);
             if (is_array($matches[0]) && count($matches[0]) > 0) {
+
+                $pattern = "/addmarkerlist=\"(.*?)\"/";
+                $washed_shortcode = str_replace(array("\r\n", "\r", "\n"), " ", $matches[0][0]);
+                preg_match_all($pattern, $washed_shortcode, $address_matches);
+
+                if (is_array($address_matches) && is_array($address_matches[1]) && !empty($address_matches[1])) {
+                    $addresss_segments = explode(CGMP_SEP, $address_matches[1][0]);
+                    if (isset($addresss_segments[0]) && trim($addresss_segments[0]) != "") {
+                        $addresses[$post->ID] = $addresss_segments[0];
+                    }
+                }
+
                 $extracted[$post->ID] = $post;
             }
         }
 
-        $function_used = ($content_type == "post" ? "get_posts" : "get_pages");
-        return array("extracted" => $extracted, "query" => array("function" => $function_used, "fetched_published" => count($posts), "have_shortcode_within" => count($extracted)));
+        $function_used = "SQL query";
+        return array("extracted" => $extracted, "query" => array("wp_count_posts" => $total_published, $function_used => count($posts), "total_shortcodes" => count($extracted), "shortcodes_with_markerlist" => count($addresses), "addresses" => $addresses));
     }
 endif;
 

@@ -49,6 +49,43 @@ if ( !function_exists('cgmp_settings_callback') ):
 
 endif;
 
+if ( !function_exists('cgmp_generate_support_data') ):
+function cgmp_generate_support_data() {
+    global $wpdb, $wp_version;
+    $current_wp_theme = wp_get_theme();
+    $published_post_count = wp_count_posts("post");
+    $published_posts = $published_post_count->publish;
+
+    $published_page_count = wp_count_posts("page");
+    $published_pages = $published_page_count->publish;
+
+    $plugin_names = scandir(CGMP_PLUGIN_DIR."/..");
+    $plugin_names = array_flip($plugin_names);
+
+    return
+    "<h4>Environment</h4>"
+    ."<ul>"
+    ."<li>PHP v".PHP_VERSION."</li>"
+    ."<li>MySQL v".mysql_get_server_info($wpdb->dbh)."</li>"
+    ."</ul>"
+    ."<h4>WordPress</h4>"
+    ."<ul>"
+    ."<li>WordPress v".$wp_version."</li>"
+    ."<li>Theme: ".$current_wp_theme->Name . ", v" . $current_wp_theme->Version."</li>"
+    ."<li>Number of published posts is: ".$published_posts."</li>"
+    ."<li>Number of published pages is: ".$published_pages."</li>"
+    ."</ul>"
+    ."<h4>Plugins</h4>"
+    ."<ul>"
+    ."<li>Comprehensive Google Map Plugin v".CGMP_VERSION."</li>"
+    ."<li>Advanced Category Excluder plugin: ".(isset($plugin_names['advanced-category-excluder']) ? "Installed" : "No installed")."</li>"
+    ."<li>Category Excluder plugin: ".(isset($plugin_names['category-excluder']) ? "Installed" : "No installed")."</li>"
+    ."<li>Simply Exclude plugin: ".(isset($plugin_names['simply-exclude']) ? "Installed" : "No installed")."</li>"
+    ."<li>Ultimate Category Excluder plugin: ".(isset($plugin_names['ultimate-category-excluder']) ? "Installed" : "No installed")."</li>"
+    ."</ul>";
+}
+endif;
+
 function populate_token_builder_under_post($template_values) {
    $setting_builder_location = get_option(CGMP_DB_SETTINGS_BUILDER_LOCATION);                                        
    $yes_display_radio_btn = "";                                                                                      
@@ -94,6 +131,7 @@ function cgmp_parse_menu_html() {
 			$map_configuration_form_template = cgmp_render_template_with_values($json_html_doco_params, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 			$template_values = array();
         	$template_values["DOCUMENTATION_TOKEN"] = $map_configuration_form_template;
+            $template_values["SUPPORT_DATA"] = cgmp_generate_support_data();
 
         	echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIG_DOCUMENTATION_PAGE);
 		}

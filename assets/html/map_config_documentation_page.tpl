@@ -12,7 +12,7 @@
 			<a title="Documentation" href="#shortcodedocs">Shortcode Explained</a>
 		</li>
 		<li class="">
-			<a title="FAQ" href="#faq">FAQ</a>
+			<a title="FAQ" href="#support">Support</a>
 		</li>
 
 		<li class="">
@@ -67,12 +67,11 @@
 		</div>
 	</div>
 
-	<div class="tools-tab-body" id="faq" style="">
+	<div class="tools-tab-body" id="support" style="">
 		<div class="tools-tab-content">
-			<h3 class="hide-if-js">FAQ</h3>
-			<h4>Frequently Asked Questions</h4>
-			<h5>Coming soon!</h5>
-			<p>Please refer to FAQ on the Wordpress.org for now. Thank you for your patience</p>
+			<h3 class="hide-if-js">Support</h3>
+			<p>Please report the following to azagniotov@gmail.com if you have problems with the plugin, Thank you</p>
+            SUPPORT_DATA
 		</div>
 	</div>
 
