@@ -302,12 +302,15 @@
 
                 function createGoogleMarkersFromGeomashupJson(json, infoBubbleContainPostLink) {
                     var index = 1;
-                    $.each(json, function () {
+                    $.each(json, function (key, value) {
+                        if (key === "live_debug") {
+                            return true;
+                        }
                         if (this.excerpt == null) {
                             this.excerpt = '';
                         }
                         if (typeof this.validated_address_csv_data === "undefined" || this.validated_address_csv_data === "") {
-                            Logger.error("Validated address on page: " + this.permalink + " returned empty, perhaps OVER_QUERY_LIMIT when validating on the server..");
+                            Logger.error("Validated address from: " + this.permalink + " returned empty, perhaps OVER_QUERY_LIMIT when validating on the server..");
                         }
 
                         createGoogleMarkersFromCsvAddressData(this.validated_address_csv_data, this.title, this.permalink, this.excerpt, infoBubbleContainPostLink, true);
@@ -323,7 +326,7 @@
                     }
 
                     var locations = csvString.split("|");
-                    Logger.info("CGMP CSV: " + locations);
+                    Logger.info("CSV " + locations);
                     for (var i = 0; i < locations.length; i++) {
                         var target = locations[i];
                         if (target != null && target != "") {
@@ -367,7 +370,7 @@
                             }
 
                             var latLngPoint = new google.maps.LatLng(parseFloat(latlngArr[0]).toFixed(8), parseFloat(latlngArr[1]).toFixed(8));
-                            Logger.info("Have marker to instrument for: " + userInputAddress + " for location: " + latLngPoint);
+                            Logger.info("Get marker: " + userInputAddress + " " + latLngPoint);
 
                             instrumentMarker(latLngPoint, element);
                         }
@@ -383,7 +386,7 @@
                         map: googleMap
                     });
                     if (marker) {
-                        Logger.info("Marker instrumented for: " + element.address + " for location: " + point);
+                        Logger.info("Got marker: " + element.address + " " + point);
                         if (element.markerIcon) {
                             var markerIcon = element.markerIcon;
                             if (typeof markerIcon == "undefined" || markerIcon === "undefined") {

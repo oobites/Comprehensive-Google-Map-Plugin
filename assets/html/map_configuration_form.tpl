@@ -219,9 +219,6 @@
 		</table>
 	</fieldset>
 
-<form action='' id='shortcode-save-form' name='shortcode-save-form' method='post'>
-    <input type="hidden" id="hidden-shortcode-title" name="hidden-shortcode-title" value=""" />
-    <input type="hidden" id="hidden-shortcode-code" name="hidden-shortcode-code" value=""" />
-</form>
+    SHORTCODEBUILDER_HTML_FORM
 
 <div align="right"><span style="font-size: 9px;"><a href="admin.php?page=cgmp-documentation">Documentation</a> | <a target="_blank" href="https://www.paypal.com/cgi-bin/webscrinfocmd=_s-xclick&amp;hosted_button_id=CWNZ5P4Z8RTQ8">Donate</a></span></div>

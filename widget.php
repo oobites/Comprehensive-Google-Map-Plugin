@@ -164,6 +164,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		$template_values = cgmp_build_template_values($settings);
         $template_values['SHORTCODEBUILDER_FORM_TITLE'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_WIDGET_FORM_TITLE);
+        $template_values['SHORTCODEBUILDER_HTML_FORM'] = "";
 
 		$tokens_with_values = array();
 		$tokens_with_values['WIDGET_ID_TOKEN'] = $this->id;

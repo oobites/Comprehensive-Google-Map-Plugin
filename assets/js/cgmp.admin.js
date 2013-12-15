@@ -461,7 +461,7 @@ function buildShortcode(id, $) {
 
 		$(document).ajaxSuccess(
 			function (e, x, o) {
-				if (o.data != null)	{
+				if (o != null && o.data != null)	{
                     var indexOf = o.data.indexOf('id_base=comprehensivegooglemap');
                     if (indexOf > 0) {
                         initTokenHolders();

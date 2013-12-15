@@ -77,7 +77,7 @@ function cgmp_generate_support_data() {
     ."<li>Number of published posts is: ".$published_posts."</li>"
     ."<li>Number of published pages is: ".$published_pages."</li>"
     ."</ul>"
-    ."<h4>Problematic Plugins</h4>"
+    ."<h4>Plugins known to modify global WordPress query</h4>"
     ."<ul>"
     ."<li>Advanced Category Excluder plugin: ".(isset($plugin_names['advanced-category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
     ."<li>Category Excluder plugin: ".(isset($plugin_names['category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
@@ -151,6 +151,7 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
 
         $template_values = cgmp_build_template_values($settings);
         $template_values['SHORTCODEBUILDER_FORM_TITLE'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_FORM_TITLE);
+        $template_values['SHORTCODEBUILDER_HTML_FORM'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_HTML_FORM);
         $map_configuration_template = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 
 		echo cgmp_render_template_with_values(array("SHORTCODEBUILDER_TOKEN" => $map_configuration_template), CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);

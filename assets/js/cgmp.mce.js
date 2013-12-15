@@ -15,8 +15,10 @@
                     });
 
                     csm.onRenderMenu.add( function(c, m) {
-                        m.add({title: 'Load saved shortcodes', 'class': 'mceMenuItemTitle'}).setDisabled(1);
                         var shortcodesJson = jQuery.parseJSON(CGMPGlobal.shortcodes);
+                        var title = jQuery.isArray(shortcodesJson) ? 'No saved shortcodes' : 'Select a shortcode';
+
+                        m.add({title: title, 'class': 'mceMenuItemTitle'}).setDisabled(1);
                         jQuery.each(shortcodesJson, function () {
                             m.add({title : this.title, icon: 'cgmp-mce-split-button-menu-item-icon'});
                         });
@@ -46,6 +48,11 @@
             jQuery.post(ajaxurl, {action: 'cgmp_mce_ajax_action', title: shortcodeTitle}, function (response) {
                 if (response === "OK") {
                     jQuery(clickedIcon).closest("tr").remove();
+
+                    if (jQuery("div#menu_content_content_shortcode_menu span.mceText").size() == 1) {
+                        jQuery("div#menu_content_content_shortcode_menu span.mceText").text("No saved shortcodes");
+                    }
+
                     alert("Shortcode deleted!");
                 }
             });

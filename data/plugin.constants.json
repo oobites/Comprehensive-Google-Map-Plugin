@@ -42,6 +42,7 @@
     "CGMP_HTML_TEMPLATE_WIDGET" : "widget.tpl",
     "CGMP_HTML_TEMPLATE_WIDGET_FORM_TITLE" : "widget_form_title.tpl",
     "CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_FORM_TITLE" : "shortcode_builder_form_title.tpl",
+    "CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_HTML_FORM" : "shortcode_builder_html_form.tpl",
     "CGMP_JSON_DATA_DEFAULT_WIDGET_PARAM_VALUES" : "default.widget.params.values.json",
     "CGMP_JSON_DATA_HTML_ELEMENTS_DOCO_PARAMS" : "html.elements.doco.params.json",
     "CGMP_JSON_DATA_HTML_ELEMENTS_FORM_PARAMS" : "html.elements.form.params.json",

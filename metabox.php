@@ -61,6 +61,7 @@ function cgmp_render_shortcode_builder_form() {
 
     $template_values = cgmp_build_template_values($settings);
     $template_values['SHORTCODEBUILDER_FORM_TITLE'] = "";
+    $template_values['SHORTCODEBUILDER_HTML_FORM'] = "";
     $map_configuration_template = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 
     $tokens_with_values = array("MAP_CONFIGURATION_FORM_TOKEN" => $map_configuration_template);
