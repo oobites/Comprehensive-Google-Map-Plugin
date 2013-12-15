@@ -78,8 +78,11 @@ Please revisit and reconfigure your widget or shortcode configuration. The map r
 5. Where is plugin documentation?<br />
 After plugin activation, look at the left hand side menu of WP admin, look for "Google Map" item
 
-5. Where to find my saved shortcode?<br />
-Look for little map icon in post/page editor
+6. Where to find my saved shortcode?<br />
+Look for little map icon in post/page WYSIWYG editor
+
+7. Do I lose my saved shortcodes after plugin update?<br />
+No, they will still be there
 
 == Screenshots ==
 
