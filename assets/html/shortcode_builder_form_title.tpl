@@ -9,8 +9,8 @@
 							<td align="left"></td>
 						</tr>
 						<tr>
-							<td>LABEL_TITLE</td>
-							<td colspan="3">INPUT_TITLE</td>
+							<td>LABEL_SHORTCODETITLE</td>
+							<td colspan="3">INPUT_SHORTCODETITLE</td>
 						</tr>
 					</tbody>
 				</table>

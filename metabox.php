@@ -48,7 +48,21 @@ endif;
 
 if ( !function_exists('cgmp_render_shortcode_builder_form') ):
 function cgmp_render_shortcode_builder_form() {
-	include_once(CGMP_PLUGIN_INCLUDE_DIR.'/shortcode_builder_form.php');
+
+    $settings = array();
+    $json_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_HTML_ELEMENTS_FORM_PARAMS);
+    $parsed_json = json_decode($json_string, true);
+
+    if (is_array($parsed_json)) {
+        foreach ($parsed_json as $data_chunk) {
+            cgmp_set_values_for_html_rendering($settings, $data_chunk);
+        }
+    }
+
+    $template_values = cgmp_build_template_values($settings);
+    $template_values['SHORTCODEBUILDER_FORM_TITLE'] = "";
+    $map_configuration_template = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
+
     $tokens_with_values = array("MAP_CONFIGURATION_FORM_TOKEN" => $map_configuration_template);
     echo cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_METABOX);
 }

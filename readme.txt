@@ -96,7 +96,7 @@ Look for little map icon in post/page editor
 == Changelog ==
 
 = 9.0.4 =
-* Enhancement: Added ability to save shortcodes by name and load them up in Wordpress's post/page WYSIWYG editor
+* Enhancement: Added ability to save shortcodes by name and load them up in Wordpress's post/page WYSIWYG editor (Saved shortcode purge functionality coming soon!)
 * Enhancement: Added more debug data for cases when GeoMashup fails
 * Enhancement: Added "Support" tab in CGMP settings with debug information
 * Cleanup: Removed deprecated shortcode properties

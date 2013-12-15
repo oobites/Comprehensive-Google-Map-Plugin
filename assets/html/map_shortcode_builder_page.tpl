@@ -19,7 +19,6 @@
 			<input type='button' onclick='return displayShortcodeInPopup("google-map-container-metabox");' 
 		class='button-primary' tabindex='4' value=' GENERATE SHORTCODE ' id='send-to-editor' name='send-to-editor' /><br />
 				<div id='google-map-container-metabox' style='margin-top: 20px'>
-                SHORTCODEBUILDER_FORM_TITLE_TOKEN
 				SHORTCODEBUILDER_TOKEN
 				</div>
 		<input type='button' onclick='return displayShortcodeInPopup("google-map-container-metabox");' 

@@ -36,18 +36,19 @@ if ( !function_exists('cgmp_settings_callback') ):
 		}
 
 		if (isset($_POST['cgmp-save-settings']))  {
-		   update_option(CGMP_DB_SETTINGS_BUILDER_LOCATION, $_POST['builder-under-post']);
-			update_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES, $_POST['custom-post-types']);	
-         cgmp_show_message("Settings updated successfully!");
+		    update_option(CGMP_DB_SETTINGS_BUILDER_LOCATION, $_POST['builder-under-post']);
+		    update_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES, $_POST['custom-post-types']);
+            cgmp_show_message("Settings updated successfully!");
 		}
 
-      $template_values = array();
-      $template_values = populate_token_builder_under_post($template_values);
-      $template_values = populate_token_custom_post_types($template_values);
-      echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE);
+        $template_values = array();
+        $template_values = populate_token_builder_under_post($template_values);
+        $template_values = populate_token_custom_post_types($template_values);
+        echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE);
 	}
 
 endif;
+
 
 if ( !function_exists('cgmp_generate_support_data') ):
 function cgmp_generate_support_data() {
@@ -71,17 +72,17 @@ function cgmp_generate_support_data() {
     ."<h4>WordPress</h4>"
     ."<ul>"
     ."<li>WordPress v".$wp_version."</li>"
+    ."<li>Comprehensive Google Map Plugin v".CGMP_VERSION."</li>"
     ."<li>Theme: ".$current_wp_theme->Name . ", v" . $current_wp_theme->Version."</li>"
     ."<li>Number of published posts is: ".$published_posts."</li>"
     ."<li>Number of published pages is: ".$published_pages."</li>"
     ."</ul>"
-    ."<h4>Plugins</h4>"
+    ."<h4>Problematic Plugins</h4>"
     ."<ul>"
-    ."<li>Comprehensive Google Map Plugin v".CGMP_VERSION."</li>"
-    ."<li>Advanced Category Excluder plugin: ".(isset($plugin_names['advanced-category-excluder']) ? "Installed" : "No installed")."</li>"
-    ."<li>Category Excluder plugin: ".(isset($plugin_names['category-excluder']) ? "Installed" : "No installed")."</li>"
-    ."<li>Simply Exclude plugin: ".(isset($plugin_names['simply-exclude']) ? "Installed" : "No installed")."</li>"
-    ."<li>Ultimate Category Excluder plugin: ".(isset($plugin_names['ultimate-category-excluder']) ? "Installed" : "No installed")."</li>"
+    ."<li>Advanced Category Excluder plugin: ".(isset($plugin_names['advanced-category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
+    ."<li>Category Excluder plugin: ".(isset($plugin_names['category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
+    ."<li>Simply Exclude plugin: ".(isset($plugin_names['simply-exclude']) ? "<b>Installed</b>" : "No installed")."</li>"
+    ."<li>Ultimate Category Excluder plugin: ".(isset($plugin_names['ultimate-category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
     ."</ul>";
 }
 endif;
@@ -113,9 +114,21 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
              	wp_die( __('You do not have sufficient permissions to access this page.') );
         }
 
+        if (isset($_POST['hidden-shortcode-code']))  {
+
+            $bad_entities = array("&quot;", "&#039;", "'");
+            $title = str_replace($bad_entities, "", $_POST['hidden-shortcode-title']);
+            $code = str_replace($bad_entities, "", $_POST['hidden-shortcode-code']);
+
+            $shortcodes = array();
+            $shortcodes[] = array("title" => $title, "code" => $code);
+
+            update_option(CGMP_PERSISTED_SHORTCODES, json_encode($shortcodes));
+            cgmp_show_message("Shortcode save successfully!");
+            cgmp_show_message("Look for the map icon in the page/post WYSIWYG editor");
+        }
 
         $settings = array();
-
         $json_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_HTML_ELEMENTS_FORM_PARAMS);
         $parsed_json = json_decode($json_string, true);
 
@@ -126,10 +139,10 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
         }
 
         $template_values = cgmp_build_template_values($settings);
+        $template_values['SHORTCODEBUILDER_FORM_TITLE'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_FORM_TITLE);
+        $map_configuration_template = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 
-		include_once(CGMP_PLUGIN_INCLUDE_DIR.'/shortcode_builder_form.php');
-        $tokens_with_values = array("SHORTCODEBUILDER_TOKEN" => $map_configuration_template, "SHORTCODEBUILDER_FORM_TITLE_TOKEN" => cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_FORM_TITLE));
-		echo cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
+		echo cgmp_render_template_with_values(array("SHORTCODEBUILDER_TOKEN" => $map_configuration_template), CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
 	}
 endif;
 
@@ -143,6 +156,7 @@ function cgmp_parse_menu_html() {
 		$json_html_doco_params = cgmp_fetch_json_data_file(CGMP_JSON_DATA_HTML_ELEMENTS_DOCO_PARAMS);
 
 		if (is_array($json_html_doco_params)) {
+            $json_html_doco_params['SHORTCODEBUILDER_FORM_TITLE'] = "";
 			$map_configuration_form_template = cgmp_render_template_with_values($json_html_doco_params, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 			$template_values = array();
         	$template_values["DOCUMENTATION_TOKEN"] = $map_configuration_form_template;

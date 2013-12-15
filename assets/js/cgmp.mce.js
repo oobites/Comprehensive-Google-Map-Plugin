@@ -24,6 +24,7 @@
 
                         function menuItemClickHandler(code) {
                             return function() {
+                                code = code.replace(new RegExp("\\\\\"", "g"), "\""); // replace escaped quote and escaping slash with just quote
                                 tinymce.activeEditor.setContent(tinymce.activeEditor.getContent() + code);
                             }
                         }

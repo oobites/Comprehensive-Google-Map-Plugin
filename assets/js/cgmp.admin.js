@@ -33,11 +33,11 @@ function displayShortcodeInPopup(container_id) {
 		var code = buildShortcode(id, $);
 		var content = "Upon saving, the shortcode will be available to you in post/page WYSIWYG editor -<br />just look for the map icon in the editor panel<br /><br /><div id='inner-shortcode-dialog'><b>"
 			+ code + "</b></div><br />";
-		displayPopupWithContent(content, $);
+		displayPopupWithContent(content, code, $);
 	}(jQueryCgmp));
 }
 
-function displayPopupWithContent(content, $)  {
+function displayPopupWithContent(content, code, $)  {
 
 		var mask = $('<div id="cgmp-popup-mask"/>');
 		var id = Math.random().toString(36).substring(3);
@@ -61,7 +61,15 @@ function displayPopupWithContent(content, $)  {
 		$("div#" + id).css('left', winW/2-$("div#" + id).width()/2);
 		$("div#" + id).fadeIn(500); 
 		$('.cgmp-popup-window .save-dialog').click(function (e) {
-			alert('saved');
+
+            var title = $("input#shortcode-title").val();
+            title = title.replace(new RegExp("'", "g"), "");
+			$("input#hidden-shortcode-title").val(title);
+
+            code = code.replace(new RegExp("'", "g"), "");
+			$("input#hidden-shortcode-code").val(code);
+
+            $("form#shortcode-save-form").submit();
 		});
 		$('.cgmp-popup-window .dialog-dismiss').click(function (e) {
 			 close_dialog(e, $(this));

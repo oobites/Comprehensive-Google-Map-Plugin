@@ -102,11 +102,6 @@ if ( !function_exists('cgmp_google_map_init_global_admin_html_object') ):
                 } else {
                     $a = array();
                     $a[] = array("title" => "None saved", "code" => "");
-                    //echo "    <param id='shortcodes' name='shortcodes' value='".json_encode($a)."' />".PHP_EOL;
-                    $a = array();
-                    $a[] = array("title" => "one", "code" => "[SHORTCODE-1]");
-                    $a[] = array("title" => "two", "code" => "[SHORTCODE-2]");
-                    $a[] = array("title" => "three", "code" => "[SHORTCODE-3]");
                     echo "    <param id='shortcodes' name='shortcodes' value='".json_encode($a)."' />".PHP_EOL;
                 }
                 echo "    <param id='assets' name='assets' value='".CGMP_PLUGIN_ASSETS_URI."' />".PHP_EOL;

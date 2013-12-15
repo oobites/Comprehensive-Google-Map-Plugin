@@ -163,10 +163,10 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		}
 
 		$template_values = cgmp_build_template_values($settings);
+        $template_values['SHORTCODEBUILDER_FORM_TITLE'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_WIDGET_FORM_TITLE);
 
 		$tokens_with_values = array();
 		$tokens_with_values['WIDGET_ID_TOKEN'] = $this->id;
-		$tokens_with_values['WIDGET_FORM_TITLE_TEMPLATE_TOKEN'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_WIDGET_FORM_TITLE);
 		$tokens_with_values['MAP_CONFIGURATION_FORM_TEMPLATE_TOKEN'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 
 		echo cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_WIDGET);

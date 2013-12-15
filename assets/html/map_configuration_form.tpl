@@ -1,4 +1,6 @@
-	<fieldset class="fieldset">
+
+    SHORTCODEBUILDER_FORM_TITLE
+    <fieldset class="fieldset">
 		<legend>Basic Settings</legend>
 		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
 			<tbody>
@@ -217,5 +219,9 @@
 		</table>
 	</fieldset>
 
+<form action='' id='shortcode-save-form' name='shortcode-save-form' method='post'>
+    <input type="hidden" id="hidden-shortcode-title" name="hidden-shortcode-title" value=""" />
+    <input type="hidden" id="hidden-shortcode-code" name="hidden-shortcode-code" value=""" />
+</form>
 
-    <div align="right"><span style="font-size: 9px;"><a href="admin.php?page=cgmp-documentation">Documentation</a> | <a target="_blank" href="https://www.paypal.com/cgi-bin/webscrinfocmd=_s-xclick&amp;hosted_button_id=CWNZ5P4Z8RTQ8">Donate</a></span></div>
+<div align="right"><span style="font-size: 9px;"><a href="admin.php?page=cgmp-documentation">Documentation</a> | <a target="_blank" href="https://www.paypal.com/cgi-bin/webscrinfocmd=_s-xclick&amp;hosted_button_id=CWNZ5P4Z8RTQ8">Donate</a></span></div>

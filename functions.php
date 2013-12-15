@@ -132,10 +132,8 @@ endif;
 
 if ( !function_exists('cgmp_render_template_with_values') ):
 	function cgmp_render_template_with_values($tokens_with_values, $template_name) {
-
-		$map_shortcode_builder_metabox_template = file_get_contents(CGMP_PLUGIN_HTML."/".$template_name);
-  		$map_shortcode_builder_metabox_template = cgmp_replace_template_tokens($tokens_with_values, $map_shortcode_builder_metabox_template);
-		return $map_shortcode_builder_metabox_template;
+		$template = file_get_contents(CGMP_PLUGIN_HTML."/".$template_name);
+  		return cgmp_replace_template_tokens($tokens_with_values, $template);
 	}
 endif;
 
