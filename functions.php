@@ -186,7 +186,35 @@ if ( !function_exists('cgmp_load_plugin_textdomain') ):
 	}
 endif;
 
+if ( !function_exists('cgmp_register_mce') ):
+    function cgmp_register_mce() {
+        if ( current_user_can('edit_posts') &&  current_user_can('edit_pages') ) {
+            add_filter('mce_external_plugins', 'cgmp_load_button_js_into_mce_editor');
+            add_filter('mce_buttons', 'cgmp_load_button_into_mce_editor');
+        }
+    }
+endif;
 
+if ( !function_exists('cgmp_load_button_js_into_mce_editor') ):
+    function cgmp_load_button_js_into_mce_editor($plugin_array) {
+        $plugin_array['shortcode'] = CGMP_PLUGIN_JS.'/cgmp.mce.js';
+        return $plugin_array;
+    }
+endif;
+
+if ( !function_exists('cgmp_load_button_into_mce_editor') ):
+    function cgmp_load_button_into_mce_editor($buttons) {
+        array_push($buttons, "shortcode");
+        return $buttons;
+    }
+endif;
+
+if ( !function_exists('cgmp_mce_ajax_action_callback') ):
+    function cgmp_mce_ajax_action_callback() {
+        echo "OK!";
+        exit();
+    }
+endif;
 
 if ( !function_exists('cgmp_show_message') ):
 
@@ -653,6 +681,7 @@ if ( !function_exists('cgmp_on_uninstall_hook') ):
 			if ( CGMP_PLUGIN_BOOTSTRAP != WP_UNINSTALL_PLUGIN ) {
 				return;
 			}
+            remove_option(CGMP_PERSISTED_SHORTCODES);
             remove_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
             remove_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
 

@@ -35,6 +35,8 @@ li.token-input-token span.token-input-delete-token-highlighted{background-color:
 ul.token-input-list{-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;clear:left;cursor:text;font-family:Verdana;font-size:12px;height:auto !important;list-style-type:none;margin-top:3px;overflow:hidden;padding:0;width:100%;z-index:999}
 ul.token-input-list li{list-style-type:none}
 ul.token-input-list li input{-webkit-appearance:caret;background-color:#FFF;border:0;padding:3px 8px;width:350px}
+.cgmp-mce-split-button-menu-item-icon{background-image:url("images/google_map.png"); top: 5px !important; height: 16px !important; left: 5px !important; width: 16px !important;}
+.mce_cgmp-mce-split-button-menu-item-icon{background-image:url("images/google_map.png"); top: 5px !important; height: 16px !important; left: 5px !important; width: 16px !important;}
 .uiCloseButton{background-image:url("images/facebook-axis.png");background-repeat:no-repeat;height:15px;width:15px}
 .uiCloseButton:active{background-position:left -48px}
 .uiCloseButtonSmall{background-image:url("ogYrclupeJV.png");height:11px;margin-top:2px;width:11px}

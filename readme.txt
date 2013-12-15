@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, jquery tabs, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 9.0.4.1.1.1
+Stable tag: 9.0.4
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -21,8 +21,8 @@ A simple and intuitive, yet elegant and fully documented Google map plugin that 
 * Google-like directions: driving and walking, distance shown in miles or KM, avoid tolls and highways options, direction print functionality
 * Info window can display marker's street view within itself.
 * Plugin is fully documented. If help tooltips are not enough, you can always refer to the full documentation about each of the settings
-* Short-code builder available, which integrated with post/page editor. In other words, you do not need
-manually to type the short-code in the editor (But you can if you want to).
+* Shortcode builder available, which integrated with post/page editor. In other words, you do not need
+manually to type the shortcode in the editor, just save the shortcode and it will be available to you (But you can if you want to).
 * The plugin auto generates unique ID for each map. In other words - unlimited maps! You do not need to specify and maintain unique map
 IDs explicitly when dealing with multiple maps on the same post/page.
 * The plugin offers extensive configuration options for Google map marker, controls, size, KML files, location by latitude/longitude, location by address, info windows with custom text, traffic/bike lanes and more!
@@ -93,7 +93,8 @@ After plugin activation, look at the left hand side menu of WP admin, look for "
 
 == Changelog ==
 
-= 9.0.4.1.1.1 =
+= 9.0.4 =
+* Enhancement: Added ability to save shortcodes by name and load them up in Wordpress's post/page WYSIWYG editor
 * Enhancement: Added more debug data for cases when GeoMashup fails
 * Enhancement: Added "Support" tab in CGMP settings with debug information
 * Cleanup: Removed deprecated shortcode properties

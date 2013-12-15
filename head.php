@@ -95,6 +95,21 @@ if ( !function_exists('cgmp_google_map_init_global_admin_html_object') ):
 			if (is_admin()) {
 				echo "<object id='global-data-placeholder' class='cgmp-data-placeholder'>".PHP_EOL;
 				echo "    <param id='sep' name='sep' value='".CGMP_SEP."' />".PHP_EOL;
+                echo "    <param id='version' name='version' value='".CGMP_VERSION."' />".PHP_EOL;
+                $persisted_shortcodes_json = get_option(CGMP_PERSISTED_SHORTCODES);
+                if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "" && is_array(json_decode($persisted_shortcodes_json, true))) {
+                    echo "    <param id='shortcodes' name='shortcodes' value='".$persisted_shortcodes_json."' />".PHP_EOL;
+                } else {
+                    $a = array();
+                    $a[] = array("title" => "None saved", "code" => "");
+                    //echo "    <param id='shortcodes' name='shortcodes' value='".json_encode($a)."' />".PHP_EOL;
+                    $a = array();
+                    $a[] = array("title" => "one", "code" => "[SHORTCODE-1]");
+                    $a[] = array("title" => "two", "code" => "[SHORTCODE-2]");
+                    $a[] = array("title" => "three", "code" => "[SHORTCODE-3]");
+                    echo "    <param id='shortcodes' name='shortcodes' value='".json_encode($a)."' />".PHP_EOL;
+                }
+                echo "    <param id='assets' name='assets' value='".CGMP_PLUGIN_ASSETS_URI."' />".PHP_EOL;
 				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;
 				echo "    <param id='defaultLocationText' name='defaultLocationText' value='Enter marker destination address or latitude,longitude here (required)' />".PHP_EOL;
 				echo "    <param id='defaultBubbleText' name='defaultBubbleText' value='Enter marker info bubble text here (optional)' />".PHP_EOL;

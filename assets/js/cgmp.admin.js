@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var CGMPGlobal = {};
 var jQueryCgmp = jQuery.noConflict();
 
 function sendShortcodeToEditor(container_id) {
@@ -144,8 +145,6 @@ function buildShortcode(id, $) {
 
 (function ($) {
 
-	var CGMPGlobal = {};
-
 	CGMPGlobal.sep = $("object#global-data-placeholder param#sep").val();
 
 	if (CGMPGlobal.sep == null || CGMPGlobal.sep == "undefined") {
@@ -154,6 +153,9 @@ function buildShortcode(id, $) {
 	CGMPGlobal.customMarkersUri = $("object#global-data-placeholder param#customMarkersUri").val();
 	CGMPGlobal.defaultLocationText = $("object#global-data-placeholder param#defaultLocationText").val();
 	CGMPGlobal.defaultBubbleText = $("object#global-data-placeholder param#defaultBubbleText").val();
+    CGMPGlobal.assets = $("object#global-data-placeholder param#assets").val();
+    CGMPGlobal.version = $("object#global-data-placeholder param#version").val();
+    CGMPGlobal.shortcodes = $("object#global-data-placeholder param#shortcodes").val();
 
 	var lists = [];
 
