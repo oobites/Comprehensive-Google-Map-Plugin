@@ -6,14 +6,13 @@
 	"CGMP_DB_PURGE_GEOMASHUP_CACHE" : "cgmp_purge_geomashup_cache",
 
 
+    "CGMP_ALL_MAP_CACHED_CONSTANTS_PREFIX" : "cgmp_cache_",
 
-    "CGMP_MAP_CACHED_CONSTANTS_PREFIX" : "cgmp_cache_",
+    "CGMP_MAP_CACHE_POST_PREFIX" : "cgmp_cache_post_",
+    "CGMP_MAP_CACHE_POST_TIME_PREFIX" : "cgmp_cache_time_post_",
 
-    "CGMP_MAP_CACHE_POST_PREFIX" : "cgmp_cache_post_map_",
-    "CGMP_MAP_CACHE_POST_TIME_PREFIX" : "cgmp_cache_time_post_map_",
-
-    "CGMP_MAP_CACHE_PAGE_PREFIX" : "cgmp_cache_page_map_",
-    "CGMP_MAP_CACHE_PAGE_TIME_PREFIX" : "cgmp_cache_time_page_map_",
+    "CGMP_MAP_CACHE_PAGE_PREFIX" : "cgmp_cache_page_",
+    "CGMP_MAP_CACHE_PAGE_TIME_PREFIX" : "cgmp_cache_time_page_",
 
     "CGMP_MAP_CACHE_WIDGET_PREFIX" : "cgmp_cache_widget_map_",
     "CGMP_MAP_CACHE_WIDGET_TIME_PREFIX" : "cgmp_cache_time_widget_map_",
