@@ -80,17 +80,17 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$addmarkerlisthidden = cgmp_parse_wiki_style_links($addmarkerlisthidden);
 
         if ($addmarkermashuphidden == 'false' && trim($addmarkerlisthidden) != "") {
-            $cached_marker_data_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id);
+            $cached_marker_data_json = get_option(CGMP_MAP_CACHE_WIDGET_PREFIX.$this->id);
             if (isset($cached_marker_data_json) && trim($cached_marker_data_json) != "") {
                 $addmarkerlisthidden = $cached_marker_data_json;
-                $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX.$this->id);
+                $cache_time = get_option(CGMP_MAP_CACHE_WIDGET_TIME_PREFIX.$this->id);
                 $map_data_properties['debug'] = array("state" => "cached", "since" => $cache_time, "geo_errors" => array());
             } else {
                 $execution_results = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
                 $addmarkerlisthidden = $execution_results["validated_addresses"];
                 $map_data_properties['debug'] = array("state" => "fresh", "since" => time(), "geo_errors" => $execution_results["errors"]);
-                update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id, $addmarkerlisthidden);
-                update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX.$this->id, time());
+                update_option(CGMP_MAP_CACHE_WIDGET_PREFIX.$this->id, $addmarkerlisthidden);
+                update_option(CGMP_MAP_CACHE_WIDGET_TIME_PREFIX.$this->id, time());
             }
         }
 
@@ -123,8 +123,8 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 			$instance[$key] = strip_tags($new_instance[$key]);
 		}
 
-        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX.$this->id, "");
-        update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX.$this->id, "");
+        update_option(CGMP_MAP_CACHE_WIDGET_PREFIX.$this->id, "");
+        update_option(CGMP_MAP_CACHE_WIDGET_TIME_PREFIX.$this->id, "");
 
 		return $instance;
 	}

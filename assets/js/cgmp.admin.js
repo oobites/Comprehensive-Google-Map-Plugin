@@ -107,17 +107,22 @@ function displayPopupWithContent(content, code, $)  {
 		});
 }
 
+function muid() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + "" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+};
+
 function buildShortcode(id, $) {
 	var used_roles = {};
-	var code = "[google-map-v3 ";
+	var code = "[google-map-v3 shortcodeid=\"" + muid() + "\" ";
 	$(id + ' .shortcodeitem').each(function() {
 		var role = $(this).attr('role');
 		var val =  $(this).val();
 
 		if (role === 'addmarkerlisthidden') {
-			val = $('<div />').text(val).html();
+			val = $('<div />').text(val).html(); // from text to HTML
 			val = val.replace(new RegExp("'", "g"), "");
 			val = val.replace(new RegExp("\"", "g"), "");
+            val = val.replace(new RegExp("\\[|\\]", "g"), "");
 		}
 
 		if ($(this).attr('type') === "checkbox") {

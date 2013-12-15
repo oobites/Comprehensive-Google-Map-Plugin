@@ -25,6 +25,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 			}
 
 			$shortcode_attribs = shortcode_atts(array(
+                'shortcodeid' => -1,
 				'latitude' => 0,
 				'longitude' => 0,
 				'zoom' => '7',
@@ -94,7 +95,12 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
                 global $post;
                 $post_type = $post->post_type;
                 $post_id = $post->ID;
-                $json_data_arr = cgmp_get_post_page_cached_markerlist($post_id, $post_type, $addmarkerlist);
+
+                if (is_numeric($shortcodeid) && $shortcodeid == -1) {
+                    $shortcodeid =  md5($addmarkerlist);
+                }
+
+                $json_data_arr = cgmp_get_post_page_cached_markerlist($shortcodeid, $post_id, $post_type, $addmarkerlist);
                 $addmarkerlist = $json_data_arr["data"];
                 $map_data_properties['debug'] = $json_data_arr["debug"];
             }

@@ -35,6 +35,7 @@
 			<h4>List of allowed values for the manual shortcode configuration</h4>
 			<p style="">
 				[google-map-v3<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;shortcodeid="<span class="italic">Very important its MUST be unique per shortcode, do not copy/paste! Make sure that it s a random string containing letters and numbers (length of 8-10 characters is enough)</span>"<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;addmarkerlist="<span class="italic">one or more full geo address strings or latitude/longitude seperated by comma. When providing multiple locations, they must be seperated by the  <span class="sep">|</span>  sign</span>"<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;addmarkermashup="<span class="italic">true <span class="sep">or</span> false. Marker mashup gets marker locations from your other posts that have map on them. Anything in 'addmarkerlist' property will be ignored.</span>"<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;addmarkermashupbubble="<span class="italic">true <span class="sep">or</span> false. The "true" - displays in the marker info bubble marker's original post title and a few words from excerpt, while "false" - displays in the marker info bubble marker's address and lat/long.</span>". This property should be used together with  <span class="italic">addmarkermashup</span>.<br />

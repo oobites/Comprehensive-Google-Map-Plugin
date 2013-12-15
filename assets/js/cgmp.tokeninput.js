@@ -32,8 +32,10 @@ var jQueryCgmp = jQuery.noConflict();
 					var value_arr = value.split(CGMPGlobal.sep);
 					var bubbleText = "<p style='padding-left: 50px'><i>No description provided</i> ..</p>";
 
-					if (value_arr[2] != null && value_arr[2] != '') {
-						bubbleText = "<p style='padding-left: 50px'><i>" + value_arr[2] + "</i></p>";
+                var description = value_arr[2];
+                if (description != null && description !== "") {
+                        description = description.replace(new RegExp("\\[|\\]", "g"), "");
+						bubbleText = "<p style='padding-left: 50px'><i>" + description + "</i></p>";
 					}
 					
 					return "<li><img src='" + CGMPGlobal.customMarkersUri + value_arr[1] + 

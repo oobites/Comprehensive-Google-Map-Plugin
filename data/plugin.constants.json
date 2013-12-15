@@ -7,18 +7,20 @@
 
 
 
+    "CGMP_MAP_CACHED_CONSTANTS_PREFIX" : "cgmp_cache_",
 
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_POST_PREFIX" : "cgmp_geomashup_data_cache_post_prefix_",
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_POST_TIME_PREFIX" : "cgmp_geomashup_data_cache_post_time_prefix_",
+    "CGMP_MAP_CACHE_POST_PREFIX" : "cgmp_cache_post_map_",
+    "CGMP_MAP_CACHE_POST_TIME_PREFIX" : "cgmp_cache_time_post_map_",
 
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_PREFIX" : "cgmp_geomashup_data_cache_page_prefix_",
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_PAGE_TIME_PREFIX" : "cgmp_geomashup_data_cache_page_time_prefix_",
+    "CGMP_MAP_CACHE_PAGE_PREFIX" : "cgmp_cache_page_map_",
+    "CGMP_MAP_CACHE_PAGE_TIME_PREFIX" : "cgmp_cache_time_page_map_",
 
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_PREFIX" : "cgmp_geomashup_data_cache_widget_prefix_",
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_WIDGET_TIME_PREFIX" : "cgmp_geomashup_data_cache_widget_time_prefix_",
+    "CGMP_MAP_CACHE_WIDGET_PREFIX" : "cgmp_cache_widget_map_",
+    "CGMP_MAP_CACHE_WIDGET_TIME_PREFIX" : "cgmp_cache_time_widget_map_",
 
-    "CGMP_DB_GEOMASHUP_DATA_CACHE" : "cgmp_geomashup_data_cache",
-    "CGMP_DB_GEOMASHUP_DATA_CACHE_TIME" : "cgmp_geomashup_data_cache_time",
+    "CGMP_DB_GEOMASHUP_DATA_CACHE" : "cgmp_cache_mashup_map",
+    "CGMP_DB_GEOMASHUP_DATA_CACHE_TIME" : "cgmp_cache_time_mashup_map",
+
 
     "CGMP_PERSISTED_SHORTCODES" : "cgmp_persisted_shortcodes",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",

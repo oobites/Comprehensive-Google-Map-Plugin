@@ -96,6 +96,8 @@ Look for little map icon in post/page editor
 == Changelog ==
 
 = 9.0.4 =
+* Bug: Mulitple maps on the same page were generated from the cached map data of the first map
+* Bug: Square brackets in marker description were breaking WordPress shortcode parsing functionality
 * Enhancement: Added ability to save shortcodes by name and load them up/delete them in Wordpress's post/page WYSIWYG editor
 * Enhancement: Added more debug data for cases when GeoMashup fails
 * Enhancement: Added "Support" tab in CGMP settings with user specific debug information
