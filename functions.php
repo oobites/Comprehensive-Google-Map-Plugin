@@ -649,27 +649,39 @@ if ( !function_exists('extract_published_content_containing_shortcode') ):
         $extracted = array();
         $pattern = "/\[google-map-v3[^\]]*\]/";
         $addresses = array();
+        $per_published_content_type_address_counter = 0;
         foreach($posts as $post)  {
+
+            $content_id = $content_type . "_" . $post->ID;
+
             preg_match_all($pattern, $post->post_content, $matches);
             if (is_array($matches[0]) && count($matches[0]) > 0) {
 
-                $pattern = "/addmarkerlist=\"(.*?)\"/";
-                $washed_shortcode = str_replace(array("\r\n", "\r", "\n"), " ", $matches[0][0]);
-                preg_match_all($pattern, $washed_shortcode, $address_matches);
+                $matches_shortcodes_per_post = $matches[0];
+                foreach($matches_shortcodes_per_post as $matched_shortcode)  {
+                    $washed_marker_csv = str_replace(array("\r\n", "\r", "\n"), " ", $matched_shortcode);
 
-                if (is_array($address_matches) && is_array($address_matches[1]) && !empty($address_matches[1])) {
-                    $addresss_segments = explode(CGMP_SEP, $address_matches[1][0]);
-                    if (isset($addresss_segments[0]) && trim($addresss_segments[0]) != "") {
-                        $addresses[$post->ID] = $addresss_segments[0];
+                    $pattern = "/addmarkerlist=\"(.*?)\"/";
+                    preg_match_all($pattern, $washed_marker_csv, $address_matches);
+
+                    if (is_array($address_matches) && is_array($address_matches[1]) && !empty($address_matches[1])) {
+                        $addresss_segments = explode(CGMP_SEP, $address_matches[1][0]);
+                        $address_as_string = $addresss_segments[0];
+                        if (isset($address_as_string) && trim($address_as_string) != "") {
+                            if (!is_array($addresses[$content_id])) {
+                                $addresses[$content_id] = array();
+                            }
+                            $addresses[$content_id][] = $address_as_string;
+                        }
                     }
                 }
-
+                $per_published_content_type_address_counter = $per_published_content_type_address_counter + count($addresses[$content_id]);
                 $extracted[$post->ID] = $post;
             }
         }
 
         $function_used = "SQL query";
-        return array("extracted" => $extracted, "query" => array("wp_count_posts" => $total_published, $function_used => count($posts), "total_shortcodes" => count($extracted), "shortcodes_with_markerlist" => count($addresses), "addresses" => $addresses));
+        return array("extracted" => $extracted, "query" => array("wp_count_posts" => $total_published, $function_used => count($posts), $content_type."s_with_shortcodes" => count($extracted), $content_type."_addresses_total" => $per_published_content_type_address_counter, "addresses" => $addresses));
     }
 endif;
 
@@ -1002,7 +1014,7 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
         $page_data = extract_published_content_containing_shortcode("page");
         $query_debug_data["page"] = $page_data["query"];
 
-        $extracted_published_markers =  process_collection_of_contents($post_data["extracted"]) + process_collection_of_contents($page_data["extracted"]);
+        $extracted_published_markers =  array_merge(process_collection_of_contents($post_data["extracted"]), process_collection_of_contents($page_data["extracted"]));
 
         if (is_array($extracted_published_markers) && count($extracted_published_markers) > 0) {
 
