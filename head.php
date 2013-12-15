@@ -100,9 +100,7 @@ if ( !function_exists('cgmp_google_map_init_global_admin_html_object') ):
                 if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "" && is_array(json_decode($persisted_shortcodes_json, true))) {
                     echo "    <param id='shortcodes' name='shortcodes' value='".$persisted_shortcodes_json."' />".PHP_EOL;
                 } else {
-                    $a = array();
-                    $a[] = array("title" => "None saved", "code" => "");
-                    echo "    <param id='shortcodes' name='shortcodes' value='".json_encode($a)."' />".PHP_EOL;
+                    echo "    <param id='shortcodes' name='shortcodes' value='".json_encode(array())."' />".PHP_EOL;
                 }
                 echo "    <param id='assets' name='assets' value='".CGMP_PLUGIN_ASSETS_URI."' />".PHP_EOL;
 				echo "    <param id='customMarkersUri' name='customMarkersUri' value='".CGMP_PLUGIN_IMAGES."/markers/' />".PHP_EOL;

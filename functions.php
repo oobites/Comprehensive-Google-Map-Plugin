@@ -209,7 +209,23 @@ endif;
 
 if ( !function_exists('cgmp_mce_ajax_action_callback') ):
     function cgmp_mce_ajax_action_callback() {
-        echo "OK!";
+
+        if (isset($_POST['title']))  {
+            $persisted_shortcodes_json = get_option(CGMP_PERSISTED_SHORTCODES);
+            if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "") {
+                $persisted_shortcodes = json_decode($persisted_shortcodes_json, true);
+                if (is_array($persisted_shortcodes)) {
+                    if (isset($persisted_shortcodes[$_POST['title']])) {
+                        unset($persisted_shortcodes[$_POST['title']]);
+                        if (empty($persisted_shortcodes)) {
+                            //$persisted_shortcodes[] = array("title" => "None saved", "code" => "");
+                        }
+                        update_option(CGMP_PERSISTED_SHORTCODES, json_encode($persisted_shortcodes));
+                        echo "OK";
+                    }
+                }
+            }
+        }
         exit();
     }
 endif;

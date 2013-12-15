@@ -63,6 +63,9 @@ function displayPopupWithContent(content, code, $)  {
 		$('.cgmp-popup-window .save-dialog').click(function (e) {
 
             var title = $("input#shortcode-title").val();
+            if (typeof title === "undefined" || title.replace(/^\s+|\s+$/g, '') === "") {
+                title = "Nameless";
+            }
             title = title.replace(new RegExp("'", "g"), "");
 			$("input#hidden-shortcode-title").val(title);
 

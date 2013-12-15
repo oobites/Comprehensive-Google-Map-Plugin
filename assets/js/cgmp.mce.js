@@ -2,7 +2,6 @@
     tinymce.create('tinymce.plugins.shortcode', {
 
         createControl: function (n, cm) {
-            console.log(n);
             switch (n) {
                 case 'shortcode':
                     var csm = cm.createSplitButton( 'shortcode', {
@@ -19,15 +18,8 @@
                         m.add({title: 'Load saved shortcodes', 'class': 'mceMenuItemTitle'}).setDisabled(1);
                         var shortcodesJson = jQuery.parseJSON(CGMPGlobal.shortcodes);
                         jQuery.each(shortcodesJson, function () {
-                            m.add({title : this.title, icon: 'cgmp-mce-split-button-menu-item-icon', onclick : menuItemClickHandler(this.code)});
+                            m.add({title : this.title, icon: 'cgmp-mce-split-button-menu-item-icon'});
                         });
-
-                        function menuItemClickHandler(code) {
-                            return function() {
-                                code = code.replace(new RegExp("\\\\\"", "g"), "\""); // replace escaped quote and escaping slash with just quote
-                                tinymce.activeEditor.setContent(tinymce.activeEditor.getContent() + code);
-                            }
-                        }
                     });
 
                     return csm;
@@ -45,5 +37,34 @@
         }
     });
     tinymce.PluginManager.add('shortcode', tinymce.plugins.shortcode);
+
+    jQuery(document).ready(function () {
+        jQuery(document).on("click", "div#menu_content_content_shortcode_menu span.mce_cgmp-mce-split-button-menu-item-icon", function(event) {
+
+            var clickedIcon = jQuery(this);
+            var shortcodeTitle = jQuery(this).next().text();
+            jQuery.post(ajaxurl, {action: 'cgmp_mce_ajax_action', title: shortcodeTitle}, function (response) {
+                if (response === "OK") {
+                    jQuery(clickedIcon).closest("tr").remove();
+                    alert("Shortcode deleted!");
+                }
+            });
+
+            return false;
+        });
+
+        jQuery(document).on("click", "div#menu_content_content_shortcode_menu span.mceText", function(event) {
+            var menuTitle = jQuery(this).text();
+            var shortcodesJson = jQuery.parseJSON(CGMPGlobal.shortcodes);
+            jQuery.each(shortcodesJson, function () {
+                if (this.title === menuTitle) {
+                    var code = this.code.replace(new RegExp("\\\\\"", "g"), "\""); // replace escaped quote and escaping slash with just quote
+                    tinymce.activeEditor.setContent(tinymce.activeEditor.getContent() + code);
+                }
+            });
+            return false;
+        });
+    });
 })();
+
 

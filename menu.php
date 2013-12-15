@@ -121,9 +121,20 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
             $code = str_replace($bad_entities, "", $_POST['hidden-shortcode-code']);
 
             $shortcodes = array();
-            $shortcodes[] = array("title" => $title, "code" => $code);
+
+            $persisted_shortcodes_json = get_option(CGMP_PERSISTED_SHORTCODES);
+            if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "") {
+                $persisted_shortcodes = json_decode($persisted_shortcodes_json, true);
+                if (is_array($persisted_shortcodes)) {
+                    $persisted_shortcodes[$title] = array("title" => $title, "code" => $code);
+                    $shortcodes = $persisted_shortcodes;
+                }
+            } else {
+                $shortcodes[$title] = array("title" => $title, "code" => $code);
+            }
 
             update_option(CGMP_PERSISTED_SHORTCODES, json_encode($shortcodes));
+
             cgmp_show_message("Shortcode save successfully!");
             cgmp_show_message("Look for the map icon in the page/post WYSIWYG editor");
         }
