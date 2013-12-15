@@ -113,8 +113,23 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
              	wp_die( __('You do not have sufficient permissions to access this page.') );
         }
 
+
+        $settings = array();
+
+        $json_string = file_get_contents(CGMP_PLUGIN_DATA_DIR."/".CGMP_JSON_DATA_HTML_ELEMENTS_FORM_PARAMS);
+        $parsed_json = json_decode($json_string, true);
+
+        if (is_array($parsed_json)) {
+            foreach ($parsed_json as $data_chunk) {
+                cgmp_set_values_for_html_rendering($settings, $data_chunk);
+            }
+        }
+
+        $template_values = cgmp_build_template_values($settings);
+
 		include_once(CGMP_PLUGIN_INCLUDE_DIR.'/shortcode_builder_form.php');
-		echo cgmp_render_template_with_values(array("SHORTCODEBUILDER_TOKEN" => $map_configuration_template), CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
+        $tokens_with_values = array("SHORTCODEBUILDER_TOKEN" => $map_configuration_template, "SHORTCODEBUILDER_FORM_TITLE_TOKEN" => cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_FORM_TITLE));
+		echo cgmp_render_template_with_values($tokens_with_values, CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
 	}
 endif;
 

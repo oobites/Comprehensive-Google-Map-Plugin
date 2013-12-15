@@ -31,8 +31,8 @@ function displayShortcodeInPopup(container_id) {
 	(function ($) {
 		var id = '#' + container_id;
 		var code = buildShortcode(id, $);
-		var content = "Select the generated shortcode text below including the square brackets and press CTRL+C (CMMND+C on Mac) to copy:<br /><br /><div id='inner-shortcode-dialog'><b>" 
-			+ code + "</b></div><br /><br />Paste the copied text into your post/page";
+		var content = "Upon saving, the shortcode will be available to you in post/page WYSIWYG editor -<br />just look for the map icon in the editor panel<br /><br /><div id='inner-shortcode-dialog'><b>"
+			+ code + "</b></div><br />";
 		displayPopupWithContent(content, $);
 	}(jQueryCgmp));
 }
@@ -42,7 +42,7 @@ function displayPopupWithContent(content, $)  {
 		var mask = $('<div id="cgmp-popup-mask"/>');
 		var id = Math.random().toString(36).substring(3);
 		var shortcode_dialog = $('<div id="' + id + '" class="cgmp-popup-shortcode-dialog cgmp-popup-window">');
-		shortcode_dialog.html("<div class='dismiss-container'><a class='dialog-dismiss' href='javascript:void(0)'>×</a></div><p style='padding: 10px 10px 0 10px'>" + content + "</p><div align='center'><input type='button' class='close-dialog' value='Close' /></div>");
+		shortcode_dialog.html("<div class='dismiss-container'><a class='dialog-dismiss' href='javascript:void(0)'>×</a></div><p style='padding: 10px 10px 0 10px'>" + content + "</p><div align='center'><input type='button' class='save-dialog' value='Save' /></div>");
 
 		$('body').append(mask);
 		$('body').append(shortcode_dialog);
@@ -60,8 +60,8 @@ function displayPopupWithContent(content, $)  {
 		$("div#" + id).css('top',  winH/2-$("div#" + id).height()/2);
 		$("div#" + id).css('left', winW/2-$("div#" + id).width()/2);
 		$("div#" + id).fadeIn(500); 
-		$('.cgmp-popup-window .close-dialog').click(function (e) {
-			close_dialog(e, $(this));
+		$('.cgmp-popup-window .save-dialog').click(function (e) {
+			alert('saved');
 		});
 		$('.cgmp-popup-window .dialog-dismiss').click(function (e) {
 			 close_dialog(e, $(this));

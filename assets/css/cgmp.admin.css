@@ -59,14 +59,14 @@ ul.tools-tabs-nav li.current a{color:#000}
 .cgmp-popup-shortcode-dialog p{font-family:Arial,sans-serif !important;font-size:13px !important}
 .cgmp-popup-shortcode-dialog .dismiss-container{left:0;position:absolute;top:0;width:100%}
 .cgmp-popup-shortcode-dialog .dialog-dismiss{color:#7F7F7F !important;float:right;font:26px Arial,sans-serif;margin:6px 14px;text-decoration:none}
-.cgmp-popup-shortcode-dialog .close-dialog{-moz-transition:all 0.218s ease 0;-moz-user-select:none;background-color:#D14836;background-image:0;border:1px solid transparent;border-radius:2px 2px 2px 2px;color:#FFF;cursor:pointer;display:inline-block;font:bold 11px/27px "Arial","Helvetica",sans-serif;height:27px;min-width:54px;padding:0 8px;text-align:center;text-shadow:0 1px rgba(0, 0, 0, 0.1);text-transform:uppercase}
-.cgmp-popup-shortcode-dialog .close-dialog:hover{-moz-border-bottom-colors:none;-moz-border-image:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;background-color:#C53727;background-image:0;border-color:#B0281A #B0281A #AF301F;border-style:solid;border-width:1px;box-shadow:0 1px 1px rgba(0, 0, 0, 0.2);color:#FFF}
+.cgmp-popup-shortcode-dialog .save-dialog{-moz-transition:all 0.218s ease 0;-moz-user-select:none;background-color:#D14836;background-image:0;border:1px solid transparent;border-radius:2px 2px 2px 2px;color:#FFF;cursor:pointer;display:inline-block;font:bold 11px/27px "Arial","Helvetica",sans-serif;height:27px;min-width:54px;padding:0 8px;text-align:center;text-shadow:0 1px rgba(0, 0, 0, 0.1);text-transform:uppercase}
+.cgmp-popup-shortcode-dialog .save-dialog:hover{-moz-border-bottom-colors:none;-moz-border-image:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;background-color:#C53727;background-image:0;border-color:#B0281A #B0281A #AF301F;border-style:solid;border-width:1px;box-shadow:0 1px 1px rgba(0, 0, 0, 0.2);color:#FFF}
 div#inner-shortcode-dialog{-moz-border-radius:7px;-webkit-border-radius:7px;background-color:#fff;border:1px solid gray;border-radius:7px;height:90px;overflow:auto;padding:8px}
 div.shortcodebuilder fieldset.fieldset table input[type="text"],div.shortcodebuilder fieldset.fieldset table select{width:120px}
 fieldset.fieldset table input.marker-text-details,div.shortcodebuilder fieldset.fieldset table input.marker-text-details{width:88%}
 * html li.token-input-token,* html ul.token-input-list{height:1% !important}
 .uiCloseButton:focus,.uiCloseButton:hover{background-position:left -32px}
 .uiCloseButtonSmall:focus,.uiCloseButtonSmall:hover{background-position:left -24px}
-.cgmp-popup-shortcode-dialog .close-dialog:focus,.cgmp-popup-shortcode-dialog .close-dialog.focus{box-shadow:0 0 0 1px #FFF inset}
-.cgmp-popup-shortcode-dialog .close-dialog:focus:hover,.cgmp-popup-shortcode-dialog .close-dialog.focus:hover{box-shadow:0 0 0 1px #FFF inset, 0 1px 1px rgba(0, 0, 0, 0.1)}
-.cgmp-popup-shortcode-dialog .close-dialog:active,.cgmp-popup-shortcode-dialog .close-dialog:focus:active,.cgmp-popup-shortcode-dialog .close-dialog.focus:active{background-color:#B0281A;background-image:0;border:1px solid #992A1B;box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset}
+.cgmp-popup-shortcode-dialog .save-dialog:focus,.cgmp-popup-shortcode-dialog .save-dialog.focus{box-shadow:0 0 0 1px #FFF inset}
+.cgmp-popup-shortcode-dialog .save-dialog:focus:hover,.cgmp-popup-shortcode-dialog .save-dialog.focus:hover{box-shadow:0 0 0 1px #FFF inset, 0 1px 1px rgba(0, 0, 0, 0.1)}
+.cgmp-popup-shortcode-dialog .save-dialog:active,.cgmp-popup-shortcode-dialog .save-dialog:focus:active,.cgmp-popup-shortcode-dialog .save-dialog.focus:active{background-color:#B0281A;background-image:0;border:1px solid #992A1B;box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset}
