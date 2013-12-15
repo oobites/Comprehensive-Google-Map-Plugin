@@ -21,7 +21,7 @@ var jQueryCgmp = jQuery.noConflict();
 function sendShortcodeToEditor(container_id) {
 	(function ($) {
 		var id = '#' + container_id;
-		var code = buildShortcode(id, $);
+		var code = buildShortcode(id, muid(), $);
 		send_to_editor('<br />' + code + '<br />');
 	}(jQueryCgmp));
 }
@@ -30,7 +30,7 @@ function sendShortcodeToEditor(container_id) {
 function displayShortcodeInPopup(container_id) {
 	(function ($) {
 		var id = '#' + container_id;
-		var code = buildShortcode(id, $);
+		var code = buildShortcode(id, "TO_BE_GENERATED", $);
 		var content = "Upon saving, the shortcode will be available to you in post/page WYSIWYG editor -<br />just look for the map icon in the editor panel<br /><br /><div id='inner-shortcode-dialog'><b>"
 			+ code + "</b></div><br />";
 		displayPopupWithContent(content, code, $);
@@ -109,11 +109,11 @@ function displayPopupWithContent(content, code, $)  {
 
 function muid() {
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + "" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-};
+}
 
-function buildShortcode(id, $) {
+function buildShortcode(id, shortcodeId, $) {
 	var used_roles = {};
-	var code = "[google-map-v3 shortcodeid=\"" + muid() + "\" ";
+	var code = "[google-map-v3 shortcodeid=\"" + shortcodeId + "\" ";
 	$(id + ' .shortcodeitem').each(function() {
 		var role = $(this).attr('role');
 		var val =  $(this).val();

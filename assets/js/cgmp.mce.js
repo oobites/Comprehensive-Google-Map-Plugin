@@ -66,11 +66,16 @@
             jQuery.each(shortcodesJson, function () {
                 if (this.title === menuTitle) {
                     var code = this.code.replace(new RegExp("\\\\\"", "g"), "\""); // replace escaped quote and escaping slash with just quote
+                    code = code.replace(new RegExp("TO_BE_GENERATED", "g"), muid()); // replace escaped quote and escaping slash with just quote
                     tinymce.activeEditor.setContent(tinymce.activeEditor.getContent() + code);
                 }
             });
             return false;
         });
+
+        function muid() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + "" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
     });
 })();
 
