@@ -84,6 +84,13 @@ Look for little map icon in post/page WYSIWYG editor
 7. Do I lose my saved shortcodes after plugin update?<br />
 No, they will still be there
 
+8. Whats the correct way to define coordinates?
+You can use one of the following formats:
+[a] N43°38 19.39, W116°14 28.86 (Please note: single quote or apostrophe has been replaced with SPACE and no double quotes)
+[b] 43°38 19.39N, 116°14 28.86W
+[c] 43 38 19.39, -116 14 28.86
+[d] 43.6387194445, -116.2413513485235
+
 == Screenshots ==
 
 1. Help tooltip in action
