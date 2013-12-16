@@ -13,7 +13,7 @@
         "cssClasses": "widefat notshortcodeitem",
         "dbParameterId": "shortcode-title",
         "dbParameterName": "shortcode-title",
-        "htmlLabelValue": "Title",
+        "htmlLabelValue": "Title (unique per sh.code)",
         "inlineCss": "width: 98% !important;",
         "templateTokenNameSuffix": "shortcodetitle"
     },

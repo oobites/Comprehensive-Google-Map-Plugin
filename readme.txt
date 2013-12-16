@@ -107,6 +107,7 @@ You can use one of the following formats:
 
 = 9.0.5 =
 * Experimental: Doing client side Geo address validation in addition to server side
+* Enhancement: Added help message on "Shortcode Builder" page where to find saved shortcodes
 
 = 9.0.4.2 =
 * Enhancement: Documentation update and some code clean up
