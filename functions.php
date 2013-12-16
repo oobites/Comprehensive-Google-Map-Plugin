@@ -92,43 +92,30 @@ if ( !function_exists('cgmp_geocode_address') ):
       $server_api = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
       $full_server_api = $server_api.urlencode($address_to_geocode);
 
-      $attempts = 0;
       $results = array();
       $errors = array();
       $json_response = FALSE;
-      while ($attempts < 3) {
-          if (function_exists('curl_init')) {
-             $c = curl_init();
-             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-             curl_setopt($c, CURLOPT_URL, $full_server_api);
-             $json_response = curl_exec($c);
-             curl_close($c);
-          } else {
-             $json_response = file_get_contents($full_server_api);
-          }
-
-          if ($json_response) {
-             $json = json_decode($json_response, true);
-             if ($json['status'] == 'OK') {
-                $results['location'] = $json['results'][0]['geometry']['location'];
-                $results['formatted_address'] = $json['results'][0]['formatted_address'];
-                break;
-             } else if ($json['status'] == 'OVER_QUERY_LIMIT') {
-                 $errors[$address_to_geocode] = $json['status'];
-                 $attempts++;
-                 sleep(3); //wait 3 seconds if status is OVER_QUERY_LIMIT
-             } else {
-                 $errors[$address_to_geocode] = $json['status'];
-                 $attempts++;
-                 usleep(500000); //wait 500k microseconds (or 500 milliseconds or 0.5 seconds) on other statuses
-             }
-          } else {
-              $errors[$address_to_geocode."_attempt_".$attempts] = "No JSON response from Geo service";
-              $attempts++;
-              usleep(500000); //wait 500k microseconds (or 500 milliseconds or 0.5 seconds)
-          }
+      if (function_exists('curl_init')) {
+         $c = curl_init();
+         curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($c, CURLOPT_URL, $full_server_api);
+         $json_response = curl_exec($c);
+         curl_close($c);
+      } else {
+         $json_response = file_get_contents($full_server_api);
       }
 
+      if ($json_response) {
+         $json = json_decode($json_response, true);
+         if ($json['status'] == 'OK') {
+            $results['location'] = $json['results'][0]['geometry']['location'];
+            $results['formatted_address'] = $json['results'][0]['formatted_address'];
+         } else {
+             $errors[$address_to_geocode] = $json['status'];
+         }
+      } else {
+            $errors[$address_to_geocode] = "No JSON response from Geo service";
+      }
       return array("results" => $results, "errors" => $errors);
    }                                                                                                                    
 endif;
@@ -1014,7 +1001,9 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
         $cached_geomashup_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
         if (isset($cached_geomashup_json) && trim($cached_geomashup_json) != "" && is_array(json_decode($cached_geomashup_json, true))) {
             $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
-            return array("data" => $cached_geomashup_json, "debug" => array("state" => "cached", "since" => $cache_time));
+
+            $json = json_decode($cached_geomashup_json, true);
+            return array("data" => $cached_geomashup_json, "debug" => array("state" => "cached", "since" => $cache_time, "geo_errors" => $json["live_debug"]["geo_errors"]));
         }
 
         $query_debug_data = array();
@@ -1129,11 +1118,11 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                 // Some basic throttling...
                 if ($google_request_counter == 10) {
                     $google_request_counter = 0;
-                    usleep(350000); //wait 350k microseconds (or 350 milliseconds) after we finished 10 requests to Google
+                    usleep(300000); //wait 300k microseconds (or 350 milliseconds) after we finished 10 requests to Google
                 } else {
                     // https://developers.google.com/maps/documentation/business/articles/usage_limits
                     // Google allows a rate limit or 10 QPS (queries per second), checked on 11/December/2013 using above link
-                    usleep(300000); //wait 300k microseconds (or 300 milliseconds) between each request
+                    usleep(200000); //wait 200k microseconds (or 200 milliseconds) between each request
                 }
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;

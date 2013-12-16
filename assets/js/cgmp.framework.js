@@ -220,7 +220,7 @@
 
 
             var MarkerBuilder = function () {
-                var markers, storedAddresses, badAddresses, defaultUnits, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
+                var markers, storedGeoErrorAddresses, badAddresses, defaultUnits, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
                 var geolocationMarker = null;
                 var init = function init(map, autoPan, units) {
                     googleMap = map;
@@ -233,7 +233,7 @@
 
                     markers = [];
                     badAddresses = [];
-                    storedAddresses = [];
+                    storedGeoErrorAddresses = [];
 
                     updatedZoom = 5;
 
@@ -281,6 +281,60 @@
                     return wasBuildAddressMarkersCalled;
                 }
 
+                var buildAddressMarkersFromRejectedAddressses = function buildAddressMarkersFromRejectedAddressses(geo_errors, isGeoMashup, infoBubbleContainPostLink) {
+                    wasBuildAddressMarkersCalled = true;
+                    $.each(geo_errors, function (addresss, addressAndError) {
+                        var element = {
+                            address: addresss,
+                            animation: google.maps.Animation.DROP,
+                            zIndex: Math.floor(Math.random() * (71 - 8 + 1)) + 8,
+                            markerIcon: '3-default.png',
+                            customBubbleText: '',
+                            markerHoverText: "" + " (" + addresss + ")",
+                            postTitle: "",
+                            postLink: "",
+                            postExcerpt: "",
+                            infoBubbleContainPostLink: false,
+                            geoMashup: false //We do not have post titles
+                        };
+                        storedGeoErrorAddresses.push(element);
+                    });
+                    Logger.info("Have " + storedGeoErrorAddresses.length + " addresses from Geo errors to process!");
+                    queryGeocoderService();
+                }
+
+                function queryGeocoderService() {
+                    clearTimeout(timeout);
+                    if (storedGeoErrorAddresses.length > 0) {
+                        var element = storedGeoErrorAddresses.shift();
+                        Logger.info("Passing [" + element.address + "] to Geo service. Have left " + storedGeoErrorAddresses.length + " items to process!");
+                        var geocoderRequest = {
+                            "address": element.address
+                        };
+                        geocoder.geocode(geocoderRequest, function (results, status) {
+                            geocoderCallback(results, status, element);
+                        });
+                    } else {
+                        setBounds();
+                    }
+                }
+
+                function geocoderCallback(results, status, element) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var addressPoint = results[0].geometry.location;
+                        instrumentMarker(addressPoint, element);
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 330);
+                    } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        setBounds();
+                        storedGeoErrorAddresses.push(element);
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 3000);
+                    } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                        Logger.warn("Got ZERO_RESULTS for [" + element.address + "]");
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 400);
+                    }
+
+                }
+
                 var buildAddressMarkers = function buildAddressMarkers(markerLocations, isGeoMashap, isBubbleContainsPostLink) {
 
                     wasBuildAddressMarkersCalled = true;
@@ -303,7 +357,7 @@
                 function createGoogleMarkersFromGeomashupJson(json, infoBubbleContainPostLink) {
                     var index = 1;
                     $.each(json, function (key, value) {
-                        if (key === "live_debug") {
+                        if (key === "live_debug" || key === "debug") {
                             return true;
                         }
                         if (this.excerpt == null) {
@@ -1129,6 +1183,7 @@
                     init: init,
                     setGeoLocationIfEnabled: setGeoLocationIfEnabled,
                     buildAddressMarkers: buildAddressMarkers,
+                    buildAddressMarkersFromRejectedAddressses: buildAddressMarkersFromRejectedAddressses,
                     isBuildAddressMarkersCalled: isBuildAddressMarkersCalled
                 }
             };
@@ -1379,9 +1434,15 @@
                         if (json.kml != null && Utils.trim(json.kml) != '') {
                             LayerBuilder.buildKmlLayer(json.kml);
                         } else {
-
+                            //json.debug.geo_errors = parseJson('{"39\u00b0 26 56.42 N 8\u00b0 11 26.38 W":{"39\u00b0 26 56.42 N 8\u00b0 11 26.38 W":"OVER_QUERY_LIMIT"},"Estrada do Cabrito - Rossio ao sul do Tejo - Abrantes":{"Estrada do Cabrito - Rossio ao sul do Tejo - Abrantes":"OVER_QUERY_LIMIT"}}');
                             if (json.markerlist != null && Utils.trim(json.markerlist) != '') {
                                 markerBuilder.buildAddressMarkers(json.markerlist, json.addmarkermashup, json.addmarkermashupbubble);
+                            }
+
+                            if (json.debug != null && typeof json.debug !== "undefined") {
+                                if (json.debug.geo_errors != null && typeof json.debug.geo_errors !== "undefined") {
+                                    markerBuilder.buildAddressMarkersFromRejectedAddressses(json.debug.geo_errors, json.addmarkermashup, json.addmarkermashupbubble);
+                                }
                             }
 
                             var isBuildAddressMarkersCalled = markerBuilder.isBuildAddressMarkersCalled();
