@@ -96,7 +96,7 @@ if ( !function_exists('cgmp_geocode_address') ):
       $results = array();
       $errors = array();
       $json_response = FALSE;
-      while ($attempts < 5) {
+      while ($attempts < 3) {
           if (function_exists('curl_init')) {
              $c = curl_init();
              curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
@@ -113,15 +113,19 @@ if ( !function_exists('cgmp_geocode_address') ):
                 $results['location'] = $json['results'][0]['geometry']['location'];
                 $results['formatted_address'] = $json['results'][0]['formatted_address'];
                 break;
+             } else if ($json['status'] == 'OVER_QUERY_LIMIT') {
+                 $errors[$address_to_geocode] = $json['status'];
+                 $attempts++;
+                 sleep(3); //wait 3 seconds if status is OVER_QUERY_LIMIT
              } else {
                  $errors[$address_to_geocode] = $json['status'];
                  $attempts++;
-                 usleep(300000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+                 usleep(500000); //wait 500k microseconds (or 500 milliseconds or 0.5 seconds) on other statuses
              }
           } else {
               $errors[$address_to_geocode."_attempt_".$attempts] = "No JSON response from Geo service";
               $attempts++;
-              usleep(300000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+              usleep(500000); //wait 500k microseconds (or 500 milliseconds or 0.5 seconds)
           }
       }
 
@@ -1128,11 +1132,11 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
             // Some basic throttling...
             if ($google_request_counter == 10) {
                 $google_request_counter = 0;
-                usleep(CGMP_GEOSERVICE_THROTTLING_IN_MICROS); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
+                usleep(350000); //wait 350k microseconds (or 350 milliseconds) after we finished 10 requests to Google
             } else {
                 // https://developers.google.com/maps/documentation/business/articles/usage_limits
                 // Google allows a rate limit or 10 QPS (queries per second), checked on 11/December/2013 using above link
-                usleep(100000); //wait 100k microseconds (or 100 milliseconds) between each request
+                usleep(300000); //wait 300k microseconds (or 300 milliseconds) between each request
             }
 
         }
