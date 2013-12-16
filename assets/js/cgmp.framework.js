@@ -281,28 +281,6 @@
                     return wasBuildAddressMarkersCalled;
                 }
 
-                var buildAddressMarkersFromRejectedAddressses = function buildAddressMarkersFromRejectedAddressses(geo_errors, isGeoMashup, infoBubbleContainPostLink) {
-                    wasBuildAddressMarkersCalled = true;
-                    $.each(geo_errors, function (addresss, addressAndError) {
-                        var element = {
-                            address: addresss,
-                            animation: google.maps.Animation.DROP,
-                            zIndex: Math.floor(Math.random() * (71 - 8 + 1)) + 8,
-                            markerIcon: '3-default.png',
-                            customBubbleText: '',
-                            markerHoverText: "" + " (" + addresss + ")",
-                            postTitle: "",
-                            postLink: "",
-                            postExcerpt: "",
-                            infoBubbleContainPostLink: false,
-                            geoMashup: false //We do not have post titles
-                        };
-                        storedGeoErrorAddresses.push(element);
-                    });
-                    Logger.info("Have " + storedGeoErrorAddresses.length + " addresses from Geo errors to process!");
-                    queryGeocoderService();
-                }
-
                 function queryGeocoderService() {
                     clearTimeout(timeout);
                     if (storedGeoErrorAddresses.length > 0) {
@@ -352,6 +330,7 @@
                         createGoogleMarkersFromCsvAddressData(csvString, '', '', '', false, false);
                     }
                     setBounds();
+                    queryGeocoderService();
                 }
 
                 function createGoogleMarkersFromGeomashupJson(json, infoBubbleContainPostLink) {
@@ -408,6 +387,11 @@
                                 infoBubbleContainPostLink: infoBubbleContainPostLink,
                                 geoMashup: geoMashup
                             };
+
+                            if (rawCoordinates === CGMPGlobal.geoValidationClientRevalidate) {
+                                storedGeoErrorAddresses.push(element);
+                                continue;
+                            }
 
                             var latlngArr = [];
                             if (rawCoordinates.indexOf(",") != -1) {
@@ -1183,7 +1167,6 @@
                     init: init,
                     setGeoLocationIfEnabled: setGeoLocationIfEnabled,
                     buildAddressMarkers: buildAddressMarkers,
-                    buildAddressMarkersFromRejectedAddressses: buildAddressMarkersFromRejectedAddressses,
                     isBuildAddressMarkersCalled: isBuildAddressMarkersCalled
                 }
             };
@@ -1346,6 +1329,7 @@
             CGMPGlobal.noBubbleDescriptionProvided = $("object#global-data-placeholder").find("param#noBubbleDescriptionProvided").val();
             CGMPGlobal.customMarkersUri = $("object#global-data-placeholder").find("param#customMarkersUri").val();
             CGMPGlobal.errors = $("object#global-data-placeholder").find("param#errors").val();
+            CGMPGlobal.geoValidationClientRevalidate = $("object#global-data-placeholder").find("param#geoValidationClientRevalidate").val();
 
             CGMPGlobal.errors = parseJson(CGMPGlobal.errors);
             CGMPGlobal.translations = $("object#global-data-placeholder").find("param#translations").val();
@@ -1437,12 +1421,6 @@
                             //json.debug.geo_errors = parseJson('{"39\u00b0 26 56.42 N 8\u00b0 11 26.38 W":{"39\u00b0 26 56.42 N 8\u00b0 11 26.38 W":"OVER_QUERY_LIMIT"},"Estrada do Cabrito - Rossio ao sul do Tejo - Abrantes":{"Estrada do Cabrito - Rossio ao sul do Tejo - Abrantes":"OVER_QUERY_LIMIT"}}');
                             if (json.markerlist != null && Utils.trim(json.markerlist) != '') {
                                 markerBuilder.buildAddressMarkers(json.markerlist, json.addmarkermashup, json.addmarkermashupbubble);
-                            }
-
-                            if (json.debug != null && typeof json.debug !== "undefined") {
-                                if (json.debug.geo_errors != null && typeof json.debug.geo_errors !== "undefined") {
-                                    markerBuilder.buildAddressMarkersFromRejectedAddressses(json.debug.geo_errors, json.addmarkermashup, json.addmarkermashupbubble);
-                                }
                             }
 
                             var isBuildAddressMarkersCalled = markerBuilder.isBuildAddressMarkersCalled();

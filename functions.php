@@ -1108,9 +1108,8 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                     $lng = $result_from_google['location']['lng'];
                     $location = $lat.",".$lng;
                     $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$location;
-                } else {
-                    // cgmp_geocode_address() returned an empty array, most probably some error received, ie.: OVER_QUERY_LIMIT
-                    // $validated_addresses[] = $address.$icon.$description.CGMP_SEP.CGMP_GEO_VALIDATION_CLIENT_REVALIDATE;
+                } else if (empty($result_from_google)) {
+                    $validated_addresses[] = $address.$icon.$description.CGMP_SEP.CGMP_GEO_VALIDATION_CLIENT_REVALIDATE;
                     $geo_errors[$address] = $execution_results["errors"];
                 }
 
@@ -1118,11 +1117,11 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                 // Some basic throttling...
                 if ($google_request_counter == 10) {
                     $google_request_counter = 0;
-                    usleep(300000); //wait 300k microseconds (or 350 milliseconds) after we finished 10 requests to Google
+                    usleep(150000); //wait 150k microseconds (or 150 milliseconds) after we finished 10 requests to Google
                 } else {
                     // https://developers.google.com/maps/documentation/business/articles/usage_limits
-                    // Google allows a rate limit or 10 QPS (queries per second), checked on 11/December/2013 using above link
-                    usleep(200000); //wait 200k microseconds (or 200 milliseconds) between each request
+                    // Google allows a rate limit of 10 QPS (queries per second), checked on 11/December/2013 using the above link
+                    usleep(110000); //wait 110k microseconds (or 110 milliseconds) between each request
                 }
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;
