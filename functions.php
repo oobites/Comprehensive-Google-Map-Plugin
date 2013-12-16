@@ -1124,21 +1124,20 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
                     // $validated_addresses[] = $address.$icon.$description.CGMP_SEP.CGMP_GEO_VALIDATION_CLIENT_REVALIDATE;
                     $geo_errors[$address] = $execution_results["errors"];
                 }
+
+                $google_request_counter++;
+                // Some basic throttling...
+                if ($google_request_counter == 10) {
+                    $google_request_counter = 0;
+                    usleep(350000); //wait 350k microseconds (or 350 milliseconds) after we finished 10 requests to Google
+                } else {
+                    // https://developers.google.com/maps/documentation/business/articles/usage_limits
+                    // Google allows a rate limit or 10 QPS (queries per second), checked on 11/December/2013 using above link
+                    usleep(300000); //wait 300k microseconds (or 300 milliseconds) between each request
+                }
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;
             }
-            $google_request_counter++;
-
-            // Some basic throttling...
-            if ($google_request_counter == 10) {
-                $google_request_counter = 0;
-                usleep(350000); //wait 350k microseconds (or 350 milliseconds) after we finished 10 requests to Google
-            } else {
-                // https://developers.google.com/maps/documentation/business/articles/usage_limits
-                // Google allows a rate limit or 10 QPS (queries per second), checked on 11/December/2013 using above link
-                usleep(300000); //wait 300k microseconds (or 300 milliseconds) between each request
-            }
-
         }
         return array("validated_addresses" => implode("|", $validated_addresses),  "errors" => $geo_errors);
     }
