@@ -30,10 +30,6 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
             array( 'classname' => 'comprehensivegooglemap_widget', 'description' => __("A simple and intuitive, yet elegant fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for marker, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more.", CGMP_NAME)),
             array( 'width' => 570)
         );
-
-        wp_enqueue_script('cgmp-google-map-jsapi');
-        wp_enqueue_script('cgmp-google-map-orchestrator-framework');
-        add_action('wp_footer', 'cgmp_google_map_init_global_html_object');
     }
 
 	public function widget( $args, $instance ) {
@@ -41,6 +37,10 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		if (is_admin() || is_feed()) {
 			return;
 		}
+
+        wp_enqueue_script('cgmp-google-map-jsapi');
+        wp_enqueue_script('cgmp-google-map-orchestrator-framework');
+        add_action('wp_footer', 'cgmp_google_map_init_global_html_object');
 
 		extract($args);
 		$map_data_properties = array();

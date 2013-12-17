@@ -34,7 +34,7 @@ endif;
 if ( !function_exists('cgmp_google_map_admin_add_script') ):
 		function cgmp_google_map_admin_add_script()  {
 
-				$whitelist = array('localhost', '127.0.0.1', 'initbinder.com');
+				$whitelist = array('localhost', '127.0.0.1');
 
               	wp_enqueue_script('cgmp-jquery-tools-tooltip', CGMP_PLUGIN_JS .'/jquery.tools.tooltip.min.js', array('jquery'), '1.2.5.a', true);
 				$minified = ".min";
@@ -56,7 +56,7 @@ endif;
 
 if ( !function_exists('cgmp_google_map_register_scripts') ):
 		function cgmp_google_map_register_scripts()  {
-			$whitelist = array('localhost', '127.0.0.1', 'initbinder.com');
+			$whitelist = array('localhost', '127.0.0.1');
 			$minified = ".min";
 			if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
 				$minified = "";
