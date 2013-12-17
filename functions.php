@@ -251,9 +251,6 @@ endif;
 if ( !function_exists('cgmp_map_data_hook_function') ):
 	function cgmp_map_data_hook_function( $map_json, $id) {
 
-		update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "true");
-		update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
-
 		$naughty_stuff = array("'", "\r\n", "\n", "\r");
 		$map_json = str_replace($naughty_stuff, "", $map_json);
 		$objectid = 'for-mapid-'.$id;
@@ -687,8 +684,6 @@ endif;
 if ( !function_exists('cgmp_on_activate_hook') ):
     function cgmp_on_activate_hook()  {
         cgmp_clear_cached_map_data(CGMP_ALL_MAP_CACHED_CONSTANTS_PREFIX);
-        update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "false");
-        update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
     }
@@ -1004,11 +999,8 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
         $cached_geomashup_json = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE);
         if (isset($cached_geomashup_json) && trim($cached_geomashup_json) != "") {
             $cached_geomashup_json = str_replace("\\\"", "\"", $cached_geomashup_json);
-            $json = json_decode($cached_geomashup_json, true);
-            if (is_array($json)) {
-                $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
-                return array("data" => $cached_geomashup_json, "debug" => array("state" => "cached", "since" => $cache_time, "geo_errors" => $json["live_debug"]["geo_errors"]));
-            }
+            $cache_time = get_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME);
+            return array("data" => $cached_geomashup_json, "debug" => array("state" => "cached", "since" => $cache_time));
         }
 
         $query_debug_data = array();

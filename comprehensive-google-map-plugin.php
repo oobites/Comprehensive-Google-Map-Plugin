@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 9.0.5
+Version: 9.0.6
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -73,7 +73,6 @@ if ( !function_exists('cgmp_add_actions') ):
 		//http://scribu.net/wordpress/optimal-script-loading.html
 		add_action('init', 'cgmp_google_map_register_scripts');
 		add_action('init', 'cgmp_load_plugin_textdomain');
-		add_action('wp_footer', 'cgmp_google_map_init_scripts');
 		add_action('admin_notices', 'cgmp_show_message');
 		add_action('admin_init', 'cgmp_google_map_admin_add_style');
 		add_action('admin_init', 'cgmp_google_map_admin_add_script');
@@ -87,8 +86,8 @@ if ( !function_exists('cgmp_add_actions') ):
             add_action('wp_ajax_cgmp_mce_ajax_action', 'cgmp_mce_ajax_action_callback');
         }
 
-        add_action('wp_ajax_cgmp_ajax_cache_map_action', 'cgmp_ajax_cache_map_action_callback');
         add_action('wp_ajax_nopriv_cgmp_ajax_cache_map_action', 'cgmp_ajax_cache_map_action_callback');
+        add_action('wp_ajax_cgmp_ajax_cache_map_action', 'cgmp_ajax_cache_map_action_callback');
 
         add_action('save_post', 'cgmp_save_post_hook' );
         add_action('save_page', 'cgmp_save_page_hook' );
@@ -116,26 +115,6 @@ if ( !function_exists('cgmp_add_filters') ):
 	}
 endif;
 
-if ( !function_exists('cgmp_init_db_settings') ):
-	function cgmp_init_db_settings() {
-		$current_theme_name = wp_get_theme();
-
-		$problematic_themes = array("mingle", "skeleton", "skeletonplus", "super-skeleton", "super-skeleton-child");
-		//Extremly ugly hack. Some theme developers do some funky stuff with footer calls in their themes, 
-		//which messes things up, while working normally in other themes
-		if (in_array(strtolower($current_theme_name), $problematic_themes)) {
-
-            update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "true");
-            update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
-            add_action('wp_footer', 'cgmp_google_map_init_scripts');
-
-		} else {
-			//Makes sure that there are no plugin scripts in the footer of the page that does not have a shortcode or widget
-			update_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER, "false");
-			update_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED, "false");
-		}
-	}
-endif;
 
 global $cgmp_global_map_language;
 $cgmp_global_map_language = "en";
@@ -147,7 +126,6 @@ cgmp_add_actions();
 cgmp_register_hooks();
 cgmp_add_shortcode_support();
 cgmp_add_filters();
-cgmp_init_db_settings();
 /* BOOTSTRAPPING ENDS */
 
 ?>

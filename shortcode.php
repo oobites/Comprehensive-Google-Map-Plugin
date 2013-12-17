@@ -24,6 +24,10 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 				return;
 			}
 
+            wp_enqueue_script('cgmp-google-map-jsapi');
+            wp_enqueue_script('cgmp-google-map-orchestrator-framework');
+            add_action('wp_footer', 'cgmp_google_map_init_global_html_object');
+
 			$shortcode_attribs = shortcode_atts(array(
                 'shortcodeid' => -1,
 				'latitude' => 0,

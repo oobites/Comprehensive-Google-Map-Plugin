@@ -105,6 +105,9 @@ You can use one of the following formats:
 
 == Changelog ==
 
+= 9.0.6 =
+* Enhancement: Revisited how plugin scripts are loaded
+
 = 9.0.5 =
 * Experimental: Dropped server-side Geo validation due to Google's request limit quota per-IP. Doing client side Geo address validation instead with server side caching.
 * Enhancement: Added help message on "Shortcode Builder" page where to find saved shortcodes
