@@ -136,7 +136,7 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
             update_option(CGMP_PERSISTED_SHORTCODES, json_encode($shortcodes));
 
             cgmp_show_message("Shortcode save successfully!");
-            cgmp_show_message("Look for the map icon in the page/post WYSIWYG editor");
+            cgmp_show_message("Look for the map icon&nbsp;<img src='".CGMP_PLUGIN_IMAGES."/google_map.png' border='0' valign='middle' />&nbsp;in WordPress page/post WYSIWYG editor");
         }
 
         $settings = array();
