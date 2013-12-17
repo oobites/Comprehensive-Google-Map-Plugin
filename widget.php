@@ -84,11 +84,10 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
             if (isset($cached_marker_data_json) && trim($cached_marker_data_json) != "") {
                 $addmarkerlisthidden = $cached_marker_data_json;
                 $cache_time = get_option(CGMP_MAP_CACHE_WIDGET_TIME_PREFIX.$this->id);
-                $map_data_properties['debug'] = array("state" => "cached", "since" => $cache_time, "geo_errors" => array());
+                $map_data_properties['debug'] = array("widget_id" => $this->id, "state" => "cached", "since" => $cache_time);
             } else {
-                $execution_results = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
-                $addmarkerlisthidden = $execution_results["validated_addresses"];
-                $map_data_properties['debug'] = array("state" => "fresh", "since" => time(), "geo_errors" => $execution_results["errors"]);
+                $addmarkerlisthidden = cgmp_do_serverside_address_validation_2($addmarkerlisthidden);
+                $map_data_properties['debug'] = array("widget_id" => $this->id, "state" => "fresh", "since" => time());
                 update_option(CGMP_MAP_CACHE_WIDGET_PREFIX.$this->id, $addmarkerlisthidden);
                 update_option(CGMP_MAP_CACHE_WIDGET_TIME_PREFIX.$this->id, time());
             }

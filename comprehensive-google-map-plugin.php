@@ -87,6 +87,9 @@ if ( !function_exists('cgmp_add_actions') ):
             add_action('wp_ajax_cgmp_mce_ajax_action', 'cgmp_mce_ajax_action_callback');
         }
 
+        add_action('wp_ajax_cgmp_ajax_cache_map_action', 'cgmp_ajax_cache_map_action_callback');
+        add_action('wp_ajax_nopriv_cgmp_ajax_cache_map_action', 'cgmp_ajax_cache_map_action_callback');
+
         add_action('save_post', 'cgmp_save_post_hook' );
         add_action('save_page', 'cgmp_save_page_hook' );
 
