@@ -154,7 +154,7 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
         $template_values['SHORTCODEBUILDER_HTML_FORM'] = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_HTML_FORM);
         $map_configuration_template = cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 
-		echo cgmp_render_template_with_values(array("SHORTCODEBUILDER_TOKEN" => $map_configuration_template), CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
+		echo cgmp_render_template_with_values(array("CGMP_PLUGIN_IMAGES" => CGMP_PLUGIN_IMAGES, "SHORTCODEBUILDER_TOKEN" => $map_configuration_template), CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
 	}
 endif;
 
