@@ -184,6 +184,9 @@ if ( !function_exists('cgmp_ajax_cache_map_action_callback') ):
                         $page_db_cache_key = CGMP_MAP_CACHE_PAGE_PREFIX.$_POST['postId']."_".$_POST['shortcodeId'];
                         $page_db_cache_time_key = CGMP_MAP_CACHE_PAGE_TIME_PREFIX.$_POST['postId']."_".$_POST['shortcodeId'];
 
+                        $customtype_db_cache_key = CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$_POST['postId']."_".$_POST['shortcodeId'];
+                        $customtype_db_cache_time_key = CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$_POST['postId']."_".$_POST['shortcodeId'];
+
                         if ($_POST['postType'] == "post") {
                             update_option($post_db_cache_key, $_POST['data']);
                             update_option($post_db_cache_time_key, time());
@@ -192,6 +195,10 @@ if ( !function_exists('cgmp_ajax_cache_map_action_callback') ):
                             update_option($page_db_cache_key, $_POST['data']);
                             update_option($page_db_cache_time_key, time());
                             echo "OK_PAGE";
+                        } else {
+                            update_option($customtype_db_cache_key, $_POST['data']);
+                            update_option($customtype_db_cache_time_key, time());
+                            echo "OK_CUSTOM";
                         }
                     } else if (isset($_POST['widgetId']))  {
                         update_option(CGMP_MAP_CACHE_WIDGET_PREFIX.$_POST['widgetId'], $_POST['data']);
@@ -638,7 +645,7 @@ if ( !function_exists('extract_published_content_containing_shortcode') ):
         // To avoid cases where plugin's like Ultimate Category Excluder messes around with the main query by using filter 'pre_get_posts' to exclude posts
         global $wpdb;
         $table = $wpdb->posts;
-        $query = "SELECT * FROM $table WHERE $table.post_type = '".$content_type."' AND $table.post_status = 'publish' LIMIT 1000"; // For 1000 should be more than enough, really who has a map with 1000+ markers?
+        $query = "SELECT * FROM $table WHERE $table.post_type = '".$content_type."' AND $table.post_status = 'publish' LIMIT 1000"; // For 1000 should be more than enough, really who has a blog with 1000+ published content?
         $posts = $wpdb->get_results($query);
 
         $extracted = array();
@@ -876,6 +883,9 @@ if ( !function_exists('cgmp_save_post_hook') ):
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_POST_PREFIX.$postID);
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_POST_TIME_PREFIX.$postID);
 
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$postID);
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$postID);
+
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
     }
@@ -885,6 +895,9 @@ if ( !function_exists('cgmp_save_page_hook') ):
     function cgmp_save_page_hook($pageID)  {
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_PAGE_PREFIX.$pageID);
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_PAGE_TIME_PREFIX.$pageID);
+
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$pageID);
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$pageID);
 
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
@@ -896,6 +909,9 @@ if ( !function_exists('cgmp_publish_post_hook') ):
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_POST_PREFIX.$postID);
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_POST_TIME_PREFIX.$postID);
 
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$postID);
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$postID);
+
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
     }
@@ -905,6 +921,9 @@ if ( !function_exists('cgmp_publish_page_hook') ):
     function cgmp_publish_page_hook($pageID)  {
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_PAGE_PREFIX.$pageID);
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_PAGE_TIME_PREFIX.$pageID);
+
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$pageID);
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$pageID);
 
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
@@ -916,6 +935,9 @@ if ( !function_exists('cgmp_deleted_post_hook') ):
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_POST_PREFIX.$postID);
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_POST_TIME_PREFIX.$postID);
 
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$postID);
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$postID);
+
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
     }
@@ -925,6 +947,9 @@ if ( !function_exists('cgmp_deleted_page_hook') ):
     function cgmp_deleted_page_hook($pageID)  {
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_PAGE_PREFIX.$pageID);
         cgmp_clear_cached_map_data(CGMP_MAP_CACHE_PAGE_TIME_PREFIX.$pageID);
+
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$pageID);
+        cgmp_clear_cached_map_data(CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$pageID);
 
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
@@ -942,12 +967,18 @@ if ( !function_exists('cgmp_publish_to_draft_hook') ):
             $page_db_cache_key = CGMP_MAP_CACHE_PAGE_PREFIX.$post_page_id;
             $page_db_cache_time_key = CGMP_MAP_CACHE_PAGE_TIME_PREFIX.$post_page_id;
 
+            $customtype_db_cache_key = CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$post_page_id;
+            $customtype_db_cache_time_key = CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$post_page_id;
+
             if ($post_page_type == "post") {
                 cgmp_clear_cached_map_data($post_db_cache_key);
                 cgmp_clear_cached_map_data($post_db_cache_time_key);
             } else if ($post_page_type == "page") {
                 cgmp_clear_cached_map_data($page_db_cache_key);
                 cgmp_clear_cached_map_data($page_db_cache_time_key);
+            } else {
+                cgmp_clear_cached_map_data($customtype_db_cache_key);
+                cgmp_clear_cached_map_data($customtype_db_cache_time_key);
             }
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
             update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
@@ -964,6 +995,9 @@ if ( !function_exists('cgmp_get_post_page_cached_markerlist') ):
         $page_db_cache_key = CGMP_MAP_CACHE_PAGE_PREFIX.$post_page_id."_".$shortcodeid;
         $page_db_cache_time_key = CGMP_MAP_CACHE_PAGE_TIME_PREFIX.$post_page_id."_".$shortcodeid;
 
+        $customtype_db_cache_key = CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX.$post_page_id."_".$shortcodeid;
+        $customtype_db_cache_time_key = CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX.$post_page_id."_".$shortcodeid;
+
         $cached_validated_addresses = "";
         $cached_map_data_time = "";
         if ($post_page_type == "post") {
@@ -972,6 +1006,9 @@ if ( !function_exists('cgmp_get_post_page_cached_markerlist') ):
         } else if ($post_page_type == "page") {
             $cached_validated_addresses = get_option($page_db_cache_key);
             $cached_map_data_time = get_option($page_db_cache_time_key);
+        } else {
+            $cached_validated_addresses = get_option($customtype_db_cache_key);
+            $cached_map_data_time = get_option($customtype_db_cache_time_key);
         }
 
         if (isset($cached_validated_addresses) && trim($cached_validated_addresses) != "") {

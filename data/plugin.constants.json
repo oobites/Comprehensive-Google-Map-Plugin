@@ -14,6 +14,9 @@
     "CGMP_MAP_CACHE_PAGE_PREFIX" : "cgmp_cache_page_",
     "CGMP_MAP_CACHE_PAGE_TIME_PREFIX" : "cgmp_cache_time_page_",
 
+    "CGMP_MAP_CACHE_CUSTOM_TYPE_PREFIX" : "cgmp_cache_custom_",
+    "CGMP_MAP_CACHE_CUSTOM_TYPE_TIME_PREFIX" : "cgmp_cache_time_custom_",
+
     "CGMP_MAP_CACHE_WIDGET_PREFIX" : "cgmp_cache_widget_map_",
     "CGMP_MAP_CACHE_WIDGET_TIME_PREFIX" : "cgmp_cache_time_widget_map_",
 
@@ -63,5 +66,5 @@
     "CGMP_SEP" : "{}",
     "CGMP_GEOSERVICE_THROTTLING_IN_MICROS" : 150000,
     "CGMP_GEO_VALIDATION_CLIENT_REVALIDATE" : "REVALIDATE",
-    "CGMP_VERSION" : "9.0.8"
+    "CGMP_VERSION" : "9.0.9"
   } ]

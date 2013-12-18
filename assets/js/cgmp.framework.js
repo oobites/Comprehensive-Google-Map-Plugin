@@ -364,6 +364,8 @@
                                                 Logger.info("Map cache was reset on the server for post#" + postId + " shortcode#" + shortcodeId);
                                             } else if (response === "OK_PAGE") {
                                                 Logger.info("Map cache was reset on the server for page#" + postId + " shortcode#" + shortcodeId);
+                                            } else if (response === "OK_CUSTOM") {
+                                                Logger.info("Map cache was reset on the server for type " + postType+ "#" + postId + " shortcode#" + shortcodeId);
                                             }
                                         }
                                     });
