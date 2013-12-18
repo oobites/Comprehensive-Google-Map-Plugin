@@ -61,7 +61,6 @@
                 Logger.fatal("Using parseJson stub..");
             }
 
-            var CGMPGlobal = {};
             var GoogleMapOrchestrator = (function () {
 
                 var builder = {};
@@ -175,32 +174,32 @@
                         switch (kmlStatus) {
 
                             case google.maps.KmlLayerStatus.DOCUMENT_NOT_FOUND:
-                                msg = CGMPGlobal.errors.kmlNotFound;
+                                msg = CGMPGlobal.kmlNotFound;
                                 break;
                             case google.maps.KmlLayerStatus.DOCUMENT_TOO_LARGE:
-                                msg = CGMPGlobal.errors.kmlTooLarge;
+                                msg = CGMPGlobal.kmlTooLarge;
                                 break;
                             case google.maps.KmlLayerStatus.FETCH_ERROR:
-                                msg = CGMPGlobal.errors.kmlFetchError;
+                                msg = CGMPGlobal.kmlFetchError;
                                 break;
                             case google.maps.KmlLayerStatus.INVALID_DOCUMENT:
-                                msg = CGMPGlobal.errors.kmlDocInvalid;
+                                msg = CGMPGlobal.kmlDocInvalid;
                                 break;
                             case google.maps.KmlLayerStatus.INVALID_REQUEST:
-                                msg = CGMPGlobal.errors.kmlRequestInvalid;
+                                msg = CGMPGlobal.kmlRequestInvalid;
                                 break;
                             case google.maps.KmlLayerStatus.LIMITS_EXCEEDED:
-                                msg = CGMPGlobal.errors.kmlLimits;
+                                msg = CGMPGlobal.kmlLimits;
                                 break;
                             case google.maps.KmlLayerStatus.TIMED_OUT:
-                                msg = CGMPGlobal.errors.kmlTimedOut;
+                                msg = CGMPGlobal.kmlTimedOut;
                                 break;
                             case google.maps.KmlLayerStatus.UNKNOWN:
-                                msg = CGMPGlobal.errors.kmlUnknown;
+                                msg = CGMPGlobal.kmlUnknown;
                                 break;
                         }
                         if (msg != '') {
-                            var error = CGMPGlobal.errors.kml.replace("[MSG]", msg);
+                            var error = CGMPGlobal.kml.replace("[MSG]", msg);
                             error = error.replace("[STATUS]", kmlStatus);
                             Errors.alertError(error);
                             Logger.error("Google returned KML error: " + msg + " (" + kmlStatus + ")");
@@ -937,7 +936,7 @@
 
                     var bubble = "<div id='bubble-" + randomNumber + "' style='height: 130px !important; width: 300px !important;' class='bubble-content'>";
                     if ((!markersElement.geoMashup || (markersElement.geoMashup && !markersElement.infoBubbleContainPostLink))) {
-                        bubble += "<h4>" + CGMPGlobal.translations.address + ":</h4>";
+                        bubble += "<h4>" + CGMPGlobal.address + ":</h4>";
                         bubble += "<p class='custom-bubble-text'>" + contentFromMarker + "</p>";
                         if (markersElement.customBubbleText != '') {
                             bubble += "<p class='custom-bubble-text'>" + markersElement.customBubbleText + "</p>";
@@ -950,7 +949,7 @@
                     }
                     bubble += "<div class='custom-bubble-links-section'>";
                     bubble += "<hr />";
-                    bubble += "<p class='custom-bubble-text'>" + CGMPGlobal.translations.directions + ": <a id='toHere-" + randomNumber + "' class='dirToHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.toHere + "</a> - <a id='fromHere-" + randomNumber + "' class='dirFromHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.fromHere + "</a> | <a id='trigger-" + randomNumber + "' class='streetViewTrigger' href='javascript:void(0);'>" + CGMPGlobal.translations.streetView + "</a></p>";
+                    bubble += "<p class='custom-bubble-text'>" + CGMPGlobal.directions + ": <a id='toHere-" + randomNumber + "' class='dirToHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.toHere + "</a> - <a id='fromHere-" + randomNumber + "' class='dirFromHereTrigger' href='javascript:void(0);'>" + CGMPGlobal.fromHere + "</a> | <a id='trigger-" + randomNumber + "' class='streetViewTrigger' href='javascript:void(0);'>" + CGMPGlobal.streetView + "</a></p>";
                     bubble += "</div></div>";
 
                     return {
@@ -1394,49 +1393,31 @@
                 }
             })();
 
-            if ($('object#global-data-placeholder').length == 0) {
-                Logger.fatal("The global HTML <object> element is undefined. Aborting map generation .. d[-_-]b");
-                return;
-            }
-
             var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
             var link = document.createElement('link');
             link.type = 'text/css';
             link.rel = 'stylesheet';
-            link.href = $("object#global-data-placeholder").find("param#cssHref").val();
+            link.href = CGMPGlobal.cssHref;
             link.media = 'screen';
             head.appendChild(link);
 
-            CGMPGlobal.sep = $("object#global-data-placeholder").find("param#sep").val();
-            CGMPGlobal.noBubbleDescriptionProvided = $("object#global-data-placeholder").find("param#noBubbleDescriptionProvided").val();
-            CGMPGlobal.customMarkersUri = $("object#global-data-placeholder").find("param#customMarkersUri").val();
-            CGMPGlobal.errors = $("object#global-data-placeholder").find("param#errors").val();
-            CGMPGlobal.geoValidationClientRevalidate = $("object#global-data-placeholder").find("param#geoValidationClientRevalidate").val();
-            CGMPGlobal.ajaxurl = $("object#global-data-placeholder").find("param#ajaxurl").val();
-
-            CGMPGlobal.errors = parseJson(CGMPGlobal.errors);
-            CGMPGlobal.translations = $("object#global-data-placeholder").find("param#translations").val();
-            CGMPGlobal.translations = parseJson(CGMPGlobal.translations);
-
             var versionMajor = parseFloat($.fn.jquery.split(".")[0]);
             var versionMinor = parseFloat($.fn.jquery.split(".")[1]);
-            if ((versionMajor < 1) || (versionMajor >= 1 && versionMajor < 2 && versionMinor < 3)) {
-                alert(CGMPGlobal.errors.oldJquery);
-                Logger.fatal("Client uses jQuery older than the version 1.3.0. Aborting map generation ..");
+            if ((versionMajor < 1) || (versionMajor >= 1 && versionMajor < 2 && versionMinor < 9)) {
+                Logger.fatal("Client uses jQuery older than the version 1.9.0. Aborting map generation ..");
                 return false;
             }
 
             if (typeof google === "undefined" || !google) {
-                Errors.alertError(CGMPGlobal.errors.msgNoGoogle);
+                Errors.alertError(CGMPGlobal.msgNoGoogle);
                 Logger.fatal("We do not have reference to Google API. Aborting map generation ..");
                 return false;
             } else if (typeof GMap2 !== "undefined" && GMap2) {
-                Errors.alertError(CGMPGlobal.errors.msgApiV2);
+                Errors.alertError(CGMPGlobal.msgApiV2);
                 Logger.fatal("It looks like the webpage has reference to GMap2 object from Google API v2. Aborting map generation ..");
                 return false;
             }
 
-            CGMPGlobal.language = $("object#global-data-placeholder").find("param#language").val();
             google.load('maps', '3', {
                 other_params: 'sensor=false&libraries=panoramio&language=' + CGMPGlobal.language,
                 callback: function () {
@@ -1508,7 +1489,7 @@
 
                             var isBuildAddressMarkersCalled = markerBuilder.isBuildAddressMarkersCalled();
                             if (!isBuildAddressMarkersCalled) {
-                                Errors.alertError(CGMPGlobal.errors.msgMissingMarkers);
+                                Errors.alertError(CGMPGlobal.msgMissingMarkers);
                             }
                         }
 

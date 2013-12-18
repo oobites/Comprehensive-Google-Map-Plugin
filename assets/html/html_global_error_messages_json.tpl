@@ -1,5 +1,4 @@
-{ "oldJquery" : "LABEL_OLD_JQUERY",
-  "badAddresses" : "LABEL_BAD_ADDRESSES",
+{ "badAddresses" : "LABEL_BAD_ADDRESSES",
   "kml" : "LABEL_KML",
   "kmlDocInvalid" : "LABEL_DOCINVALID_KML",
   "kmlFetchError" : "LABEL_FETCHERROR_KML",

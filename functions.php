@@ -1093,7 +1093,7 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
             $icon = isset($marker_data_segments[1]) && trim($marker_data_segments[1]) != "" ? CGMP_SEP.$marker_data_segments[1] : CGMP_SEP."1-default.png";
             $description = isset($marker_data_segments[2]) && trim($marker_data_segments[2]) != "" ? CGMP_SEP.$marker_data_segments[2] : CGMP_SEP.CGMP_NO_BUBBLE_DESC;
 
-            if (preg_match('/[a-zA-Z]/', $address) !== 0) {
+            if (preg_match('/[^0-9,\s{1,}\-\.+]/', $address) !== 0) {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.CGMP_GEO_VALIDATION_CLIENT_REVALIDATE;
             } else {
                 $validated_addresses[] = $address.$icon.$description.CGMP_SEP.$address;
