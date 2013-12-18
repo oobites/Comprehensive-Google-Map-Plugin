@@ -257,12 +257,12 @@ endif;
 
 if ( !function_exists('cgmp_map_data_hook_function') ):
 	function cgmp_map_data_hook_function( $map_json, $id) {
-
+        global $cgmp_global_map_language;
 		$naughty_stuff = array("'", "\r\n", "\n", "\r");
 		$map_json = str_replace($naughty_stuff, "", $map_json);
 		$objectid = 'for-mapid-'.$id;
 		$paramid = 'json-string-'.$objectid;
-	return "<object id='".$objectid."' name='".$objectid."' class='cgmp-data-placeholder cgmp-json-string-placeholder'><param id='".$paramid."' name='".$paramid."' value='".$map_json."' /></object> ".PHP_EOL;
+	return "<object id='".$objectid."' name='".$objectid."' class='cgmp-data-placeholder cgmp-json-string-placeholder'><param id='".$paramid."' name='".$paramid."' value='".$map_json."' /></object>".PHP_EOL."<script type='text/javascript'>CGMPGlobal.language = '".$cgmp_global_map_language."';</script>".PHP_EOL;
 	}
 endif;
 
