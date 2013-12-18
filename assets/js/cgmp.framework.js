@@ -307,9 +307,11 @@
                                 $.each(markers, function (index, marker) {
                                     var position = (marker.position + "").replace(new RegExp("\\(|\\)", "g"), "");
                                     $.each(geoMashupJsonData, function (jsonKey, jsonValue) {
-                                        if (jsonKey === marker.content && jsonValue.validated_address_csv_data.indexOf(CGMPGlobal.geoValidationClientRevalidate) != -1) {
-                                            jsonValue.validated_address_csv_data = jsonValue.validated_address_csv_data.replace(new RegExp(CGMPGlobal.geoValidationClientRevalidate, "g"), position);
-                                            return false;
+                                        if (jsonKey === marker.content) {
+                                            if (jsonValue.validated_address_csv_data.indexOf(CGMPGlobal.geoValidationClientRevalidate) != -1) {
+                                                jsonValue.validated_address_csv_data = jsonValue.validated_address_csv_data.replace(new RegExp(CGMPGlobal.geoValidationClientRevalidate, "g"), position);
+                                                return false;
+                                            }
                                         }
                                     });
                                 });
@@ -328,14 +330,19 @@
                                 var shortcodeId = nonGeoMashupJsonData.debug.shortcodeid;
 
                                 var filtered = [];
-                                $.each(markers, function (index, marker) {
+                                $.each(markers, function (buildMarkerIndex, marker) {
                                     var position = (marker.position + "").replace(new RegExp("\\(|\\)", "g"), "");
-                                    $.each(rawMarkerCSV, function (index, value) {
+                                    $.each(rawMarkerCSV, function (rawCsvMarkerIndex, value) {
 
-                                       var chunks = value.split(CGMPGlobal.sep);
-                                       if (chunks[0] === marker.content && value.indexOf(CGMPGlobal.geoValidationClientRevalidate) != -1) {
-                                           filtered[index] = value.replace(new RegExp(CGMPGlobal.geoValidationClientRevalidate, "g"), position);
-                                           return false;
+                                        var chunks = value.split(CGMPGlobal.sep);
+                                        if (chunks[0] === marker.content) {
+                                            Logger.info(chunks[0] + " matched " + marker.content + " (marker#" + (buildMarkerIndex + 1) + ")");
+                                            if (value.indexOf(CGMPGlobal.geoValidationClientRevalidate) != -1) {
+                                                filtered[buildMarkerIndex] = value.replace(new RegExp(CGMPGlobal.geoValidationClientRevalidate, "g"), position);
+                                            } else {
+                                                filtered[buildMarkerIndex] = value;
+                                            }
+                                            return false;
                                         }
                                     });
                                 });
@@ -434,9 +441,8 @@
                         Logger.fatal("Not parsing empty validated address csv data.. Skipping");
                         return;
                     }
-
+                    Logger.info("Raw: " + csvString);
                     var locations = csvString.split("|");
-                    Logger.info("Raw: " + locations);
                     for (var i = 0; i < locations.length; i++) {
                         var target = locations[i];
                         if (target != null && target != "") {

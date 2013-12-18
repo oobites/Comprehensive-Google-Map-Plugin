@@ -1085,6 +1085,11 @@ if ( !function_exists('cgmp_do_serverside_address_validation_2') ):
 
             $marker_data_segments = explode(CGMP_SEP, $marker_data_with_cgmp_sep);
             $address = $marker_data_segments[0];
+
+            if (!isset($address) || trim($address) == "") {
+                continue;
+            }
+
             $icon = isset($marker_data_segments[1]) && trim($marker_data_segments[1]) != "" ? CGMP_SEP.$marker_data_segments[1] : CGMP_SEP."1-default.png";
             $description = isset($marker_data_segments[2]) && trim($marker_data_segments[2]) != "" ? CGMP_SEP.$marker_data_segments[2] : CGMP_SEP.CGMP_NO_BUBBLE_DESC;
 
