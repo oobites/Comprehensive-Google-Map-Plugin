@@ -1406,8 +1406,7 @@
             var versionMajor = parseFloat($.fn.jquery.split(".")[0]);
             var versionMinor = parseFloat($.fn.jquery.split(".")[1]);
             if ((versionMajor < 1) || (versionMajor >= 1 && versionMajor < 2 && versionMinor < 9)) {
-                Logger.fatal("Client uses jQuery older than the version 1.9.0. Aborting map generation ..");
-                return false;
+                Logger.fatal("Client uses jQuery older than the version 1.9.0, check if he is using jQuery Migrate plugin");
             }
 
             if (typeof google === "undefined" || !google) {

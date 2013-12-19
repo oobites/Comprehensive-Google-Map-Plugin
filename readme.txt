@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, google map widget, jquery tabs, google map short code, google map short code, map widget, map short code, fusion tables, google fusion tables, google fusion queries, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 9.0.10
+Stable tag: 9.0.11
 
 A simple and intuitive,  yet elegant and fully documented Google map plugin that installs as a widget and a short code.
 
@@ -13,19 +13,15 @@ A simple and intuitive,  yet elegant and fully documented Google map plugin that
 A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. No limited plugin editions or limited functionality! This is the full version of this free and premium plugin, which comes packed with useful features: 
 
 * Compatible with jQuery tabs! No more poorly rendered map on your site!
+* Compatible with W3 Total Cache, read the <a href="http://wordpress.org/support/topic/how-to-make-w3-total-cache-plugin-to-play-nicely-together">solution</a>
 * Intuitive and user friendly interface, which makes it very easy to configure Google map. No complex configuration options. Facebook style interactive interface for managing multiple map markers. OpenStreetMap imagery available
 * With over 250 amazing custom marker icons to choose from!
 * Aggregate all your post markers in one map - Marker Geo Mashup!
-* Help tooltips enabled, which makes your configuration hassle free
+* Dozens of options to choose from
 * Add end-user's current GPS location to the map! Useful for end-users that want to find directions from their current location to map's markers
-* Google-like directions: driving and walking, distance shown in miles or KM, avoid tolls and highways options, direction print functionality
-* Info window can display marker's street view within itself.
 * Plugin is fully documented. If help tooltips are not enough, you can always refer to the full documentation about each of the settings
 * Shortcode builder available, which integrated with post/page editor. In other words, you do not need
 manually to type the shortcode in the editor, just save the shortcode and it will be available to you (But you can if you want to).
-* The plugin auto generates unique ID for each map. In other words - unlimited maps! You do not need to specify and maintain unique map
-IDs explicitly when dealing with multiple maps on the same post/page.
-* The plugin offers extensive configuration options for Google map marker, controls, size, KML files, location by latitude/longitude, location by address, info windows with custom text, traffic/bike lanes and more!
 * Support for custom overlays: Panoramio photos on the map (http://www.panoramio.com/), bicycle lanes and traffic info.
 * User can get directions to the locations on the map (markers)
 * Widget enabled.
@@ -36,7 +32,7 @@ If you liked the plugin, you can join the <a href="http://www.facebook.com/pages
  
 
 Please note: 
-Although I try my best to release a bug-free code, one or two may slip through. It would be so cool and I would really appreciate it if you would report any bugs to me first at http://initbinder.com/comprehensive-google-map-plugin, before reporting the plugin to be broken. I am quick to respond. 
+Although I try my best to release a bug-free code, one or two may slip through. It would be so cool and I would really appreciate it if you would report any bugs to me first at http://wordpress.org/plugins/comprehensive-google-map-plugin/, before reporting the plugin to be broken. I am quick to respond.
 Thanks!
 
 Licenses:
@@ -63,32 +59,26 @@ Do you have a question or a feature request? Sure, drop me a line here: http://i
 1. Where can I find the short code builder?<br />
 After plugin installation look for the 'Google Map' menu item on the left hand side of your WP admin. The 'Shortcode builder' item is just there. After generating the short code, copy the contents of the popup and paste int your post/page.
 
-2. How fast can you have a look at my bug?<br />
-Well, I always check emails on the go, so my response times are amazingly short and fast. I always try to reply. Having said that, not always I can dive into the code. It can take me up to a few hours when I reach my laptop and Internet connection :)
+2. How to make W3 Total Cache to work with your plugin?
+http://wordpress.org/support/topic/how-to-make-w3-total-cache-plugin-to-play-nicely-together
 
-3. I have dragged/scrolled/pulled my map to a direction, messed up my zoom view, how can I get get all my markers in view again with the original zoom?<br />
-Just click once somewhere on the map
+3. Is your plugin compatible with jQuery Tabs or other tabs?
+Yes
 
-4. The map appears empty with "loading" image or just gray square why is that?
-Please check the following when adding marker locations: 
-[a] In the shortcode builder, did you add marker loaction(s) and clicked the 'Add' button before clicking 'Send to Editor'?
-[b] In the widget, did you add marker loaction(s) and clicked the 'Add' button before clicking 'Save'?
-Please revisit and reconfigure your widget or shortcode configuration. The map requires at least one marker location to be added.
-
-5. Where is plugin documentation?<br />
+4. Where is plugin documentation?<br />
 After plugin activation, look at the left hand side menu of WP admin, look for "Google Map" item
 
-6. Where to find my saved shortcode?<br />
+5. Where to find my saved shortcode?<br />
 Look for little map icon in post/page WYSIWYG editor
 
-7. Do I lose my saved shortcodes after plugin update?<br />
+6. Do I lose my saved shortcodes after plugin update?<br />
 No, they will still be there
 
-8. Whats the correct way to define coordinates?
-You can use one of the following formats:
-[a] N43°38 19.39, W116°14 28.86 (Please note: single quote or apostrophe has been replaced with SPACE and no double quotes)
-[b] 43°38 19.39N, 116°14 28.86W
-[c] 43 38 19.39, -116 14 28.86
+7. Whats the correct way to define coordinates?
+You can use one of the following formats:<br />
+[a] N43°38 19.39, W116°14 28.86 (Please note: single quote or apostrophe has been replaced with SPACE and no double quotes)<br />
+[b] 43°38 19.39N, 116°14 28.86W<br />
+[c] 43 38 19.39, -116 14 28.86<br />
 [d] 43.6387194445, -116.2413513485235
 
 == Screenshots ==
@@ -104,6 +94,9 @@ You can use one of the following formats:
 9. When having marker Geo mashup, you can display in the info bubble marker's original post and post content excerpt instead of normally address and lat/long
 
 == Changelog ==
+
+= 9.0.11 =
+* Enhancement: Documentation update
 
 = 9.0.10 =
 * Bug: User set language was reset before map generation
