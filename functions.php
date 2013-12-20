@@ -698,27 +698,6 @@ if ( !function_exists('cgmp_on_activate_hook') ):
 endif;
 
 
-if ( !function_exists('cgmp_on_uninstall_hook') ):
-    function cgmp_on_uninstall_hook()  {
-
-        if ( CGMP_PLUGIN_BOOTSTRAP != WP_UNINSTALL_PLUGIN ) {
-            return;
-        }
-
-        cgmp_clear_cached_map_data(CGMP_ALL_MAP_CACHED_CONSTANTS_PREFIX);
-
-        //legacy
-        remove_option(CGMP_DB_PUBLISHED_POST_MARKERS);
-        remove_option(CGMP_DB_POST_COUNT);
-        remove_option(CGMP_DB_PUBLISHED_POST_IDS);
-        remove_option(CGMP_DB_PUBLISHED_PAGE_IDS);
-        remove_option(CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER);
-        remove_option(CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED);
-        remove_option(CGMP_DB_PURGE_GEOMASHUP_CACHE);
-        remove_option(CGMP_DB_GEOMASHUP_CONTENT);
-    }
-endif;
-
 if ( !function_exists('cgmp_clear_cached_map_data') ):
     function cgmp_clear_cached_map_data($prefix_constant)  {
         // Remove cache of posts, pages and widgets

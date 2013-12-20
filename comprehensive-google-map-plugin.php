@@ -64,7 +64,6 @@ endif;
 if ( !function_exists('cgmp_register_hooks') ):
 	function cgmp_register_hooks() {
 		register_activation_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_activate_hook');
-		register_uninstall_hook( CGMP_PLUGIN_BOOTSTRAP, 'cgmp_on_uninstall_hook');
 	}
 endif;
 
