@@ -58,7 +58,6 @@ if ( !function_exists('cgmp_require_dependancies') ):
 		require_once (CGMP_PLUGIN_DIR . '/metabox.php');
 		require_once (CGMP_PLUGIN_DIR . '/menu.php');
 		require_once (CGMP_PLUGIN_DIR . '/head.php');
-		require_once (CGMP_PLUGIN_DIR . '/uninstall.php');
 	}
 endif;
 
