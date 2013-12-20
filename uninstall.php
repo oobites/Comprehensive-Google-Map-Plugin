@@ -4,11 +4,7 @@ if(defined('WP_UNINSTALL_PLUGIN')) {
     global $wpdb;
 
     $options_table = $wpdb->options;
-    $options_to_delete = $wpdb->query( "SELECT option_name FROM ".$options_table." WHERE option_name LIKE '".CGMP_ALL_MAP_CACHED_CONSTANTS_PREFIX."%'" );
-
-    foreach ( $options_to_delete as $option_name ) {
-        delete_option($option_name);
-    }
+    $wpdb->query( "DELETE FROM ".$options_table." WHERE option_name LIKE '".CGMP_ALL_MAP_CACHED_CONSTANTS_PREFIX."%';" );
 
     //legacy
     delete_option(CGMP_DB_PUBLISHED_POST_MARKERS);
@@ -22,3 +18,6 @@ if(defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 ?>
+
+
+//SELECT option_name FROM wp_options WHERE option_name LIKE 'cgmp_cache_%'
