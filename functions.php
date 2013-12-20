@@ -703,7 +703,7 @@ if ( !function_exists('cgmp_clear_cached_map_data') ):
         // Remove cache of posts, pages and widgets
         global $wpdb;
         $options_table = $wpdb->options;
-        $wpdb->query( "DELETE FROM ".$options_table." WHERE option_name LIKE '".$prefix_constant."%'" );
+        $wpdb->query( "DELETE FROM ".$options_table." WHERE option_name LIKE '".$prefix_constant."%';" );
     }
 endif;
 
