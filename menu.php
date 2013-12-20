@@ -79,10 +79,10 @@ function cgmp_generate_support_data() {
     ."</ul>"
     ."<h4>Plugins known to modify global WordPress query</h4>"
     ."<ul>"
-    ."<li>Advanced Category Excluder plugin: ".(isset($plugin_names['advanced-category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
-    ."<li>Category Excluder plugin: ".(isset($plugin_names['category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
-    ."<li>Simply Exclude plugin: ".(isset($plugin_names['simply-exclude']) ? "<b>Installed</b>" : "No installed")."</li>"
-    ."<li>Ultimate Category Excluder plugin: ".(isset($plugin_names['ultimate-category-excluder']) ? "<b>Installed</b>" : "No installed")."</li>"
+    ."<li>Advanced Category Excluder plugin: ".(isset($plugin_names['advanced-category-excluder']) ? "<b>Installed</b>" : "Not installed")."</li>"
+    ."<li>Category Excluder plugin: ".(isset($plugin_names['category-excluder']) ? "<b>Installed</b>" : "Not installed")."</li>"
+    ."<li>Simply Exclude plugin: ".(isset($plugin_names['simply-exclude']) ? "<b>Installed</b>" : "Not installed")."</li>"
+    ."<li>Ultimate Category Excluder plugin: ".(isset($plugin_names['ultimate-category-excluder']) ? "<b>Installed</b>" : "Not installed")."</li>"
     ."</ul>";
 }
 endif;
