@@ -29,7 +29,6 @@ if ( !function_exists( 'add_action' ) ) {
 	exit;
 }
 
-
 if ( !function_exists('cgmp_define_constants') ):
 	function cgmp_define_constants() {
 		define('CGMP_PLUGIN_BOOTSTRAP', __FILE__ );
@@ -73,6 +72,7 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('init', 'cgmp_google_map_register_scripts');
 		add_action('init', 'cgmp_load_plugin_textdomain');
 		add_action('admin_notices', 'cgmp_show_message');
+		add_action('admin_notices', 'cgmp_show_initial_warning_message');
 		add_action('admin_init', 'cgmp_google_map_admin_add_style');
 		add_action('admin_init', 'cgmp_google_map_admin_add_script');
 		add_action('admin_footer', 'cgmp_google_map_init_global_admin_html_object');

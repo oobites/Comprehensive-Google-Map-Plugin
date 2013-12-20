@@ -670,7 +670,7 @@ if ( !function_exists('extract_published_content_containing_shortcode') ):
                         $addresss_segments = explode(CGMP_SEP, $address_matches[1][0]);
                         $address_as_string = $addresss_segments[0];
                         if (isset($address_as_string) && trim($address_as_string) != "") {
-                            if (!is_array($addresses[$content_id])) {
+                            if (!isset($addresses[$content_id]) || !is_array($addresses[$content_id])) {
                                 $addresses[$content_id] = array();
                             }
                             $addresses[$content_id][] = $address_as_string;
@@ -694,6 +694,32 @@ if ( !function_exists('cgmp_on_activate_hook') ):
 
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
+    }
+endif;
+
+if ( !function_exists('cgmp_show_initial_warning_message') ):
+    function cgmp_show_initial_warning_message()  {
+        global $pagenow;
+        if (isset($_GET['activate']) && $_GET['activate'] == "true" && $pagenow == "plugins.php") {
+           ob_start();
+            ?>
+            <div id="message" class="error">
+                <p>
+                    <strong>One-time Warning:</strong><br />
+                    In order for <b>Comprehensive Google Map Plugin</b> to function without issues, please make sure<br />
+                    you are using on your blog <b>one of the</b> following:<br /><br />
+                    <b>[a]</b> jQuery 1.9+ <br />
+                    <b>[b]</b> An older jQuery in conjunction with jQuery Migrate plugin
+                </p>
+                <p>
+                    <strong>Please be mindful:</strong><br />
+                    Some 3rd party theme & plugin developers ship their products with older versions of jQuery that disable<br />
+                    default jQuery (1.9+) shipped with WordPress these days
+                </p>
+            </div>
+            <?php
+            echo ob_get_clean();
+        }
     }
 endif;
 
