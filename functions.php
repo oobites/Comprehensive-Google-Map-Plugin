@@ -694,30 +694,33 @@ if ( !function_exists('cgmp_on_activate_hook') ):
 
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE, "");
         update_option(CGMP_DB_GEOMASHUP_DATA_CACHE_TIME, "");
+        update_option(CGMP_INITIAL_WARNING, 1);
     }
 endif;
 
 if ( !function_exists('cgmp_show_initial_warning_message') ):
     function cgmp_show_initial_warning_message()  {
+        $conter = get_option(CGMP_INITIAL_WARNING);
         global $pagenow;
-        if (isset($_GET['activate']) && $_GET['activate'] == "true" && $pagenow == "plugins.php") {
+        if (isset($_GET['activate']) && $_GET['activate'] == "true" && $pagenow == "plugins.php" && $conter < 2) {
            ob_start();
             ?>
             <div id="message" class="error">
                 <p>
-                    <strong>One-time Warning:</strong><br />
-                    In order for <b>Comprehensive Google Map Plugin</b> to function without issues, please make sure<br />
-                    you are using on your blog <b>one of the</b> following:<br /><br />
-                    <b>[a]</b> jQuery 1.9+ <br />
-                    <b>[b]</b> An older jQuery in conjunction with jQuery Migrate plugin
+                    <strong>One-time Warning</strong> from <strong>Comprehensive Google Map Plugin v<?php echo CGMP_VERSION; ?>:</strong><br />
+                    Some 3rd party theme & plugin developers ship their products with older versions of jQuery and disable<br />
+                    loading of default jQuery (1.9+) shipped with WordPress these days
                 </p>
                 <p>
                     <strong>Please be mindful:</strong><br />
-                    Some 3rd party theme & plugin developers ship their products with older versions of jQuery that disable<br />
-                    default jQuery (1.9+) shipped with WordPress these days
+                    In order for <b>Comprehensive Google Map Plugin v<?php echo CGMP_VERSION; ?></b> to function without issues, it requires <b>one of the</b> following:<br /><br />
+                    <b>[a]</b> Your blog has to use jQuery 1.9+ <br />
+                    <b>[b]</b> If your blog uses an older version of jQuery, make sure it is used in conjunction with jQuery Migrate plugin
                 </p>
+                <p>If <b>[a]</b> nor <b>[b]</b> are true, it will result in broken plugin</p>
             </div>
             <?php
+            update_option(CGMP_INITIAL_WARNING, 2);
             echo ob_get_clean();
         }
     }

@@ -24,6 +24,7 @@
     "CGMP_DB_GEOMASHUP_DATA_CACHE_TIME" : "cgmp_cache_time_mashup_map",
 
 
+    "CGMP_INITIAL_WARNING" : "cgmp_initial_warning",
     "CGMP_PERSISTED_SHORTCODES" : "cgmp_persisted_shortcodes",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
