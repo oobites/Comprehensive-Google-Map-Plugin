@@ -315,7 +315,7 @@
                                     });
                                 });
                                 var jsonDataAsString = JSON.stringify(geoMashupJsonData);
-                                $.post(CGMPGlobal.ajaxurl, {action: 'cgmp_ajax_cache_map_action', data: jsonDataAsString, geoMashup: "true"}, function (response) {
+                                $.post(CGMPGlobal.ajaxurl, {action: CGMPGlobal.ajaxCacheMapAction, data: jsonDataAsString, geoMashup: "true", timestamp: CGMPGlobal.timestamp}, function (response) {
                                     Logger.info("Posting map data to the server..");
                                     if (response != null && response === "OK") {
                                         Logger.info("Map geo mashup cache was reset on the server");
@@ -348,7 +348,7 @@
 
                                 var cleansedMarkerCSV = filtered.join("|");
                                 if (typeof widgetId !== "undefined" && widgetId !== "undefined") {
-                                    $.post(CGMPGlobal.ajaxurl, {action: 'cgmp_ajax_cache_map_action', data: cleansedMarkerCSV, geoMashup: "false", widgetId: widgetId}, function (response) {
+                                    $.post(CGMPGlobal.ajaxurl, {action: CGMPGlobal.ajaxCacheMapAction, data: cleansedMarkerCSV, geoMashup: "false", widgetId: widgetId, timestamp: CGMPGlobal.timestamp}, function (response) {
                                         Logger.info("Posting map data to the server..");
                                         if (response != null) {
                                             if (response === "OK_WIDGET") {
@@ -357,7 +357,7 @@
                                         }
                                     });
                                 } else if (typeof postId !== "undefined" && postId !== "undefined") {
-                                    $.post(CGMPGlobal.ajaxurl, {action: 'cgmp_ajax_cache_map_action', data: cleansedMarkerCSV, geoMashup: "false", postId: postId, postType: postType, shortcodeId: shortcodeId}, function (response) {
+                                    $.post(CGMPGlobal.ajaxurl, {action: CGMPGlobal.ajaxCacheMapAction, data: cleansedMarkerCSV, geoMashup: "false", postId: postId, postType: postType, shortcodeId: shortcodeId, timestamp: CGMPGlobal.timestamp}, function (response) {
                                         Logger.info("Posting map data to the server..");
                                         if (response != null) {
                                             if (response === "OK_POST") {
@@ -514,25 +514,6 @@
                                 markerIcon = '1-default.png';
                             }
                             marker.setIcon(CGMPGlobal.customMarkersUri + markerIcon);
-
-                            var shadow = null;
-                            var defaultMarkers = ['1-default.png', '2-default.png'];
-                            var defaultPins = ['4-default.png', '5-default.png', '6-default.png', '7-default.png'];
-
-                            if ($.inArray(markerIcon, defaultMarkers) != -1) {
-                                var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
-                                shadow = buildMarkerImage(url, 59, 32, 0, 0, 16, 33);
-                            } else if ($.inArray(markerIcon, defaultPins) != -1) {
-                                var url = CGMPGlobal.customMarkersUri + "msmarker.shadow.png";
-                                shadow = buildMarkerImage(url, 59, 32, 0, 0, 21, 34);
-                            } else if (markerIcon.indexOf('3-default') != -1) {
-                                var url = CGMPGlobal.customMarkersUri + "beachflag_shadow.png";
-                                shadow = buildMarkerImage(url, 37, 32, 0, 0, 10, 33);
-                            } else {
-                                shadow = buildMarkerImage(CGMPGlobal.customMarkersUri + "shadow.png", 68, 37, 0, 0, 32, 38);
-                            }
-
-                            marker.setShadow(shadow);
                         }
 
                         attachEventlistener(marker, element);
@@ -540,13 +521,8 @@
                             bindDirectionControlsToEvents();
                             directionControlsBinded = true;
                         }
-
                         markers.push(marker);
                     }
-                }
-
-                function buildMarkerImage(url, sizeX, sizeY, pointAX, pointAY, pointBX, pointBY) {
-                    return new google.maps.MarkerImage(url, new google.maps.Size(sizeX, sizeY), new google.maps.Point(pointAX, pointAY), new google.maps.Point(pointBX, pointBY));
                 }
 
                 function setBounds() {
@@ -1505,7 +1481,7 @@
                                 resizeMapWhenPlaceholderBecomesVisible();
                             } else {
                                 // Just to be on a safe side lets resize
-                                setTimeout(function () { resizeMapWhenPlaceholderBecomesVisible(); }, (timeoutDelay * 4));
+                                timeout = setTimeout(function () { resizeMapWhenPlaceholderBecomesVisible(); }, (timeoutDelay * 3));
                             }
 
                             function resizeMapWhenPlaceholderBecomesVisible() {
@@ -1515,19 +1491,26 @@
                                 if ($(mapPlaceholder).is(":hidden")) {
                                     timeout = setTimeout(resizeMapWhenPlaceholderBecomesVisible, timeoutDelay);
                                 } else {
-                                    setTimeout(function () {resize_map(googleMap);}, timeoutDelay);
+                                    timeout = setTimeout(function () {resize_map(googleMap);}, timeoutDelay);
                                 }
                             }
 
                             function resize_map(googleMap) {
+                                if (timeout != null) {
+                                    clearTimeout(timeout);
+                                }
                                 if (googleMap) {
-                                    var oldZoom = googleMap.getZoom();
-                                    var oldBounds = googleMap.getBounds();
-                                    var oldCenter = googleMap.getCenter();
                                     google.maps.event.trigger(googleMap, "resize");
-                                    googleMap.setZoom(oldZoom);
-                                    googleMap.setCenter(oldCenter);
-                                    googleMap.getBounds(oldBounds);
+                                    timeout = setTimeout(function() { click_map(googleMap); }, timeoutDelay / 2)
+                                }
+                            }
+
+                            function click_map(googleMap) {
+                                if (timeout != null) {
+                                    clearTimeout(timeout);
+                                }
+                                if (googleMap) {
+                                    google.maps.event.trigger(googleMap, "click");
                                 }
                             }
                         });

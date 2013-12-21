@@ -147,6 +147,8 @@ if ( !function_exists('cgmp_generate_global_options') ):
         foreach($translationArray as $name => $value) {
             echo "      $name: \"".$value."\",".PHP_EOL;
         }
+        echo "      ".CGMP_TIMESTAMP.": \"".wp_create_nonce(CGMP_AJAX_CACHE_MAP_ACTION)."\",".PHP_EOL;
+        echo "      ajaxCacheMapAction: \"".CGMP_AJAX_CACHE_MAP_ACTION."\",".PHP_EOL;
         echo "      sep: \"".CGMP_SEP."\"".PHP_EOL;
         echo "  }".PHP_EOL;
         echo "</script>".PHP_EOL;

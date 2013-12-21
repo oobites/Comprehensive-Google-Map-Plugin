@@ -24,6 +24,8 @@
     "CGMP_DB_GEOMASHUP_DATA_CACHE_TIME" : "cgmp_cache_time_mashup_map",
 
 
+    "CGMP_AJAX_CACHE_MAP_ACTION" : "cgmp_ajax_cache_map_action",
+    "CGMP_TIMESTAMP" : "timestamp",
     "CGMP_INITIAL_WARNING" : "cgmp_initial_warning",
     "CGMP_PERSISTED_SHORTCODES" : "cgmp_persisted_shortcodes",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
@@ -67,5 +69,5 @@
     "CGMP_SEP" : "{}",
     "CGMP_GEOSERVICE_THROTTLING_IN_MICROS" : 150000,
     "CGMP_GEO_VALIDATION_CLIENT_REVALIDATE" : "REVALIDATE",
-    "CGMP_VERSION" : "9.0.12"
+    "CGMP_VERSION" : "9.0.13"
   } ]

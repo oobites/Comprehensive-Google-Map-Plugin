@@ -168,6 +168,8 @@ endif;
 if ( !function_exists('cgmp_ajax_cache_map_action_callback') ):
     function cgmp_ajax_cache_map_action_callback() {
 
+        check_ajax_referer( CGMP_AJAX_CACHE_MAP_ACTION, CGMP_TIMESTAMP );
+
         if (isset($_POST['data']))  {
             if (isset($_POST['geoMashup']))  {
                 $isGeoMashup = $_POST['geoMashup'] === "true";
@@ -717,7 +719,7 @@ if ( !function_exists('cgmp_show_initial_warning_message') ):
                     <b>[a]</b> Your blog has to use jQuery 1.9+ <br />
                     <b>[b]</b> If your blog uses an older version of jQuery, make sure it is used in conjunction with jQuery Migrate plugin
                 </p>
-                <p>If <b>[a]</b> nor <b>[b]</b> are true, it will result in broken plugin</p>
+                <p>If <b>[a]</b> nor <b>[b]</b> are true, it will result in broken plugin. Just give it a try and see. In any case, <a href="http://wordpress.org/support/plugin/comprehensive-google-map-plugin" target="_blank">support forum</a> is available to you.</p>
             </div>
             <?php
             update_option(CGMP_INITIAL_WARNING, 2);
