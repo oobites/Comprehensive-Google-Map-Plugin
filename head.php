@@ -25,7 +25,9 @@ endif;
 
 if ( !function_exists('cgmp_google_map_admin_add_style') ):
         function cgmp_google_map_admin_add_style()  {
-       			wp_enqueue_style('comprehensive-google-map-style', CGMP_PLUGIN_CSS . '/cgmp.admin.css', false, CGMP_VERSION, "screen");
+            if (cgmp_should_load_admin_scripts()) {
+                wp_enqueue_style('comprehensive-google-map-style', CGMP_PLUGIN_CSS . '/cgmp.admin.css', false, CGMP_VERSION, "screen");
+            }
         }
 endif;
 
@@ -34,22 +36,43 @@ endif;
 if ( !function_exists('cgmp_google_map_admin_add_script') ):
 		function cgmp_google_map_admin_add_script()  {
 
-				$whitelist = array('localhost', '127.0.0.1');
-
-              	wp_enqueue_script('cgmp-jquery-tools-tooltip', CGMP_PLUGIN_JS .'/jquery.tools.tooltip.min.js', array('jquery'), '1.2.5.a', true);
-				$minified = ".min";
-				if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
-					$minified = "";
-				}
-				wp_enqueue_script('cgmp-jquery-tokeninput', CGMP_PLUGIN_JS. '/cgmp.tokeninput'.$minified.'.js', array('jquery'), CGMP_VERSION, true);
-				wp_enqueue_script('comprehensive-google-map-plugin', CGMP_PLUGIN_JS. '/cgmp.admin'.$minified.'.js', array('jquery'), CGMP_VERSION, true);
+            if (cgmp_should_load_admin_scripts()) {
+                $whitelist = array('localhost', '127.0.0.1');
+                wp_enqueue_script('cgmp-jquery-tools-tooltip', CGMP_PLUGIN_JS .'/jquery.tools.tooltip.min.js', array('jquery'), '1.2.5.a', true);
+                $minified = ".min";
+                if (in_array($_SERVER['HTTP_HOST'], $whitelist)) {
+                    $minified = "";
+                }
+                wp_enqueue_script('cgmp-jquery-tokeninput', CGMP_PLUGIN_JS. '/cgmp.tokeninput'.$minified.'.js', array('jquery'), CGMP_VERSION, true);
+                wp_enqueue_script('comprehensive-google-map-plugin', CGMP_PLUGIN_JS. '/cgmp.admin'.$minified.'.js', array('jquery'), CGMP_VERSION, true);
+            }
 		}
 endif;
 
 
+if ( !function_exists('cgmp_should_load_admin_scripts') ):
+    function cgmp_should_load_admin_scripts()  {
+        global $pagenow;
+
+        $admin_pages = array('cgmp-documentation', 'cgmp-shortcodebuilder', 'cgmp-settings');
+        $plugin_admin_page = isset($_REQUEST['page']) && trim($_REQUEST['page']) != "" ? $_REQUEST['page'] : "";
+        $is_plugin_menu_page = in_array($plugin_admin_page, $admin_pages);
+
+        $action_type = isset($_REQUEST['action']) && trim($_REQUEST['action']) != "" ? $_REQUEST['action'] : "";
+        $is_post_edit_mode = ($action_type == "edit" && $pagenow == "post.php");
+
+        $is_post_create_mode = ($pagenow == "post-new.php");
+
+        // Either we are viewing plugin's admin pages or we are creating new post or any other type
+        return ($is_plugin_menu_page || $is_post_create_mode || $is_post_edit_mode);
+    }
+endif;
+
+
+
 if ( !function_exists('cgmp_google_map_tab_script') ):
     	function cgmp_google_map_tab_script()  {
-             	wp_enqueue_script('cgmp-jquery-tools-tabs', CGMP_PLUGIN_JS .'/jquery.tools.tabs.min.js', array('jquery'), '1.2.5', true);
+            wp_enqueue_script('cgmp-jquery-tools-tabs', CGMP_PLUGIN_JS .'/jquery.tools.tabs.min.js', array('jquery'), '1.2.5', true);
         }
 endif;
 

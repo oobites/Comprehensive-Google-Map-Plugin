@@ -1,6 +1,17 @@
-(function () {
-    tinymce.create('tinymce.plugins.shortcode', {
+var CGMPTinyMCE = tinymce;
 
+(function ($) {
+    $.create('tinymce.plugins.shortcode', {
+
+        init: function (ed, url) {
+            ed.onBeforeSetContent.add(function (ed, o) {
+                return false;
+            });
+
+            ed.onSetContent.add(function (ed, o) {
+                return false;
+            });
+        },
         createControl: function (n, cm) {
             switch (n) {
                 case 'shortcode':
@@ -38,7 +49,7 @@
             };
         }
     });
-    tinymce.PluginManager.add('shortcode', tinymce.plugins.shortcode);
+    $.PluginManager.add('shortcode', $.plugins.shortcode);
 
     jQuery(document).ready(function () {
         jQuery(document).on("click", "div#menu_content_content_shortcode_menu span.mce_cgmp-mce-split-button-menu-item-icon", function(event) {
@@ -67,7 +78,7 @@
                 if (this.title === menuTitle) {
                     var code = this.code.replace(new RegExp("\\\\\"", "g"), "\""); // replace escaped quote and escaping slash with just quote
                     code = code.replace(new RegExp("TO_BE_GENERATED", "g"), muid()); // replace escaped quote and escaping slash with just quote
-                    tinymce.activeEditor.setContent(tinymce.activeEditor.getContent() + code);
+                    $.activeEditor.setContent($.activeEditor.getContent() + code);
                 }
             });
             return false;
@@ -77,6 +88,6 @@
             return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) + "" + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         }
     });
-})();
+})(CGMPTinyMCE);
 
 
