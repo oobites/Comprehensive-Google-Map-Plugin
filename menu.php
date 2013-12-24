@@ -60,6 +60,26 @@ function cgmp_generate_support_data() {
     $published_page_count = wp_count_posts("page");
     $published_pages = $published_page_count->publish;
 
+    global $wpdb;
+    $table = $wpdb->posts;
+
+    // LIMIT 1000 should be more than enough, really who has a blog with 1000+ published content these days?
+    $query = "SELECT $table.post_type FROM $table WHERE $table.post_type NOT IN ('post', 'page') AND $table.post_status = 'publish' LIMIT 1000";
+    $published_results = $wpdb->get_results($query);
+    $published_per_type = array();
+    foreach ($published_results as $result) {
+        if (!isset($published_per_type[$result->post_type])) {
+            $published_per_type[$result->post_type] = 1;
+        } else {
+            $published_per_type[$result->post_type]++;
+        }
+    }
+
+    $custom_types_count = "";
+    foreach ($published_per_type as $type => $count) {
+        $custom_types_count .= "<li>Published ".$type."s: ".$count."</li>";
+     }
+
     $plugin_names = scandir(CGMP_PLUGIN_DIR."/..");
     $plugin_names = array_flip($plugin_names);
 
@@ -74,8 +94,9 @@ function cgmp_generate_support_data() {
     ."<li>WordPress v".$wp_version."</li>"
     ."<li>Comprehensive Google Map Plugin v".CGMP_VERSION."</li>"
     ."<li>Theme: ".$current_wp_theme->Name . ", v" . $current_wp_theme->Version."</li>"
-    ."<li>Number of published posts is: ".$published_posts."</li>"
-    ."<li>Number of published pages is: ".$published_pages."</li>"
+    ."<li>Published posts: ".$published_posts."</li>"
+    ."<li>Published pages: ".$published_pages."</li>"
+    .$custom_types_count
     ."</ul>"
     ."<h4>Plugins known to modify global WordPress query</h4>"
     ."<ul>"

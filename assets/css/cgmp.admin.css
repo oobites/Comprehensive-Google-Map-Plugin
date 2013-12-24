@@ -1,6 +1,7 @@
 span.italic{color:green;font-style:normal}
 span.sep{color:red;font-size:12px;font-style:normal;font-weight:400}
 .marker-input-info-text{color:#ababab; font-size: 11px}
+div#google-map-container-settings input {border-color: #B3B3B3; background: #F1F1F1}
 .google-map-tooltip{-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#000;border:5px solid #777;border-radius:5px;color:#fff;display:none;font-family:verdana;font-size:11px;padding:15px;text-align:left;width:180px;z-index:9999999999}
 fieldset.fieldset{-moz-border-radius:3px;-webkit-border-radius:3px;background-color:#F1F1F1;background-image:0;border-bottom:1px solid #c1c1c1;border-left:1px solid #D1D1D1;border-radius:3px;border-right:1px solid #D1D1D1;border-top:1px solid #D1D1D1;margin-bottom:15px;padding:10px 10px 15px}
 fieldset.fieldset legend{color:gray;font-size:100%;padding:0.2em;text-align:left}
@@ -46,14 +47,14 @@ ul.tools-tabs-nav{margin-bottom:5px;padding-left:4.2em;padding-right:3.5em;paddi
 ul.tools-tabs-nav {*margin-bottom: 1px !important; margin-bottom: 1px\0/ !important; margin-bottom: 1px\9 !important;}
 @-moz-document url-prefix() {ul.tools-tabs-nav {margin-bottom: -1px;}}
 @media not all and (-webkit-min-device-pixel-ratio:0) {ul.tools-tabs-nav {margin-bottom: 0px;}}
-ul.tools-tabs-nav li{-moz-border-radius-topleft:6px;-moz-border-radius-topright:6px;-webkit-border-top-left-radius:6px;-webkit-border-top-right-radius:6px;background:none repeat scroll 0 0 #F8F8F8;border:1px solid #DFDFDF;border-top-left-radius:6px;border-top-right-radius:6px;display:inline-block;font-weight:700;margin:0 0.2em 0 0;max-width:20%;/*overflow:hidden;*/text-align:center;text-shadow:0 1px 0 #FFF}
+ul.tools-tabs-nav li{-moz-border-radius-topleft:6px;-moz-border-radius-topright:6px;-webkit-border-top-left-radius:6px;-webkit-border-top-right-radius:6px;background:none repeat scroll 0 0 #F8F8F8;border:1px solid #C0C0C0;border-top-left-radius:6px;border-top-right-radius:6px;display:inline-block;font-weight:700;margin:0 0.2em 0 0;max-width:20%;/*overflow:hidden;*/text-align:center;text-shadow:0 1px 0 #FFF}
 @media not all and (-webkit-min-device-pixel-ratio:0) {ul.tools-tabs-nav li {margin: 0px 0.2em -1px 0px;}}
 ul.tools-tabs-nav li a{color:#C1C1C1;display:inline-block;padding:0.6em 1em;text-decoration:none}
-ul.tools-tabs-nav li.current{-moz-box-shadow:0 -3px 5px rgba(0, 0, 0, 0.06);-webkit-box-shadow:0 -3px 5px rgba(0, 0, 0, 0.06);background:#FFF;border-bottom-color:#FFF;box-shadow:0 -3px 5px rgba(0, 0, 0, 0.06);color:#000}
+ul.tools-tabs-nav li.current{-moz-box-shadow:0 -3px 5px rgba(0, 0, 0, 0.15);-webkit-box-shadow:0 -3px 5px rgba(0, 0, 0, 0.15);background:#FFF;border-bottom-color:#FFF;box-shadow:0 -3px 5px rgba(0, 0, 0, 0.15);color:#000}
 ul.tools-tabs-nav li.current a{color:#000}
 .tools-tabs .documentation a{display:none !important}
-.tools-tabs .tools-tab-body{-moz-border-radius:6px;-moz-border-radius-bottomleft:6px;-moz-border-radius-bottomright:6px;-moz-border-radius-topright:6px;-webkit-border-bottom-left-radius:6px;-webkit-border-bottom-right-radius:6px;-webkit-border-radius:6px;-webkit-border-top-right-radius:6px;background:#FFF;border:1px solid #DFDFDF;border-bottom-left-radius:6px;border-bottom-right-radius:6px;border-radius:6px;border-top-right-radius:6px;border-top-width:1px;margin-top:-70px;min-height:300px;padding:63px 20px 25px 50px;width:70%}
-.tools-tabs .tools-tab-content{border-top:1px solid #DFDFDF;padding-top:25px}
+.tools-tabs .tools-tab-body{-moz-border-radius:6px;-moz-border-radius-bottomleft:6px;-moz-border-radius-bottomright:6px;-moz-border-radius-topright:6px;-webkit-border-bottom-left-radius:6px;-webkit-border-bottom-right-radius:6px;-webkit-border-radius:6px;-webkit-border-top-right-radius:6px;background:#FFF;border:1px solid #C0C0C0;border-bottom-left-radius:6px;border-bottom-right-radius:6px;border-radius:6px;border-top-right-radius:6px;border-top-width:1px;margin-top:-70px;min-height:300px;padding:63px 20px 25px 50px;width:70%}
+.tools-tabs .tools-tab-content{border-top:1px solid #C0C0C0;padding-top:25px}
 #cgmp-popup-mask{background-color:#222;display:none;left:0;position:absolute;top:0;z-index:9000}
 .cgmp-popup-window{display:none;height:200px;left:0;padding:20px;position:fixed;top:0;width:440px;z-index:9999}
 .cgmp-popup-shortcode-dialog{-moz-border-radius:2px;-moz-box-shadow:0 4px 16px rgba(0, 0, 0, 0.4);-webkit-border-radius:2px;-webkit-box-shadow:0 4px 16px rgba(0, 0, 0, 0.4);background:none repeat scroll 0 0 #F9EDBE;border:1px solid #EBAE3D;border-radius:2px;box-shadow:0 4px 16px rgba(0, 0, 0, 0.4);color:#222;height:auto;min-height:200px;width:560px}

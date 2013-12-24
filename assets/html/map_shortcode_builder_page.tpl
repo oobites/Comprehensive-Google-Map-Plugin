@@ -3,7 +3,7 @@
 <p>This plugin is continuing to evolve because of contributions from users like you. Thank you. If you found this plugin useful, especially if you use it for commercial purposes, please consider making a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8" target="_blank">donation</a>. Your support helps me to spend more time on development and provide suberb customer service. Please check my other plugins at <a href="http://initbinder.com/plugins" target="_blank">InitBinder.com</a>.</p> 
 <p>Alternatively, you can write on your own blog about the plugin, join the <a href="http://www.facebook.com/pages/Comprehensive-Google-Map-Plugin/180316032076503" target="_blank">Comprehensive Google Map Fan Page</a> on Facebook, <a href="http://twitter.com/InitBinder" target="_blank">spread the word</a> about it on Twitter, <a href="http://wordpress.org/extend/plugins/comprehensive-google-map-plugin/" target="_blank">rate it</a> on Wordpress.org or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8" target="_blank">donate</a>, thanks!</p>
 </div>
-<div style="margin-top: 18px; border: 1px solid #ff5a25; width: 70%; padding: 5px 15px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;">
+<div style="margin-top: 15px; border: 1px solid #ff5a25; width: 70%; padding: 5px 15px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;">
     <p>Saved shortcodes are accessible in WordPress page/post WYSIWYG editor. Just look for the map icon:&nbsp;&nbsp;<img src="CGMP_PLUGIN_IMAGES/google_map.png" alt="" valign="middle"/></p>
 </div>
 <div class="tools-tabs">

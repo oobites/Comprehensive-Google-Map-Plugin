@@ -383,16 +383,19 @@
                         Logger.info("Geocoding '" + element.address + "' OK!");
                         var addressPoint = results[0].geometry.location;
                         instrumentMarker(addressPoint, element);
-                        timeout = setTimeout(function() { queryGeocoderService(); }, 300);
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 200);
                     } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        Logger.warn("Geocoding '" + element.address + "' OVER_QUERY_LIMIT!");
                         setBounds();
                         toValidateAddresses.push(element);
-                        timeout = setTimeout(function() { queryGeocoderService(); }, 3000);
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 2200);
                     } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        Logger.warn("Got ZERO_RESULTS for [" + element.address + "]");
-                        timeout = setTimeout(function() { queryGeocoderService(); }, 300);
+                        Logger.warn("Geocoding '" + element.address + "' ZERO_RESULTS!");
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 200);
+                    }  else  {
+                        Logger.warn("Geocoding '" + element.address + "' " + status + "!");
+                        timeout = setTimeout(function() { queryGeocoderService(); }, 200);
                     }
-
                 }
 
                 var buildAddressMarkers = function buildAddressMarkers(markerLocations, isGeoMashap, isBubbleContainsPostLink) {
@@ -511,9 +514,11 @@
                         if (element.markerIcon) {
                             var markerIcon = element.markerIcon;
                             if (typeof markerIcon == "undefined" || markerIcon === "undefined") {
-                                markerIcon = '1-default.png';
+                                markerIcon = "1-default.png";
                             }
-                            marker.setIcon(CGMPGlobal.customMarkersUri + markerIcon);
+                            if (markerIcon !== "1-default.png") {
+                                marker.setIcon(CGMPGlobal.customMarkersUri + markerIcon);
+                            }
                         }
 
                         attachEventlistener(marker, element);
@@ -1420,8 +1425,24 @@
 
                     if ($('div#' + json.id).length > 0) {
 
-                        var googleMap = new google.maps.Map(document.getElementById(json.id));
+                        // Very basic mobile user agent detection
+                        var userAgent = navigator.userAgent;
+                        var mapDiv = document.getElementById(json.id);
+                        //http://www.zytrax.com/tech/web/mobile_ids.html
+                        if(userAgent.match(/Android|BlackBerry|IEMobile|i(Phone|Pad|Pod)|Kindle|MeeGo|NetFront|Nokia|Opera M(ob|in)i|Pie|PalmOS|PDA|Polaris|Plucker|Samsung|SonyEricsson|SymbianOS|UP.Browser|Vodafone|webOS|Windows Phone/i)) {
+                            mapDiv.style.width = '100%';
+                            var viewPortHeight = $(window).height() + "";
 
+                            if (viewPortHeight.indexOf("px") != -1) {
+                                mapDiv.style.height = viewPortHeight;
+                            } else if (viewPortHeight.indexOf("%") != -1) {
+                                mapDiv.style.height = "100%";
+                            } else {
+                                mapDiv.style.height = viewPortHeight + "px";
+                            }
+                        }
+
+                        var googleMap = new google.maps.Map(mapDiv);
                         GoogleMapOrchestrator.initMap(googleMap, json.bubbleautopan, parseInt(json.zoom), json.maptype);
                         LayerBuilder.init(googleMap);
 

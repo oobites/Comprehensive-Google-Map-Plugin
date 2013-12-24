@@ -21,7 +21,7 @@
 				<table cellspacing='0' cellpadding='0' border='0'>
 					<tbody>
 						<tr>
-							<td><b>Shortcode builder under post/page HTML WYSIWYG editor?</b></td>
+							<td><b>Shortcode builder under default post/page HTML WYSIWYG editor?</b></td>
 						</tr>
 						<tr>
 							<td>
@@ -42,11 +42,12 @@
 				<table cellspacing='0' cellpadding='0' border='0'>
 					<tbody>
 						<tr>
-							<td><b>Shortcode builder should be visible under HTML WYSIWYG editor of the following custom post/page types</b></td>
+							<td><b>Include the following custom post/page types in Gep Mashup (if one is generated)</b> <span style="color: green; font-weight: bold;">AND</span><br />
+                                <b>Shortcode builder should be visible under HTML WYSIWYG editor of the following custom post/page types</b></td>
 						</tr>
 						<tr>
 							<td>
-								<label id='custom-post-types' for='custom-post-types'>Enter comma-separated values:</label>
+								<label id='custom-post-types' for='custom-post-types'>Enter <span style="color: green; font-weight: bold;">comma</span>-separated values:</label>
 								<input type='text' id='custom-post-types' name='custom-post-types' maxlength="40" size="50" value='CUSTOM_POST_TYPES_TOKEN' />
 							</td>
 						</tr>

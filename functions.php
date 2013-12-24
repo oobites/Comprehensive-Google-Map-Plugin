@@ -308,6 +308,13 @@ if ( !function_exists('trim_marker_value') ):
 	}
 endif;
 
+if ( !function_exists('trim_to_lower_value') ):
+    function trim_to_lower_value(&$value)
+    {
+        $value = trim(strtolower($value));
+    }
+endif;
+
 
 if ( !function_exists('update_markerlist_from_legacy_locations') ):
 	function update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $hiddenmarkers)  {
@@ -641,13 +648,18 @@ endif;
 if ( !function_exists('extract_published_content_containing_shortcode') ):
     function extract_published_content_containing_shortcode($content_type)  {
 
-        $count_posts = wp_count_posts($content_type);
-        $total_published = $count_posts->publish;
+        $total_published = "custom";
+        if ($content_type == "page" || $content_type == "post") {
+            $count_posts = wp_count_posts($content_type);
+            $total_published = $count_posts->publish;
+        }
 
         // To avoid cases where plugin's like Ultimate Category Excluder messes around with the main query by using filter 'pre_get_posts' to exclude posts
         global $wpdb;
         $table = $wpdb->posts;
-        $query = "SELECT * FROM $table WHERE $table.post_type = '".$content_type."' AND $table.post_status = 'publish' LIMIT 1000"; // For 1000 should be more than enough, really who has a blog with 1000+ published content?
+
+        // LIMIT 1000 should be more than enough, really who has a blog with 1000+ published content these days?
+        $query = "SELECT * FROM $table WHERE $table.post_type IN ('".$content_type."') AND $table.post_status = 'publish' LIMIT 1000";
         $posts = $wpdb->get_results($query);
 
         $extracted = array();
@@ -758,7 +770,7 @@ if ( !function_exists('process_collection_of_contents') ):
                         $post_title = preg_replace("/\r\n|\n\r|\n/", " ", $post_title);
                         $marker[$post->ID]['markers'] = $extracted;
                         $marker[$post->ID]['title'] = $post_title;
-                        $marker[$post->ID]['permalink'] = $post->guid;
+                        $marker[$post->ID]['permalink'] = get_permalink($post->ID);
                         $marker[$post->ID]['excerpt'] = '';
 
 						$clean = "";
@@ -1058,7 +1070,21 @@ if ( !function_exists('make_marker_geo_mashup_2') ):
         $page_data = extract_published_content_containing_shortcode("page");
         $query_debug_data["page"] = $page_data["query"];
 
-        $extracted_published_markers =  array_merge(process_collection_of_contents($post_data["extracted"]), process_collection_of_contents($page_data["extracted"]));
+        $custom_data = array();
+        $custom_data["extracted"] = array();
+        $custom_data["query"] = array();
+        $custom_post_types = get_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES);
+        if (isset($custom_post_types) && trim($custom_post_types) != "") {
+            $custom_post_types_arr = explode(",", $custom_post_types);
+            array_walk($custom_post_types_arr, 'trim_to_lower_value');
+            $custom_post_types = implode("','", $custom_post_types_arr);
+            $custom_data = extract_published_content_containing_shortcode($custom_post_types);
+            $query_debug_data["custom"] = $custom_data["query"];
+        }
+
+        $extracted_published_markers =  array_merge(process_collection_of_contents($post_data["extracted"]),
+                                                    process_collection_of_contents($page_data["extracted"]),
+                                                    process_collection_of_contents($custom_data["extracted"]));
 
         if (is_array($extracted_published_markers) && count($extracted_published_markers) > 0) {
 
