@@ -20,9 +20,14 @@ if ( !function_exists('cgmp_google_map_plugin_menu') ):
       function cgmp_google_map_plugin_menu() {
       		$hook = add_menu_page("Comprehensive Google Map", 'Google Map', 'activate_plugins', CGMP_HOOK, 'cgmp_parse_menu_html', CGMP_PLUGIN_IMAGES .'/google_map.png');
 	  		add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
-			$hook = add_submenu_page(CGMP_HOOK, 'Shortcode Builder', 'Shortcode Builder', 'activate_plugins', 'cgmp-shortcodebuilder', 'cgmp_shortcodebuilder_callback' );
+
+            $hook = add_submenu_page(CGMP_HOOK, 'Shortcode Builder', 'Shortcode Builder', 'activate_plugins', 'cgmp-shortcodebuilder', 'cgmp_shortcodebuilder_callback' );
 			add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
-			$hook = add_submenu_page(CGMP_HOOK, 'Settings', 'Settings', 'activate_plugins', 'cgmp-settings', 'cgmp_settings_callback' );
+
+            $hook = add_submenu_page(CGMP_HOOK, 'Saved Shortcodes', 'Saved Shortcodes', 'activate_plugins', 'cgmp-saved-shortcodes', 'cgmp_saved_shortcodes_callback' );
+            add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
+
+            $hook = add_submenu_page(CGMP_HOOK, 'Settings', 'Settings', 'activate_plugins', 'cgmp-settings', 'cgmp_settings_callback' );
 		   	add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
 	  }
 endif;
@@ -38,12 +43,14 @@ if ( !function_exists('cgmp_settings_callback') ):
 		if (isset($_POST['cgmp-save-settings']))  {
 		    update_option(CGMP_DB_SETTINGS_BUILDER_LOCATION, $_POST['builder-under-post']);
 		    update_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES, $_POST['custom-post-types']);
+		    update_option(CGMP_DB_SETTINGS_TINYMCE_BUTTON, $_POST['tinymce-button-in-editor']);
             cgmp_show_message("Settings updated successfully!");
 		}
 
         $template_values = array();
         $template_values = populate_token_builder_under_post($template_values);
         $template_values = populate_token_custom_post_types($template_values);
+        $template_values = populate_tiny_mce_button($template_values);
         echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE);
 	}
 
@@ -121,6 +128,19 @@ function populate_token_builder_under_post($template_values) {
    return $template_values;
 }
 
+function populate_tiny_mce_button($template_values) {
+    $setting_tiny_mce_button = get_option(CGMP_DB_SETTINGS_TINYMCE_BUTTON);
+    $yes_enable_radio_btn = "checked='checked'";
+    $no_enable_radio_btn = "";
+    if (isset($setting_tiny_mce_button) && $setting_tiny_mce_button == "false") {
+        $yes_enable_radio_btn = "";
+        $no_enable_radio_btn = "checked='checked'";
+    }
+    $template_values["YES_ENABLED_TINYMCE_BUTTON_TOKEN"] = $yes_enable_radio_btn;
+    $template_values["NO_ENABLED_TINYMCE_BUTTON_TOKEN"] = $no_enable_radio_btn;
+    return $template_values;
+}
+
 function populate_token_custom_post_types($template_values) {                                                                          
    $custom_post_types = get_option(CGMP_DB_SETTINGS_CUSTOM_POST_TYPES);                                           
    $template_values["CUSTOM_POST_TYPES_TOKEN"] = $custom_post_types;                             
@@ -139,6 +159,7 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
 
             $bad_entities = array("&quot;", "&#039;", "'");
             $title = str_replace($bad_entities, "", $_POST['hidden-shortcode-title']);
+            $title = preg_replace('/\s+/', ' ', trim($title));
             $code = str_replace($bad_entities, "", $_POST['hidden-shortcode-code']);
 
             $shortcodes = array();
@@ -177,6 +198,56 @@ if ( !function_exists('cgmp_shortcodebuilder_callback') ):
 
 		echo cgmp_render_template_with_values(array("CGMP_PLUGIN_IMAGES" => CGMP_PLUGIN_IMAGES, "SHORTCODEBUILDER_TOKEN" => $map_configuration_template), CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE);
 	}
+endif;
+
+if ( !function_exists('cgmp_saved_shortcodes_callback') ):
+
+    function cgmp_saved_shortcodes_callback() {
+        if (!current_user_can('activate_plugins'))  {
+            wp_die( __('You do not have sufficient permissions to access this page.') );
+        }
+
+        if (isset($_REQUEST['delete_shortcode']) && trim($_REQUEST['delete_shortcode']) != "")  {
+            $title = $_REQUEST['delete_shortcode'];
+            $persisted_shortcodes_json = get_option(CGMP_PERSISTED_SHORTCODES);
+            if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "") {
+                $persisted_shortcodes = json_decode($persisted_shortcodes_json, true);
+                if (is_array($persisted_shortcodes)) {
+                    if (isset($persisted_shortcodes[$title])) {
+                        unset($persisted_shortcodes[$title]);
+                        update_option(CGMP_PERSISTED_SHORTCODES, json_encode($persisted_shortcodes));
+                        cgmp_show_message("Shortcode deleted successfully!");
+                    } else {
+                        cgmp_show_message("Could not deleted shortcode!", true);
+                    }
+                }
+            }
+        }
+
+        $template_values = array();
+        $template_values["CGMP_PLUGIN_IMAGES"] = CGMP_PLUGIN_IMAGES;
+        $template_values["SAVED_SHORTCODES_TOKEN"] = "No shortcodes found in the database. Would you like to <a href='admin.php?page=cgmp-shortcodebuilder'>create some</a>?";
+
+        $persisted_shortcodes_json = get_option(CGMP_PERSISTED_SHORTCODES);
+        if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "") {
+            $persisted_shortcodes = json_decode($persisted_shortcodes_json, true);
+            if (is_array($persisted_shortcodes) && !empty($persisted_shortcodes)) {
+                $content = "";
+                foreach ($persisted_shortcodes as $shortcode) {
+                    $shortcode_id = substr(md5(rand()), 0, 10);
+                    if (is_array($shortcode)) {
+                        $raw_code = $shortcode['code'];
+                        $raw_code = str_replace("TO_BE_GENERATED", $shortcode_id, $raw_code);
+
+                        $content .= "<a href='admin.php?page=cgmp-saved-shortcodes&delete_shortcode=".$shortcode['title']."'>[DELETE]</a><br /><div class='loaded-db-shortcodes'><b>".stripslashes($raw_code) . "</b></div><br />";
+                    }
+                }
+                $template_values["SAVED_SHORTCODES_TOKEN"] = $content;
+            }
+        }
+
+        echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SAVED_SHORTCODES_PAGE);
+    }
 endif;
 
 

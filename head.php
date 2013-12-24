@@ -54,7 +54,7 @@ if ( !function_exists('cgmp_should_load_admin_scripts') ):
     function cgmp_should_load_admin_scripts()  {
         global $pagenow;
 
-        $admin_pages = array('cgmp-documentation', 'cgmp-shortcodebuilder', 'cgmp-settings');
+        $admin_pages = array('cgmp-documentation', 'cgmp-shortcodebuilder', 'cgmp-settings', 'cgmp-saved-shortcodes');
         $plugin_admin_page = isset($_REQUEST['page']) && trim($_REQUEST['page']) != "" ? $_REQUEST['page'] : "";
         $is_plugin_menu_page = in_array($plugin_admin_page, $admin_pages);
 

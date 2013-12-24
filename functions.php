@@ -244,7 +244,11 @@ function cgmp_show_message($message, $errormsg = false)
 	if (!isset($message) || $message == '') {
 		return;
 	}
-	echo '<div id="message" class="updated fade"><p><strong>'.$message.'</strong></p></div>';
+    if ($errormsg == true) {
+        echo '<div id="message" class="error"><p><strong>'.$message.'</strong></p></div>';
+    } else {
+	    echo '<div id="message" class="updated fade"><p><strong>'.$message.'</strong></p></div>';
+    }
 }
 endif;
 
@@ -635,6 +639,7 @@ if ( !function_exists('cgmp_plugin_row_meta') ):
 			$links = array_merge( $links,
 				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation',CGMP_NAME) ) ),
 				array( sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcode Builder',CGMP_NAME) ) ),
+                array( sprintf( '<a href="admin.php?page=cgmp-saved-shortcodes">%s</a>', __('Saved Shortcodes',CGMP_NAME) ) ),
 				array( sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings',CGMP_NAME) ) ),
 				array( '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CWNZ5P4Z8RTQ8" target="_blank">' . __('Donate') . '</a>' )
 			);

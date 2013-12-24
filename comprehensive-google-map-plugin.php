@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://initbinder.com/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 9.0.15.2
+Version: 9.0.16
 Author: Alexander Zagniotov
 Author URI: http://initbinder.com
 License: GPLv2
@@ -82,8 +82,11 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('wp_head', 'cgmp_generate_global_options');
 
         if ( is_admin() ) {
-            add_action('init', 'cgmp_register_mce');
-            add_action('wp_ajax_cgmp_mce_ajax_action', 'cgmp_mce_ajax_action_callback');
+            $setting_tiny_mce_button = get_option(CGMP_DB_SETTINGS_TINYMCE_BUTTON);
+            if (isset($setting_tiny_mce_button) && $setting_tiny_mce_button == "true") {
+                add_action('init', 'cgmp_register_mce');
+                add_action('wp_ajax_cgmp_mce_ajax_action', 'cgmp_mce_ajax_action_callback');
+            }
         }
 
         add_action('wp_ajax_nopriv_cgmp_ajax_cache_map_action', 'cgmp_ajax_cache_map_action_callback');

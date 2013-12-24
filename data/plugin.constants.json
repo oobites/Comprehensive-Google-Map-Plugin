@@ -30,6 +30,7 @@
     "CGMP_PERSISTED_SHORTCODES" : "cgmp_persisted_shortcodes",
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
+    "CGMP_DB_SETTINGS_TINYMCE_BUTTON" : "cgmp_settings_tinymce_button",
 	"CGMP_DB_SETTINGS_CUSTOM_POST_TYPES" : "cgmp_settings_custom_post_types",
 	"CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED" : "cgmp_settings_was_base_object_rendered",
 	"CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER" : "cgmp_settings_should_base_object_render",
@@ -46,6 +47,7 @@
     "CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_METABOX" : "map_shortcode_builder_metabox.tpl",
     "CGMP_HTML_TEMPLATE_MAP_SHORTCODE_BUILDER_PAGE" : "map_shortcode_builder_page.tpl",
     "CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE" : "plugin_settings_page.tpl",
+    "CGMP_HTML_TEMPLATE_PLUGIN_SAVED_SHORTCODES_PAGE" : "plugin_saved_shortcodes_page.tpl",
     "CGMP_HTML_TEMPLATE_WIDGET" : "widget.tpl",
     "CGMP_HTML_TEMPLATE_WIDGET_FORM_TITLE" : "widget_form_title.tpl",
     "CGMP_HTML_TEMPLATE_SHORTCODE_BUILDER_FORM_TITLE" : "shortcode_builder_form_title.tpl",
@@ -69,5 +71,5 @@
     "CGMP_SEP" : "{}",
     "CGMP_GEOSERVICE_THROTTLING_IN_MICROS" : 150000,
     "CGMP_GEO_VALIDATION_CLIENT_REVALIDATE" : "REVALIDATE",
-    "CGMP_VERSION" : "9.0.15.2"
+    "CGMP_VERSION" : "9.0.16"
   } ]
