@@ -254,8 +254,7 @@ function buildShortcode(id, shortcodeId, $) {
 				if ($(targetInput).val() != null && $(targetInput).val() != "" && $(targetInput).val().indexOf("Enter marker") == -1) {
 
 					var target = $(targetInput).val().replace(/^\s+|\s+$/g, '');
-					var chars = new RegExp(/^(?=.*(\d|[a-zA-Z])).{5,}$/);
-					var hasValidChars = chars.test(target);
+					var hasValidChars = (target !== "" && target.length > 1);
 					if (hasValidChars) {
 
 						customBubbleText = CGMPGlobal.sep + customBubbleText;
