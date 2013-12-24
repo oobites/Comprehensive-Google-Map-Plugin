@@ -5,11 +5,9 @@ var CGMPTinyMCE = tinymce;
 
         init: function (ed, url) {
             ed.onBeforeSetContent.add(function (ed, o) {
-                return false;
-            });
-
-            ed.onSetContent.add(function (ed, o) {
-                return false;
+                if (typeof window.CrayonTinyMCE !== "undefined" && window.CrayonTinyMCE != null) {
+                    return false;
+                }
             });
         },
         createControl: function (n, cm) {
