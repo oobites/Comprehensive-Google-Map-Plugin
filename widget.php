@@ -51,7 +51,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		foreach ($instance as $key => $value) {
 				$value = trim($value);
-				$value = (!isset($value) || empty($value)) ? $json_default_values[$key] : esc_attr(strip_tags($value));
+				$value = (!isset($value) || empty($value)) ? (isset($json_default_values[$key]) ? $json_default_values[$key] : esc_attr(strip_tags($value))) : esc_attr(strip_tags($value));
 				$instance[$key] = $value;
 
 				if (!in_array($key, $not_map_data_properties)) {
@@ -74,6 +74,9 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
             $addmarkerlisthidden = $json_data_arr["data"];
             $map_data_properties['debug'] = $json_data_arr["debug"];
 		} else if ($addmarkermashuphidden == "false") {
+            $latitude = isset($latitude) && trim($latitude) != "" ? $latitude : "";
+            $longitude = isset($longitude) && trim($longitude) != "" ? $longitude : "";
+            $addresscontent = isset($addresscontent) && trim($addresscontent) != "" ? $addresscontent : "";
 			$addmarkerlisthidden = update_markerlist_from_legacy_locations($latitude, $longitude, $addresscontent, $addmarkerlisthidden);
 			$addmarkerlisthidden = htmlspecialchars($addmarkerlisthidden);
 		}
@@ -143,8 +146,8 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 			foreach ($json_html_elems as $data_chunk) {
 				$id = $data_chunk['dbParameterId'];
-				$value = trim($instance[$id]);
-				$value = (!isset($value) || empty($value)) ? $json_default_values[$id] : esc_attr(strip_tags($value));
+				$value = isset($instance[$id]) && trim($instance[$id]) != "" ? trim($instance[$id]) : "";
+				$value = (!isset($value) || empty($value)) ? (isset($json_default_values[$id]) ? $json_default_values[$id] : esc_attr(strip_tags($value))) : esc_attr(strip_tags($value));
 
 				if (array_key_exists($id, $legacy_params)) {
 					$legacy_params[$id] = $value;

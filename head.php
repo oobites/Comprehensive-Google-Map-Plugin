@@ -63,8 +63,10 @@ if ( !function_exists('cgmp_should_load_admin_scripts') ):
 
         $is_post_create_mode = ($pagenow == "post-new.php");
 
+        $is_widgets_page = ($pagenow == "widgets.php");
+
         // Either we are viewing plugin's admin pages or we are creating new post or any other type
-        return ($is_plugin_menu_page || $is_post_create_mode || $is_post_edit_mode);
+        return ($is_plugin_menu_page || $is_post_create_mode || $is_post_edit_mode || $is_widgets_page);
     }
 endif;
 

@@ -98,6 +98,8 @@ You can use one of the following formats:<br />
 = 9.0.16 =
 * Enhancement: Added a setting to disable TinyMCE button in post/page WYSIWYG editor that loads saved shortcodes
 * Enhancement: Added a page under "Google Map" menu that shows saved shortcodes if any
+* Bug: Admin scripts were not loaded on the widgets page
+* Bug: PHP warnings
 
 = 9.0.15.2 =
 * Bug: TinyMCE was broken in certain cases
