@@ -97,6 +97,7 @@ You can use one of the following formats:<br />
 
 = 9.0.17 =
 * Enhancement: From "Saved Shortcodes" page it is now possible to inject shortcode into posts directly without entering post "Edit" mode
+* Enhancement: Added WordPress admin bar plugin menu
 
 = 9.0.16 =
 * Enhancement: Added a setting to disable TinyMCE button in post/page WYSIWYG editor that loads saved shortcodes

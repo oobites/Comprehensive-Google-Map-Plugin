@@ -9,10 +9,7 @@
 			<a title="Documentation" href="#documentation">Settings Explained</a>
 		</li>
 		<li class="">
-			<a title="Documentation" href="#shortcodedocs">Shortcode Explained</a>
-		</li>
-		<li class="">
-			<a title="FAQ" href="#support">Support</a>
+			<a title="Shortcode Explained" href="#shortcodedocs">Shortcode Explained</a>
 		</li>
 
 		<li class="">
@@ -65,14 +62,6 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;zoomcontrol="<span class="italic">true <span class="sep">or</span> false</span>"<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;width="<span class="italic">any positive numeric character, without decimal points</span>"]
             </p>
-		</div>
-	</div>
-
-	<div class="tools-tab-body" id="support" style="">
-		<div class="tools-tab-content">
-			<h3 class="hide-if-js">Support</h3>
-			<p>Please report the following to azagniotov@gmail.com if you have problems with the plugin, Thank you</p>
-            SUPPORT_DATA
 		</div>
 	</div>
 

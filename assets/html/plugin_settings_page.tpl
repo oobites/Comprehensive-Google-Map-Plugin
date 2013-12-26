@@ -8,6 +8,9 @@
 		<li class="">
 			<a title="Shortcode Builder" href="#settings">Settings</a>
 		</li>
+        <li class="">
+            <a title="Support" href="#support">Support</a>
+        </li>
 		<li class="">
 			<a title="Contribute" href="#contribute">Contribute</a>
 		</li>
@@ -79,6 +82,14 @@
 		</form>
 		</div>
 	</div>
+
+    <div class="tools-tab-body" id="support" style="">
+        <div class="tools-tab-content">
+            <h3 class="hide-if-js">Support</h3>
+            <p>Please report the following to azagniotov@gmail.com if you have problems with the plugin, Thank you</p>
+            SUPPORT_DATA
+        </div>
+    </div>
 
 	<div class="tools-tab-body" id="contribute" style="">
 		<div class="tools-tab-content">

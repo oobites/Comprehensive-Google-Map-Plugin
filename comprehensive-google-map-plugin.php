@@ -55,7 +55,8 @@ if ( !function_exists('cgmp_require_dependancies') ):
 		require_once (CGMP_PLUGIN_DIR . '/widget.php');
 		require_once (CGMP_PLUGIN_DIR . '/shortcode.php');
 		require_once (CGMP_PLUGIN_DIR . '/metabox.php');
-		require_once (CGMP_PLUGIN_DIR . '/menu.php');
+		require_once (CGMP_PLUGIN_DIR . '/admin-menu.php');
+        require_once (CGMP_PLUGIN_DIR . '/admin-bar-menu.php');
 		require_once (CGMP_PLUGIN_DIR . '/head.php');
 	}
 endif;
@@ -77,6 +78,7 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('admin_init', 'cgmp_google_map_admin_add_script');
 		add_action('admin_footer', 'cgmp_google_map_init_global_admin_html_object');
 		add_action('admin_menu', 'cgmp_google_map_plugin_menu');
+        add_action('admin_bar_menu', 'cgmp_admin_bar_menu', 99999);
 		add_action('widgets_init', create_function('', 'return register_widget("ComprehensiveGoogleMap_Widget");'));
 		add_action('wp_head', 'cgmp_google_map_deregister_scripts', 200);
 		add_action('wp_head', 'cgmp_generate_global_options');

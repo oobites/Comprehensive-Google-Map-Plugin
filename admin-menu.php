@@ -21,13 +21,16 @@ if ( !function_exists('cgmp_google_map_plugin_menu') ):
       		$hook = add_menu_page("Comprehensive Google Map", 'Google Map', 'activate_plugins', CGMP_HOOK, 'cgmp_parse_menu_html', CGMP_PLUGIN_IMAGES .'/google_map.png');
 	  		add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
 
+            $hook = add_submenu_page(CGMP_HOOK, 'Documentation', 'Documentation', 'activate_plugins', CGMP_HOOK);
+            add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
+
             $hook = add_submenu_page(CGMP_HOOK, 'Shortcode Builder', 'Shortcode Builder', 'activate_plugins', 'cgmp-shortcodebuilder', 'cgmp_shortcodebuilder_callback' );
 			add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
 
             $hook = add_submenu_page(CGMP_HOOK, 'Saved Shortcodes', 'Saved Shortcodes', 'activate_plugins', 'cgmp-saved-shortcodes', 'cgmp_saved_shortcodes_callback' );
             add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
 
-            $hook = add_submenu_page(CGMP_HOOK, 'Settings', 'Settings', 'activate_plugins', 'cgmp-settings', 'cgmp_settings_callback' );
+            $hook = add_submenu_page(CGMP_HOOK, 'Settings & Support', 'Settings & Support', 'activate_plugins', 'cgmp-settings', 'cgmp_settings_callback' );
 		   	add_action('admin_print_scripts-'.$hook, 'cgmp_google_map_tab_script');
 	  }
 endif;
@@ -51,6 +54,7 @@ if ( !function_exists('cgmp_settings_callback') ):
         $template_values = populate_token_builder_under_post($template_values);
         $template_values = populate_token_custom_post_types($template_values);
         $template_values = populate_tiny_mce_button($template_values);
+        $template_values["SUPPORT_DATA"] = cgmp_generate_support_data();
         echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_PLUGIN_SETTINGS_PAGE);
 	}
 
@@ -272,7 +276,6 @@ function cgmp_parse_menu_html() {
 			$map_configuration_form_template = cgmp_render_template_with_values($json_html_doco_params, CGMP_HTML_TEMPLATE_MAP_CONFIGURATION_FORM);
 			$template_values = array();
         	$template_values["DOCUMENTATION_TOKEN"] = $map_configuration_form_template;
-            $template_values["SUPPORT_DATA"] = cgmp_generate_support_data();
 
         	echo cgmp_render_template_with_values($template_values, CGMP_HTML_TEMPLATE_MAP_CONFIG_DOCUMENTATION_PAGE);
 		}
