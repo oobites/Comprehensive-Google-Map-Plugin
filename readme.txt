@@ -14,19 +14,15 @@ A simple and intuitive, yet elegant and fully documented Google map plugin that 
 
 * Compatible with jQuery tabs! No more poorly rendered map on your site!
 * Compatible with W3 Total Cache, read the <a href="http://wordpress.org/support/topic/how-to-make-w3-total-cache-plugin-to-play-nicely-together">solution</a>
-* Intuitive and user friendly interface, which makes it very easy to configure Google map. No complex configuration options. Facebook style interactive interface for managing multiple map markers. OpenStreetMap imagery available
+* Intuitive and user friendly interface, which makes it very easy to configure Google map. No complex configuration options. OpenStreetMap imagery available
 * With over 250 amazing custom marker icons to choose from!
-* Aggregate all your post markers in one map - Marker Geo Mashup!
-* Dozens of options to choose from
+* Aggregate all markers from your published content in one map - Marker Geo Mashup!
+* Dozens of configuration options to choose from
 * Add end-user's current GPS location to the map! Useful for end-users that want to find directions from their current location to map's markers
-* Plugin is fully documented. If help tooltips are not enough, you can always refer to the full documentation about each of the settings
-* Shortcode builder available, which integrated with post/page editor. In other words, you do not need
-manually to type the shortcode in the editor, just save the shortcode and it will be available to you (But you can if you want to).
-* Support for custom overlays: Panoramio photos on the map (http://www.panoramio.com/), bicycle lanes and traffic info.
-* User can get directions to the locations on the map (markers)
+* Fully documented. If help tooltips are not enough, you can always refer to the full documentation about each of the settings
+* Shortcode builder available, which integrates with post/page editor.
+* Insert saved shortcodes directly to posts/pages
 * Widget enabled.
-* Cross browser compatible
-* Loads geographic markup from a KML, GPX, KMZ or GeoRSS files hosted remotely.
 
 If you liked the plugin, you can join the <a href="http://www.facebook.com/pages/Comprehensive-Google-Map-Plugin/180316032076503" target="_blank">Comprehensive Google Map Fan Page</a> on Facebook. 
  
