@@ -638,7 +638,7 @@ if ( !function_exists('cgmp_plugin_row_meta') ):
 
 			$links = array_merge( $links,
 				array( sprintf( '<img style="float: left; margin-top: 1px; margin-left: 2px; margin-right: 4px" src="%s" border="0" valign="middle" /><a href="admin.php?page=cgmp-settings">%s</a>', CGMP_PLUGIN_IMAGES .'/google_map.png', __('Settings',CGMP_NAME) ) ),
-				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation',CGMP_NAME) ) ),
+				array( sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Docs',CGMP_NAME) ) ),
 				array( '<a href="http://goo.gl/yI5j6O" target="_blank">' . __('Donate') . '</a>' )
 			);
 		}
@@ -651,9 +651,9 @@ if ( !function_exists('cgmp_plugin_action_links') ):
         $plugin =  plugin_basename(CGMP_PLUGIN_BOOTSTRAP);
         if ($file == $plugin) {
             $settings_link = sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings',CGMP_NAME) );
-            $shortcodes_link = sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Documentation',CGMP_NAME) );
-            //$support_forum_link = sprintf( '<a href="http://wordpress.org/support/plugin/comprehensive-google-map-plugin" target="_blank">%s</a>', __('Forum',CGMP_NAME) );
-            array_unshift($links, $settings_link, $shortcodes_link);
+            $docs_link = sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Docs',CGMP_NAME) );
+            $shortcodes_link = sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcodes',CGMP_NAME) );
+            array_unshift($links, $settings_link, $docs_link, $shortcodes_link);
         }
         return $links;
     }
