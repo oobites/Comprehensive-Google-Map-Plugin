@@ -10,7 +10,7 @@ if ( !function_exists('cgmp_admin_bar_menu') ):
         $wp_admin_bar->add_menu( array(
             'parent' => "new-content",
             'id' => "cgmp-admin-bar-menu-new-shortcode",
-            'title' => "<span class='ab-icon'></span><span class='ab-label'>Shortcode</span>",
+            'title' => "<span class='ab-icon'></span><span class='ab-label'>Shortcodes</span>",
             'href' => "admin.php?page=cgmp-shortcodebuilder",
             'meta' => FALSE
         ) );
