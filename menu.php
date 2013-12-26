@@ -239,7 +239,12 @@ if ( !function_exists('cgmp_saved_shortcodes_callback') ):
                         $raw_code = $shortcode['code'];
                         $raw_code = str_replace("TO_BE_GENERATED", $shortcode_id, $raw_code);
 
-                        $content .= "<a href='admin.php?page=cgmp-saved-shortcodes&delete_shortcode=".$shortcode['title']."'>[DELETE]</a><br /><div class='loaded-db-shortcodes'><b>".stripslashes($raw_code) . "</b></div><br />";
+                        $content .= "<div style='line-height: 15px; min-height: 20px; height: 20px; width: 30%; padding: 0; margin: 0'>";
+                        $content .= "<a id='".$shortcode['title']."' href='javascript:void(0)' class='insert-shortcode-to-post'>[insert to post]</a>";
+                        $content .= "&nbsp;&nbsp;&nbsp;";
+                        $content .= "<a href='admin.php?page=cgmp-saved-shortcodes&delete_shortcode=".$shortcode['title']."'>[delete]</a>";
+                        $content .= "</div>";
+                        $content .= "<div class='loaded-db-shortcodes'><b>".stripslashes($raw_code) . "</b></div><br />";
                     }
                 }
                 $template_values["SAVED_SHORTCODES_TOKEN"] = $content;

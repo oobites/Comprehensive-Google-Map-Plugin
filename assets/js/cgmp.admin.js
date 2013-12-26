@@ -172,6 +172,7 @@ function buildShortcode(id, shortcodeId, $) {
     CGMPGlobal.assets = $("object#global-data-placeholder param#assets").val();
     CGMPGlobal.version = $("object#global-data-placeholder param#version").val();
     CGMPGlobal.shortcodes = $("object#global-data-placeholder param#shortcodes").val();
+    CGMPGlobal.ajaxurl = $("object#global-data-placeholder param#ajaxurl").val();
 
 	var lists = [];
 
@@ -397,6 +398,46 @@ function buildShortcode(id, shortcodeId, $) {
 			});
 		}
 
+        function initInsertShortcodeToPostEvent() {
+            var dataName = 'cgmp-find-posts-target';
+            $(document).on("click", "a.insert-shortcode-to-post", function (source) {
+                var shortcodeName = $(this).attr("id");
+                $("div.find-box-search input#affected").val(shortcodeName);
+                $('#find-posts').data(dataName, $(this));
+                findPosts.open();
+
+                $('#find-posts-submit').click(function(e) {
+                    e.preventDefault();
+
+                    // Be nice!
+                    if ( !$('#find-posts').data(dataName)) {
+                        return;
+                    }
+
+                    var selected = $('#find-posts-response').find('input:checked');
+                    if (!selected.length) {
+                        return false;
+                    }
+
+                    var postId = selected.val();
+                    var _ajax_nonce = $("div.find-box-search input#_ajax_nonce").val();
+                    var shortcodeName = $("div.find-box-search input#affected").val();
+
+                    $.post(CGMPGlobal.ajaxurl, {action: 'cgmp_insert_shortcode_to_post_action', postId: postId, shortcodeName: shortcodeName}, function (response) {
+                        console.log("Posting selected post ID#" + postId + " and shortcode name '" + shortcodeName + "' to the server..");
+                        if (response != null && response === "CONFIRMED") {
+                            console.log("The shortcode name '" + shortcodeName + "' was injected into post ID#" + postId);
+                            $('#find-posts-close' ).click();
+                        }
+                    });
+                });
+
+                $('#find-posts-close' ).click(function() {
+                    $('#find-posts').removeData(dataName);
+                });
+            });
+        }
+
 		function checkedGeoMashupOnInit() {
 
 			$.each($("input.marker-geo-mashup"), function() {
@@ -452,7 +493,8 @@ function buildShortcode(id, shortcodeId, $) {
             checkedGPSMarkerOnInit();
             initGPSMarkerEvent();
 			checkedGeoMashupOnInit();
-			initGeoMashupEvent() ;
+			initGeoMashupEvent();
+            initInsertShortcodeToPostEvent() ;
 
 			if (typeof $("ul.tools-tabs-nav").tabs == "function") {
 				$("ul.tools-tabs-nav").tabs("div.tools-tab-body", {
