@@ -75,3 +75,13 @@ fieldset.fieldset table input.marker-text-details,div.shortcodebuilder fieldset.
 .cgmp-popup-shortcode-dialog .save-dialog:active,.cgmp-popup-shortcode-dialog .save-dialog:focus:active,.cgmp-popup-shortcode-dialog .save-dialog.focus:active{background-color:#B0281A;background-image:0;border:1px solid #992A1B;box-shadow:0 1px 2px rgba(0, 0, 0, 0.3) inset}
 #wp-admin-bar-cgmp > .ab-item .ab-icon:before {content: url('images/google_map.png');}
 #wp-admin-bar-new-content #wp-admin-bar-cgmp-admin-bar-menu-new-shortcode > .ab-item .ab-icon:before {content: url('images/google_map.png');}
+#comprehensive-google-map-plugin .plugin-version-author-uri {
+    background-color: #EAEAEA;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 8px 6px -6px black;
+    color: #111111;
+    font-weight: bold;
+    margin-bottom: 10px;
+    min-height: 16px;
+    padding: 5px;
+}
