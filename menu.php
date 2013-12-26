@@ -239,10 +239,13 @@ if ( !function_exists('cgmp_saved_shortcodes_callback') ):
                         $raw_code = $shortcode['code'];
                         $raw_code = str_replace("TO_BE_GENERATED", $shortcode_id, $raw_code);
 
-                        $content .= "<div style='line-height: 15px; min-height: 20px; height: 20px; width: 30%; padding: 0; margin: 0'>";
+                        $content .= "<div style='line-height: 15px; min-height: 20px; height: 20px; width: 70%; padding: 0; margin: 0'>";
+                        $content .= "Title: <span style='color: green;'><b>".$shortcode['title']."</b></span>";
+                        $content .= "&nbsp;&nbsp;&nbsp;";
                         $content .= "<a id='".$shortcode['title']."' href='javascript:void(0)' class='insert-shortcode-to-post'>[insert to post]</a>";
                         $content .= "&nbsp;&nbsp;&nbsp;";
-                        $content .= "<a href='admin.php?page=cgmp-saved-shortcodes&delete_shortcode=".$shortcode['title']."'>[delete]</a>";
+                        $content .= "<a href='javascript:void(0)' onclick='return confirmShortcodeDelete(\"admin.php?page=cgmp-saved-shortcodes&delete_shortcode=".$shortcode['title']."\", \"".$shortcode['title']."\");'>";
+                        $content .= "<img src='".CGMP_PLUGIN_IMAGES."/close.png' border='0' valign='middle' /></a>";
                         $content .= "</div>";
                         $content .= "<div class='loaded-db-shortcodes'><b>".stripslashes($raw_code) . "</b></div><br />";
                     }

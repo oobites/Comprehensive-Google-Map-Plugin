@@ -26,6 +26,12 @@ function sendShortcodeToEditor(container_id) {
 	}(jQueryCgmp));
 }
 
+function confirmShortcodeDelete(url, title) {
+    var r = confirm("Are you sure you want to delete shortcode\n'" + title + "' ?");
+    if (r == true) {
+        window.location.href = url;
+    }
+}
 
 function displayShortcodeInPopup(container_id) {
 	(function ($) {
@@ -425,8 +431,8 @@ function buildShortcode(id, shortcodeId, $) {
 
                     $.post(CGMPGlobal.ajaxurl, {action: 'cgmp_insert_shortcode_to_post_action', postId: postId, shortcodeName: shortcodeName}, function (response) {
                         console.log("Posting selected post ID#" + postId + " and shortcode name '" + shortcodeName + "' to the server..");
-                        if (response != null && response === "CONFIRMED") {
-                            console.log("The shortcode name '" + shortcodeName + "' was injected into post ID#" + postId);
+                        if (response != null && response.length > 1) {
+                            alert("Shortcode '" + shortcodeName + "' was injected into post titled '" + response + "', ID#" + postId);
                             $('#find-posts-close' ).click();
                         }
                     });
@@ -482,7 +488,6 @@ function buildShortcode(id, shortcodeId, $) {
                 }
             });
         }
-
 
 		$(document).ready(function() {
 			initTokenHolders();

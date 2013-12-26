@@ -57,9 +57,32 @@ if ( !function_exists('cgmp_insert_shortcode_to_post_action_callback') ):
     function cgmp_insert_shortcode_to_post_action_callback() {
         //check_ajax_referer( "cgmp_insert_shortcode_to_post_action", "_ajax_nonce");
 
-        echo "CONFIRMED";
+        if (isset($_POST['postId']) && isset($_POST['shortcodeName']))  {
+            $post = get_post($_POST['postId']);
+            $post_content = $post->post_content;
 
+            $persisted_shortcodes_json = get_option(CGMP_PERSISTED_SHORTCODES);
+            if (isset($persisted_shortcodes_json) && trim($persisted_shortcodes_json) != "") {
+                $persisted_shortcodes = json_decode($persisted_shortcodes_json, true);
 
+                if (is_array($persisted_shortcodes) && !empty($persisted_shortcodes)) {
+
+                    if (isset($persisted_shortcodes[$_POST['shortcodeName']])) {
+                        $shortcode = $persisted_shortcodes[$_POST['shortcodeName']];
+
+                        if (is_array($shortcode)) {
+                            $shortcode_id = substr(md5(rand()), 0, 10);
+                            $raw_code = $shortcode['code'];
+                            $cleaned_code = str_replace("TO_BE_GENERATED", $shortcode_id, $raw_code);
+                            $updated_post_attribs = array('ID' => $_POST['postId'], 'post_content' => $post_content."<br />".$cleaned_code);
+
+                            wp_update_post( $updated_post_attribs );
+                            echo isset($post->post_title) && trim($post->post_title) != "" ? $post->post_title : "Titleless";
+                        }
+                    }
+                }
+            }
+        }
         die();
     }
 endif;
