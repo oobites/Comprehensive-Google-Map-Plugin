@@ -94,6 +94,8 @@ function cgmp_generate_support_data() {
     $plugin_names = scandir(CGMP_PLUGIN_DIR."/..");
     $plugin_names = array_flip($plugin_names);
 
+    //echo "aaaaa: " . print_r($GLOBALS, true);
+
     return
     "<h4>Environment</h4>"
     ."<ul>"
@@ -108,6 +110,14 @@ function cgmp_generate_support_data() {
     ."<li>Published posts: ".$published_posts."</li>"
     ."<li>Published pages: ".$published_pages."</li>"
     .$custom_types_count
+    ."</ul>"
+    ."<h4>JavaScript</h4>"
+    ."<ul>"
+    ."<li>jQuery v".($GLOBALS['wp_scripts']->registered["jquery"]->ver).(isset($GLOBALS['wp_scripts']->registered["jquery"]->src) && trim($GLOBALS['wp_scripts']->registered["jquery"]->src) != "" ?  ", src: ".($GLOBALS['wp_scripts']->registered["jquery"]->src)."</li>" : "</li>")
+    ."<li>jQuery Core v".($GLOBALS['wp_scripts']->registered["jquery-core"]->ver)."</li>"
+    ."<li>jQuery UI Core v".($GLOBALS['wp_scripts']->registered["jquery-ui-core"]->ver)."</li>"
+    .(isset($GLOBALS['wp_scripts']->registered["jquery-migrate"]) ?  "<li>jQuery Migrate v".($GLOBALS['wp_scripts']->registered["jquery-migrate"]->ver)."</li>" : "<li>jQuery Migrate is <b>not</b> installed</li>")
+    .(isset($GLOBALS['tinymce_version']) ?  "<li>TinyMCE v".($GLOBALS['tinymce_version'])."</li>" : "<li>TineMCE is <b>not</b> installed</li>")
     ."</ul>"
     ."<h4>Plugins known to modify global WordPress query</h4>"
     ."<ul>"
