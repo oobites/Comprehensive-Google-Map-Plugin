@@ -112,6 +112,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
 		$map_data_properties['styles'] = isset($map_data_properties['styles']) ? cgmp_clean_styles($map_data_properties['styles']) : "";
+        $map_data_properties['styles'] = trim($map_data_properties['styles']) != "" ? base64_encode($map_data_properties['styles']) : $map_data_properties['styles'];
 		$poweredby = isset($poweredby) ? $poweredby : "false";
 		$language = isset($language) ? $language : "en";
 

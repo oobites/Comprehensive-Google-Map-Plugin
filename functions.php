@@ -382,9 +382,7 @@ if ( !function_exists('cgmp_clean_styles') ):
     function cgmp_clean_styles($styles) {
         $styles = trim($styles);
         $styles = preg_replace('/\s+/', '', $styles);
-        $styles = str_replace(array("'", '"', "&quot;", "&#39;", "&#8217;", "QUOTE"), '\"', $styles);
-        $styles = str_replace(array("LEFT_BRACKET"), '[', $styles);
-        return str_replace(array("RIGHT_BRACKET"), ']', $styles);
+        return str_replace(array("'", '"', "&quot;", "&#39;", "&#8217;"), '"', $styles);
     }
 endif;
 

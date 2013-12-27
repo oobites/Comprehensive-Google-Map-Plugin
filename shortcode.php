@@ -111,9 +111,7 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 
 			$map_data_properties['id'] = $id;
 			$map_data_properties['markerlist'] = $addmarkerlist;
-
 			$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
-            $map_data_properties['styles'] = cgmp_clean_styles($map_data_properties['styles']);
 			$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
 
 			cgmp_set_google_map_language($language);
