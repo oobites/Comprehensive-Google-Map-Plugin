@@ -65,7 +65,7 @@
 
                 var builder = {};
                 var googleMap = {};
-                var initMap = function initMap(map, bubbleAutoPan, zoom, mapType) {
+                var initMap = function initMap(map, bubbleAutoPan, zoom, mapType, styles) {
                     googleMap = map;
 
                     var mapTypeIds = [];
@@ -96,6 +96,7 @@
                     googleMap.setOptions({
                         zoom: zoom,
                         mapTypeId: mapType,
+                        styles: styles,
                         mapTypeControlOptions: {
                             mapTypeIds: mapTypeIds
                         }
@@ -1443,7 +1444,19 @@
                         }
 
                         var googleMap = new google.maps.Map(mapDiv);
-                        GoogleMapOrchestrator.initMap(googleMap, json.bubbleautopan, parseInt(json.zoom), json.maptype);
+                        if (typeof json.styles !== "undefined" && Utils.trim(json.styles) !== "") {
+                            json.styles = Utils.searchReplace(json.styles, "\\\\\"", "\"");
+                            try {
+                                json.styles = parseJson(json.styles);
+                            }
+                            catch(err) {
+                                Logger.fatal("Could not parse map styles as a JSON object");
+                                json.styles = "";
+                            }
+                        } else {
+                            json.styles = "";
+                        }
+                        GoogleMapOrchestrator.initMap(googleMap, json.bubbleautopan, parseInt(json.zoom), json.maptype, json.styles);
                         LayerBuilder.init(googleMap);
 
                         var markerBuilder = new MarkerBuilder();

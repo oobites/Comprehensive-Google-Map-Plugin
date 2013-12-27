@@ -111,6 +111,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
         $map_data_properties['scrollwheelcontrol'] = isset($map_data_properties['scrollwheelcontrol']) ? $map_data_properties['scrollwheelcontrol'] : "false";
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
+		$map_data_properties['styles'] = isset($map_data_properties['styles']) ? cgmp_clean_styles($map_data_properties['styles']) : "";
 		$poweredby = isset($poweredby) ? $poweredby : "false";
 		$language = isset($language) ? $language : "en";
 
@@ -129,6 +130,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
         update_option(CGMP_MAP_CACHE_WIDGET_PREFIX.$this->id, "");
         update_option(CGMP_MAP_CACHE_WIDGET_TIME_PREFIX.$this->id, "");
+
 
 		return $instance;
 	}

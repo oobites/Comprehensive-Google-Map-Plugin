@@ -378,6 +378,16 @@ if ( !function_exists('cgmp_clean_kml') ):
 	}
 endif;
 
+if ( !function_exists('cgmp_clean_styles') ):
+    function cgmp_clean_styles($styles) {
+        $styles = trim($styles);
+        $styles = preg_replace('/\s+/', '', $styles);
+        $styles = str_replace(array("'", '"', "&quot;", "&#39;", "&#8217;", "QUOTE"), '\"', $styles);
+        $styles = str_replace(array("LEFT_BRACKET"), '[', $styles);
+        return str_replace(array("RIGHT_BRACKET"), ']', $styles);
+    }
+endif;
+
 
 if ( !function_exists('cgmp_clean_panoramiouid') ):
 	function cgmp_clean_panoramiouid($userId) {
@@ -447,6 +457,22 @@ if ( !function_exists('cgmp_create_html_list') ):
 endif;
 
 
+if ( !function_exists('cgmp_create_html_textarea') ):
+    function cgmp_create_html_textarea($attr) {
+        if (strpos($attr['class'], "notshortcodeitem") === false) {
+            $attr['class'] = $attr['class']." shortcodeitem";
+        }
+
+        return sprintf('<textarea id="%s" name="%s" role="%s" class="%s" style="%s">%s</textarea>',
+            $attr['id'],
+            $attr['name'],
+            $attr['role'],
+            $attr['class'],
+            $attr['style'],
+            $attr['value']
+        );
+    }
+endif;
 
 if ( !function_exists('cgmp_create_html_label') ):
 	function cgmp_create_html_label($attr) {
@@ -478,10 +504,7 @@ endif;
 
 if ( !function_exists('cgmp_create_html_custom') ):
 		function cgmp_create_html_custom($attr) {
-				$start =  "<ul class='".$attr['class']."' id='".$attr['id']."' name='".$attr['name']."' style='".$attr['style']."'>";
-
 				$markerDir = CGMP_PLUGIN_IMAGES_DIR . "/markers/";
-
 				$items = "<div id='".$attr['id']."' class='".$attr['class']."' style='margin-bottom: 15px; padding-bottom: 10px; padding-top: 10px; padding-left: 30px; height: 200px; overflow: auto; border-radius: 4px 4px 4px 4px; border: 1px solid #C9C9C9;'>";
 				if (is_readable($markerDir)) {
 

@@ -131,6 +131,13 @@ function buildShortcode(id, shortcodeId, $) {
             val = val.replace(new RegExp("\\[|\\]", "g"), "");
 		}
 
+        if (role === 'styles') {
+            val = val.replace(new RegExp("\\[", "g"), "LEFT_BRACKET");
+            val = val.replace(new RegExp("\\]", "g"), "RIGHT_BRACKET");
+            val = val.replace(/\s+/g, " ");
+            val = val.replace(new RegExp("\"", "g"), "QUOTE");
+        }
+
 		if ($(this).attr('type') === "checkbox") {
 			val = $(this).is(":checked");
 		}

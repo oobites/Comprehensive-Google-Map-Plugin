@@ -85,3 +85,14 @@ fieldset.fieldset table input.marker-text-details,div.shortcodebuilder fieldset.
     min-height: 16px;
     padding: 5px;
 }
+.cgmp-styles-textarea {
+    margin-top: 12px !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    width: 100%;
+    padding: 10px;
+    min-height:80px;
+    max-height:250px;
+    resize:vertical;
+}

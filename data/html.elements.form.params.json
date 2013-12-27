@@ -18,6 +18,15 @@
         "templateTokenNameSuffix": "shortcodetitle"
     },
     {
+        "backendFunctionNameSuffix": "textarea",
+        "cssClasses": "cgmp-styles-textarea",
+        "dbParameterId": "styles",
+        "dbParameterName": "styles",
+        "htmlLabelValue": "",
+        "inlineCss": "",
+        "templateTokenNameSuffix": "styles"
+    },
+    {
         "backendFunctionNameSuffix": "select",
         "cssClasses": "widefat",
         "dbParameterId": "mapalign",

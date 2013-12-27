@@ -32,6 +32,24 @@
 		</table>
 	</fieldset>
 
+    <fieldset class="fieldset"  class="collapsible">
+        <legend>Map Styles</legend>
+        <table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td valign="top" class="first-td">
+                        Styled maps allow you to customize the presentation of the standard Google base maps, changing the visual display of such elements as roads, parks, and built-up areas. <br /><br />If you want to apply custom map styles, use the <a href='http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html' target='_blank'>Styled Maps Wizard</a> to generate styles JSON. Once generated, copy the JSON (<b>DO NOT COPY</b> the sentence <i>"Google Maps API v3 Styled Maps JSON"</i>, but just the square brackets and including whats within) and paste in the text area
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" class="first-td">
+                        TEXTAREA_STYLES
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+
 	<fieldset class="fieldset"  class="collapsible">
 		<legend>Map Controls</legend>
 		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">

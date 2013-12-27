@@ -1,7 +1,7 @@
 === Comprehensive Google Map Plugin ===
 Contributors: alexanderzagniotov
 Donate link: http://goo.gl/yI5j6O
-Tags: google map, google map widget, jquery tabs, google map short code, google map short code, map widget, map short code, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
+Tags: google map, google map widget, jquery tabs, map styles, styling, google map styles, google map short code, google map short code, map widget, map short code, fully documented, marker, controls, size, KML, GPX, GeoRSS, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes, cross browser, google maps v3, google, multiple markers, panoramio photos, marker icons, custom marker icons and text, geo, geo mashup, marker geo mashup, custom marker text, openstreetmap
 Requires at least: 3.6
 Tested up to: 3.8
 Stable tag: 9.0.18
@@ -92,6 +92,7 @@ You can use one of the following formats:<br />
 == Changelog ==
 
 = 9.0.18 =
+* Enhancement: Added ability to set styles to the generated maps: https://developers.google.com/maps/documentation/javascript/styling
 * Enhancement: JavaScript information in "Support" tab
 
 = 9.0.17 =

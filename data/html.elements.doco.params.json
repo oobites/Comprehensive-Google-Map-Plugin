@@ -54,6 +54,7 @@
     "LABEL_ZOOM" : "<b>Zoom</b>:",
     "LABEL_Z_OOMCONTROL" : "<b>Zoom</b>",
     "LIST_ADDMARKERLIST" : "",
+    "TEXTAREA_STYLES" : "",
     "SELECT_ANIMATION" : "Animations can be played on a primary marker. Currently two types of animations supported: BOUNCE makes marker to bounce until animation is stopped, DROP makes primary marker to fall from the top of the map ending with a small bounce.",
     "SELECT_BUBBLEAUTOPAN" : "Enables bubble auto-pan on marker click. By default, the info bubble will pan the map so that it is fully visible when it opens.",
     "SELECT_DISTANCEUNITS" : "Default distance unit for 'Get Directions' dialog. 'Miles' is the default value.",
