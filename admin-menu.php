@@ -117,7 +117,6 @@ function cgmp_generate_support_data() {
     ."<li>jQuery Core v".($GLOBALS['wp_scripts']->registered["jquery-core"]->ver)."</li>"
     ."<li>jQuery UI Core v".($GLOBALS['wp_scripts']->registered["jquery-ui-core"]->ver)."</li>"
     .(isset($GLOBALS['wp_scripts']->registered["jquery-migrate"]) ?  "<li>jQuery Migrate v".($GLOBALS['wp_scripts']->registered["jquery-migrate"]->ver)."</li>" : "<li>jQuery Migrate is <b>not</b> installed</li>")
-    .(isset($GLOBALS['tinymce_version']) ?  "<li>TinyMCE v".($GLOBALS['tinymce_version'])."</li>" : "<li>TineMCE is <b>not</b> installed</li>")
     ."</ul>"
     ."<h4>Plugins known to modify global WordPress query</h4>"
     ."<ul>"
