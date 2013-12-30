@@ -94,6 +94,8 @@ You can use one of the following formats:<br />
 = 9.0.18 =
 * Enhancement: Added ability to set styles to the generated maps: https://developers.google.com/maps/documentation/javascript/styling
 * Enhancement: JavaScript information in "Support" tab
+* Enhancement: Added a setting to disable plugin admin bar menu
+* Enhancement: Added a setting to enable a full screen map on mobile devices(disabled by default)
 
 = 9.0.17 =
 * Enhancement: From "Saved Shortcodes" page it is now possible to inject shortcode into posts directly without entering post "Edit" mode

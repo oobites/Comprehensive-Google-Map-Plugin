@@ -31,6 +31,8 @@
     "CGMP_DB_SELECTED_LANGUAGE" : "cgmp_selected_language",
     "CGMP_DB_SETTINGS_BUILDER_LOCATION" : "cgmp_settings_builder_location",
     "CGMP_DB_SETTINGS_TINYMCE_BUTTON" : "cgmp_settings_tinymce_button",
+    "CGMP_DB_SETTINGS_PLUGIN_ADMIN_BAR_MENU" : "cgmp_settings_plugin_admin_bar_menu",
+    "CGMP_DB_SETTINGS_MAP_SHOULD_FILL_VIEWPORT" : "cgmp_settings_map_should_fill_viewport",
 	"CGMP_DB_SETTINGS_CUSTOM_POST_TYPES" : "cgmp_settings_custom_post_types",
 	"CGMP_DB_SETTINGS_WAS_BASE_OBJECT_RENDERED" : "cgmp_settings_was_base_object_rendered",
 	"CGMP_DB_SETTINGS_SHOULD_BASE_OBJECT_RENDER" : "cgmp_settings_should_base_object_render",

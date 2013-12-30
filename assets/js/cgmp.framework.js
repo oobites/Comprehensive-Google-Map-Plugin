@@ -1425,21 +1425,22 @@
                     }
 
                     if ($('div#' + json.id).length > 0) {
-
-                        // Very basic mobile user agent detection
-                        var userAgent = navigator.userAgent;
                         var mapDiv = document.getElementById(json.id);
-                        //http://www.zytrax.com/tech/web/mobile_ids.html
-                        if(userAgent.match(/Android|BlackBerry|IEMobile|i(Phone|Pad|Pod)|Kindle|MeeGo|NetFront|Nokia|Opera M(ob|in)i|Pie|PalmOS|PDA|Polaris|Plucker|Samsung|SonyEricsson|SymbianOS|UP.Browser|Vodafone|webOS|Windows Phone/i)) {
-                            mapDiv.style.width = '100%';
-                            var viewPortHeight = $(window).height() + "";
+                        if (CGMPGlobal.mapFillViewport) {
+                            // Very basic mobile user agent detection
+                            var userAgent = navigator.userAgent;
+                            //http://www.zytrax.com/tech/web/mobile_ids.html
+                            if(userAgent.match(/Android|BlackBerry|IEMobile|i(Phone|Pad|Pod)|Kindle|MeeGo|NetFront|Nokia|Opera M(ob|in)i|Pie|PalmOS|PDA|Polaris|Plucker|Samsung|SonyEricsson|SymbianOS|UP.Browser|Vodafone|webOS|Windows Phone/i)) {
+                                mapDiv.style.width = '98%';
+                                var viewPortHeight = $(window).height() + "";
 
-                            if (viewPortHeight.indexOf("px") != -1) {
-                                mapDiv.style.height = viewPortHeight;
-                            } else if (viewPortHeight.indexOf("%") != -1) {
-                                mapDiv.style.height = "100%";
-                            } else {
-                                mapDiv.style.height = viewPortHeight + "px";
+                                if (viewPortHeight.indexOf("px") != -1) {
+                                    mapDiv.style.height = viewPortHeight;
+                                } else if (viewPortHeight.indexOf("%") != -1) {
+                                    mapDiv.style.height = "98%";
+                                } else {
+                                    mapDiv.style.height = (viewPortHeight - 30) + "px";
+                                }
                             }
                         }
 

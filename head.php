@@ -217,6 +217,12 @@ if ( !function_exists('cgmp_generate_global_options') ):
         foreach($translationArray as $name => $value) {
             echo "      $name: \"".$value."\",".PHP_EOL;
         }
+        $setting_map_should_fill_viewport = get_option(CGMP_DB_SETTINGS_MAP_SHOULD_FILL_VIEWPORT);
+        if (isset($setting_map_should_fill_viewport) && $setting_map_should_fill_viewport == "true") {
+            echo "      mapFillViewport: true,".PHP_EOL;
+        } else {
+            echo "      mapFillViewport: false,".PHP_EOL;
+        }
         echo "      ".CGMP_TIMESTAMP.": \"".wp_create_nonce(CGMP_AJAX_CACHE_MAP_ACTION)."\",".PHP_EOL;
         echo "      ajaxCacheMapAction: \"".CGMP_AJAX_CACHE_MAP_ACTION."\",".PHP_EOL;
         echo "      sep: \"".CGMP_SEP."\"".PHP_EOL;

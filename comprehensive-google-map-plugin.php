@@ -78,7 +78,14 @@ if ( !function_exists('cgmp_add_actions') ):
 		add_action('admin_init', 'cgmp_google_map_admin_add_script');
 		add_action('admin_footer', 'cgmp_google_map_init_global_admin_html_object');
 		add_action('admin_menu', 'cgmp_google_map_plugin_menu');
-        add_action('admin_bar_menu', 'cgmp_admin_bar_menu', 99999);
+
+        if ( is_admin() ) {
+            $setting_plugin_menu_bar_menu = get_option(CGMP_DB_SETTINGS_PLUGIN_ADMIN_BAR_MENU);
+            if (!isset($setting_plugin_menu_bar_menu) || (isset($setting_plugin_menu_bar_menu) && $setting_plugin_menu_bar_menu != "false")) {
+                add_action('admin_bar_menu', 'cgmp_admin_bar_menu', 99999);
+            }
+        }
+
 		add_action('widgets_init', create_function('', 'return register_widget("ComprehensiveGoogleMap_Widget");'));
 		add_action('wp_head', 'cgmp_google_map_deregister_scripts', 200);
 		add_action('wp_head', 'cgmp_generate_global_options');

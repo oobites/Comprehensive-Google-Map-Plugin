@@ -755,11 +755,9 @@ if ( !function_exists('cgmp_show_initial_warning_message') ):
         if (isset($_GET['activate']) && $_GET['activate'] == "true" && $pagenow == "plugins.php" && $conter < 2) {
            ob_start();
             ?>
-            <div id="message" class="error">
+            <div id="message" class="updated">
                 <p>
-                    <strong>One-time Warning</strong> from <strong>Comprehensive Google Map Plugin v<?php echo CGMP_VERSION; ?>:</strong><br />
-                    Some 3rd party theme & plugin developers ship their products with older versions of jQuery and disable<br />
-                    loading of default jQuery (1.9+) shipped with WordPress these days
+                    <strong>One-time Warning</strong> from <strong>Comprehensive Google Map Plugin v<?php echo CGMP_VERSION; ?>:</strong>
                 </p>
                 <p>
                     <strong>Please be mindful:</strong><br />

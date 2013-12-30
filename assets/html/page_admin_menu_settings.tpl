@@ -77,6 +77,48 @@
                     </tr>
                     </tbody>
                 </table>
+                <table cellspacing='0' cellpadding='0' border='0'>
+                    <tbody>
+                    <tr>
+                        <td><br />&nbsp;<br /></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table cellspacing='0' cellpadding='0' border='0'>
+                    <tbody>
+                    <tr>
+                        <td><b>Plugin admin bar menu</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id='yes-menu-enabled-label' for='yes-menu-enabled'>Enabled</label>
+                            <input type='radio' id='yes-menu-enabled' name='plugin-admin-bar-menu' value='true' YES_ENABLED_PLUGIN_ADMIN_BAR_MENU_TOKEN />&nbsp;
+                            <label id='no-menu-enabled-label' for='no-menu-enabled'>Disabled</label>
+                            <input type='radio' id='no-menu-enabled' name='plugin-admin-bar-menu' value='false' NO_ENABLED_PLUGIN_ADMIN_BAR_MENU_TOKEN /></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table cellspacing='0' cellpadding='0' border='0'>
+                    <tbody>
+                    <tr>
+                        <td><br />&nbsp;<br /></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table cellspacing='0' cellpadding='0' border='0'>
+                    <tbody>
+                    <tr>
+                        <td><b>When viewing map on mobile devices, map should ignore user-set width & height,<br />instead the map should expand to the device's screen width & height</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id='yes-map-fill-viewport-enabled-label' for='map-fill-viewport-enabled'>Enabled</label>
+                            <input type='radio' id='map-fill-viewport-enabled' name='map-fill-viewport' value='true' YES_ENABLED_MAP_FILL_VIEWPORT_TOKEN />&nbsp;
+                            <label id='no-map-fill-viewport-enabled-label' for='no-map-fill-viewport-enabled'>Disabled</label>
+                            <input type='radio' id='no-map-fill-viewport-enabled' name='map-fill-viewport' value='false' NO_ENABLED_MAP_FILL_VIEWPORT_TOKEN /></td>
+                    </tr>
+                    </tbody>
+                </table>
 			</div><br /><br />
 			<input type='submit' onclick='' class='button-primary' tabindex='4' value=' Save Settings ' id='cgmp-save-settings' name='cgmp-save-settings' />
 		</form>
