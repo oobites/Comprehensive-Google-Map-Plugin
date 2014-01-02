@@ -1430,15 +1430,15 @@
                         if (CGMPGlobal.mapFillViewport) {
                             // Very basic mobile user agent detection
                             if (is_mobile_device()) {
-                                mapDiv.style.width = '98%';
+                                mapDiv.style.width = '99%';
                                 var viewPortHeight = $(window).height() + "";
 
                                 if (viewPortHeight.indexOf("px") != -1) {
                                     mapDiv.style.height = viewPortHeight;
                                 } else if (viewPortHeight.indexOf("%") != -1) {
-                                    mapDiv.style.height = "98%";
+                                    mapDiv.style.height = "99%";
                                 } else {
-                                    mapDiv.style.height = (viewPortHeight - 30) + "px";
+                                    mapDiv.style.height = (viewPortHeight - 15) + "px";
                                 }
                             }
                         }
