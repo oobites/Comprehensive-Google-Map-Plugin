@@ -693,8 +693,8 @@ if ( !function_exists('cgmp_plugin_action_links') ):
         if ($file == $plugin) {
             $settings_link = sprintf( '<a href="admin.php?page=cgmp-settings">%s</a>', __('Settings',CGMP_NAME) );
             $docs_link = sprintf( '<a href="admin.php?page=cgmp-documentation">%s</a>', __('Docs',CGMP_NAME) );
-            $shortcodes_link = sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcodes',CGMP_NAME) );
-            array_unshift($links, $settings_link, $docs_link, $shortcodes_link);
+            //$shortcodes_link = sprintf( '<a href="admin.php?page=cgmp-shortcodebuilder">%s</a>', __('Shortcodes',CGMP_NAME) );
+            array_unshift($links, $settings_link, $docs_link);
         }
         return $links;
     }
