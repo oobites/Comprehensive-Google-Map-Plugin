@@ -134,6 +134,26 @@ if ( !function_exists('cgmp_parse_wiki_style_links') ):
 endif;
 
 
+if ( !function_exists('cgmp_should_load_admin_scripts') ):
+    function cgmp_should_load_admin_scripts()  {
+        global $pagenow;
+
+        $admin_pages = array('cgmp-documentation', 'cgmp-shortcodebuilder', 'cgmp-settings', 'cgmp-saved-shortcodes');
+        $plugin_admin_page = isset($_REQUEST['page']) && trim($_REQUEST['page']) != "" ? $_REQUEST['page'] : "";
+        $is_plugin_menu_page = in_array($plugin_admin_page, $admin_pages);
+
+        $action_type = isset($_REQUEST['action']) && trim($_REQUEST['action']) != "" ? $_REQUEST['action'] : "";
+        $is_post_edit_mode = ($action_type == "edit" && $pagenow == "post.php");
+
+        $is_post_create_mode = ($pagenow == "post-new.php");
+
+        $is_widgets_page = ($pagenow == "widgets.php");
+
+        // Either we are viewing plugin's admin pages or we are creating new post or any other type
+        return ($is_plugin_menu_page || $is_post_create_mode || $is_post_edit_mode || $is_widgets_page);
+    }
+endif;
+
 
 if ( !function_exists('cgmp_load_plugin_textdomain') ):
 	function cgmp_load_plugin_textdomain() {

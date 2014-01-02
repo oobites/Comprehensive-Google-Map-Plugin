@@ -96,6 +96,7 @@ You can use one of the following formats:<br />
 * Enhancement: JavaScript information in "Support" tab
 * Enhancement: Added a setting to disable plugin admin bar menu
 * Enhancement: Added a setting to enable a full screen map on mobile devices(disabled by default)
+* Bug: When pipe character | was added to marker description, double marker was generated
 
 = 9.0.17 =
 * Enhancement: From "Saved Shortcodes" page it is now possible to inject shortcode into posts directly without entering post "Edit" mode

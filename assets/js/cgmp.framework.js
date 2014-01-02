@@ -265,20 +265,21 @@
 
                 var setGeoLocationIfEnabled = function setGeoLocationIfEnabled(enableGeoLocation) {
                     if (enableGeoLocation === "true") {
-                        geolocationMarker = new GeolocationMarker();
+                        if (is_mobile_device()) {
+                            geolocationMarker = new GeolocationMarker();
+                            google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
+                                googleMap.setCenter(this.getPosition());
+                                googleMap.fitBounds(this.getBounds());
+                            });
 
-                        google.maps.event.addListenerOnce(geolocationMarker, 'position_changed', function () {
-                            googleMap.setCenter(this.getPosition());
-                            googleMap.fitBounds(this.getBounds());
-                        });
-
-                        google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
-                            alert('There was an error creating Geolocation marker: ' + e.message + "\n\nProceeding with normal map generation..");
-                            Logger.error('There was an error obtaining your position. Message: ' + e.message);
-                            geolocationMarker = null; // Makes sure that the map is rendered when there was a problem with Geo marker
-                        });
-                        geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 6000, maximumAge: 0});
-                        geolocationMarker.setMap(googleMap);
+                            google.maps.event.addListener(geolocationMarker, 'geolocation_error', function (e) {
+                                //alert('There was an error creating Geolocation marker: ' + e.message + "\n\nProceeding with normal map generation..");
+                                Logger.error('There was an error obtaining your position. Message: ' + e.message);
+                                geolocationMarker = null; // Makes sure that the map is rendered when there was a problem with Geo marker
+                            });
+                            geolocationMarker.setPositionOptions({enableHighAccuracy: true, timeout: 6000, maximumAge: 0});
+                            geolocationMarker.setMap(googleMap);
+                        }
                     }
                 }
 
@@ -1428,9 +1429,7 @@
                         var mapDiv = document.getElementById(json.id);
                         if (CGMPGlobal.mapFillViewport) {
                             // Very basic mobile user agent detection
-                            var userAgent = navigator.userAgent;
-                            //http://www.zytrax.com/tech/web/mobile_ids.html
-                            if(userAgent.match(/Android|BlackBerry|IEMobile|i(Phone|Pad|Pod)|Kindle|MeeGo|NetFront|Nokia|Opera M(ob|in)i|Pie|PalmOS|PDA|Polaris|Plucker|Samsung|SonyEricsson|SymbianOS|UP.Browser|Vodafone|webOS|Windows Phone/i)) {
+                            if (is_mobile_device()) {
                                 mapDiv.style.width = '98%';
                                 var viewPortHeight = $(window).height() + "";
 
@@ -1557,6 +1556,15 @@
         }(jQueryObj));
     }
 })();
+
+function is_mobile_device() {
+    var userAgent = navigator.userAgent;
+    //http://www.zytrax.com/tech/web/mobile_ids.html
+    if (typeof userAgent !== "undefined" && userAgent != "") {
+        return userAgent.match(/Android|BlackBerry|IEMobile|i(Phone|Pad|Pod)|Kindle|MeeGo|NetFront|Nokia|Opera M(ob|in)i|Pie|PalmOS|PDA|Polaris|Plucker|Samsung|SonyEricsson|SymbianOS|UP.Browser|Vodafone|webOS|Windows Phone/i);
+    }
+    return false;
+}
 
 function base64_decode (data) {
     // From: http://phpjs.org/functions

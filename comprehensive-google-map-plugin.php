@@ -93,8 +93,10 @@ if ( !function_exists('cgmp_add_actions') ):
         if ( is_admin() ) {
             $setting_tiny_mce_button = get_option(CGMP_DB_SETTINGS_TINYMCE_BUTTON);
             if (!isset($setting_tiny_mce_button) || (isset($setting_tiny_mce_button) && $setting_tiny_mce_button != "false")) {
-                add_action('init', 'cgmp_register_mce');
-                add_action('wp_ajax_cgmp_mce_ajax_action', 'cgmp_mce_ajax_action_callback');
+                if (cgmp_should_load_admin_scripts()) {
+                    add_action('init', 'cgmp_register_mce');
+                    add_action('wp_ajax_cgmp_mce_ajax_action', 'cgmp_mce_ajax_action_callback');
+                }
             }
         }
 

@@ -35,6 +35,7 @@ var jQueryCgmp = jQuery.noConflict();
                 var description = value_arr[2];
                 if (description != null && description !== "") {
                         description = description.replace(new RegExp("\\[|\\]", "g"), "");
+                        description = description.replace(new RegExp("\\|", "g"), " - ");
 						bubbleText = "<p style='padding-left: 50px'><i>" + description + "</i></p>";
 					}
 					
