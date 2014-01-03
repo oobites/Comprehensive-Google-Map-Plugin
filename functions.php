@@ -276,7 +276,7 @@ endif;
 
 if ( !function_exists('cgmp_map_data_injector') ):
 	function cgmp_map_data_injector($map_json, $id) {
-	    return cgmp_map_data_hook_function( $map_json, $id );
+	    echo cgmp_map_data_hook_function( $map_json, $id );
 	}
 endif;
 
