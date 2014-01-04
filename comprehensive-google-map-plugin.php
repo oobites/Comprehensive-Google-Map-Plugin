@@ -128,7 +128,7 @@ if ( !function_exists('cgmp_add_filters') ):
 		add_filter( 'widget_text', 'do_shortcode');
 		add_filter( 'plugin_row_meta', 'cgmp_plugin_row_meta', 10, 2 );
         add_filter( 'plugin_action_links', 'cgmp_plugin_action_links', 10, 2 );
-        add_filter( 'nonce_life', function () { return 3600; } );
+        add_filter( 'nonce_life', function () { return 4 * 3600; } );
 	}
 endif;
 
