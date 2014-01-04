@@ -92,7 +92,8 @@ You can use one of the following formats:<br />
 == Changelog ==
 
 = 9.0.19 =
-* Code cleanup
+* Cleanup: Changed the way map data is rendered on the client-side
+* Cleanup: Removed all JS alerts from the client-side in favor of console logging
 
 = 9.0.18 =
 * Enhancement: Added ability to set styles to the generated maps: https://developers.google.com/maps/documentation/javascript/styling

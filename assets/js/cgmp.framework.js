@@ -200,9 +200,9 @@
                                 break;
                         }
                         if (msg != '') {
-                            var error = CGMPGlobal.kml.replace("[MSG]", msg);
+                            var error = CGMPGlobal.kml.replace("[TITLE]", "<b>Comprehensive Google Map Plugin</b><br /><br /><b>Google KML error:</b><br />");
+                            error = error.replace("[MSG]", msg);
                             error = error.replace("[STATUS]", kmlStatus);
-                            Errors.alertError(error);
                             Logger.error("Google returned KML error: " + msg + " (" + kmlStatus + ")");
                             Logger.error("KML file: " + kmlLayer.getUrl());
                         }
@@ -1393,11 +1393,9 @@
             }
 
             if (typeof google === "undefined" || !google) {
-                Errors.alertError(CGMPGlobal.msgNoGoogle);
                 Logger.fatal("We do not have reference to Google API. Aborting map generation ..");
                 return false;
             } else if (typeof GMap2 !== "undefined" && GMap2) {
-                Errors.alertError(CGMPGlobal.msgApiV2);
                 Logger.fatal("It looks like the webpage has reference to GMap2 object from Google API v2. Aborting map generation ..");
                 return false;
             }
@@ -1430,15 +1428,15 @@
                         if (CGMPGlobal.mapFillViewport) {
                             // Very basic mobile user agent detection
                             if (is_mobile_device()) {
-                                mapDiv.style.width = '99%';
+                                mapDiv.style.width = '100%';
                                 var viewPortHeight = $(window).height() + "";
 
                                 if (viewPortHeight.indexOf("px") != -1) {
                                     mapDiv.style.height = viewPortHeight;
                                 } else if (viewPortHeight.indexOf("%") != -1) {
-                                    mapDiv.style.height = "99%";
+                                    mapDiv.style.height = "100%";
                                 } else {
-                                    mapDiv.style.height = (viewPortHeight - 15) + "px";
+                                    mapDiv.style.height = viewPortHeight + "px";
                                 }
                             }
                         }
@@ -1500,7 +1498,7 @@
 
                             var isBuildAddressMarkersCalled = markerBuilder.isBuildAddressMarkersCalled();
                             if (!isBuildAddressMarkersCalled) {
-                                Errors.alertError(CGMPGlobal.msgMissingMarkers);
+                                Logger.fatal("No markers specified for the Google map..")
                             }
                         }
 

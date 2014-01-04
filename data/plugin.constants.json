@@ -57,7 +57,6 @@
     "CGMP_JSON_DATA_DEFAULT_WIDGET_PARAM_VALUES" : "default.widget.params.values.json",
     "CGMP_JSON_DATA_HTML_ELEMENTS_DOCO_PARAMS" : "html.elements.doco.params.json",
     "CGMP_JSON_DATA_HTML_ELEMENTS_FORM_PARAMS" : "html.elements.form.params.json",
-    "CGMP_JSON_DATA_HTML_GLOBAL_ERROR_MESSAGES" : "html.global.error.messages.json",
     "CGMP_NAME" : "cgmp",
     "CGMP_NO_BUBBLE_DESC" : "No description provided",
     "CGMP_PLUGIN_ASSETS_DIR" : "CGMP_PLUGIN_DIR/assets",
