@@ -223,16 +223,19 @@
                 var markers, toValidateAddresses, badAddresses, defaultUnits, wasBuildAddressMarkersCalled, timeout, directionControlsBinded, googleMap, csvString, bubbleAutoPan, originalExtendedBounds, originalMapCenter, updatedZoom, mapDivId, geocoder, bounds, infowindow, streetViewService, directionsRenderer, directionsService;
                 var geolocationMarker = null;
                 var isGeoMashupSet = false;
+                var enablemarkerclustering = false;
                 var resetCacheRequired = false;
                 var geoMashupJsonData = [];
                 var nonGeoMashupJsonData = [];
+                var mapClickListener = {};
                 var init = function init(map, autoPan, units, mainJson) {
                     nonGeoMashupJsonData = mainJson;
                     googleMap = map;
                     mapDivId = googleMap.getDiv().id;
                     bubbleAutoPan = autoPan;
                     defaultUnits = units;
-                    google.maps.event.addListener(googleMap, 'click', function () {
+                    enablemarkerclustering = mainJson.enablemarkerclustering !== "false";
+                    mapClickListener = google.maps.event.addListener(googleMap, 'click', function () {
                         resetMap();
                     });
 
@@ -300,6 +303,33 @@
                         });
                     } else {
                         setBounds();
+
+                        if (enablemarkerclustering) {
+                            var doneClustering = false;
+                            var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+                            var script = document.createElement('script');
+                            script.type = 'text/javascript';
+                            script.src = "http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js";
+                            script.onload = script.onreadystatechange = function () {
+                                if (!doneClustering && (!this.readyState || /loaded|complete/.test(script.readyState))) {
+                                    doneClustering = true;
+                                    //http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js
+
+                                    google.maps.event.removeListener(mapClickListener);
+                                    markerClusterer = new MarkerClusterer(googleMap, markers, {averageCenter: true, zoomOnClick: true});
+
+                                    // Handle memory leak in IE
+                                    script.onload = script.onreadystatechange = null;
+                                    if (head && script.parentNode) {
+                                        head.removeChild(script);
+                                    }
+                                    script = undefined;
+                                }
+                            };
+                            // Use insertBefore instead of appendChild  to circumvent an IE6 bug - die IE6, just die! A.Z.
+                            // head.insertBefore( script, head.firstChild );
+                            head.appendChild(script);
+                        }
 
                         if (resetCacheRequired) {
                             Logger.warn("Reset server map data cache required");

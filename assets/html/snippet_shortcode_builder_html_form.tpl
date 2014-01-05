@@ -105,6 +105,29 @@
         </table>
     </fieldset>
 
+    <fieldset class="fieldset">
+        <legend>Marker Clustering</legend>
+        <table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+            <tr>
+                <td valign="top" class="first-td first-td-cell" align="left"></td>
+                <td valign="top" class="second-td" align="left"></td>
+                <td valign="top" class="third-td" align="left"></td>
+                <td valign="top" class="fourth-td" align="left"></td>
+            </tr>
+            <tr>
+                <td class="first-td-cell"><a id="tooltip-marker-gps-location" class="google-map-tooltip-marker" href="javascript:;" title="Some applications are required to display a large number of locations or markers. Naively plotting hundreds-to-thousands of markers on a map can quickly lead to a degraded user experience. Too many markers on the map cause both visual overload and sluggish interaction with the map. To overcome this poor performance, the information displayed on the map can be simplified by organizing markers into clusters">[Help?]</a></td>
+                <td align="left" colspan="3">
+						<span>
+							HIDDEN_ENABLEMARKERCLUSTERINGHIDDEN
+							INPUT_ENABLEMARKERCLUSTERING&nbsp;LABEL_ENABLEMARKERCLUSTERING
+						</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+
 	<fieldset class="fieldset">
 		<legend>Marker GEO Mashup</legend>
 		<table class="cgmp-widget-table" cellspacing="0" cellpadding="0" border="0">

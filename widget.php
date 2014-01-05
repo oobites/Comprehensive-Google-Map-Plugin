@@ -69,6 +69,7 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
 
 		$addmarkermashuphidden = isset($addmarkermashuphidden) ? $addmarkermashuphidden : "false";
         $enablegeolocationmarkerhidden = isset($enablegeolocationmarkerhidden) ? $enablegeolocationmarkerhidden : "false";
+        $enablemarkerclusteringhidden = isset($enablemarkerclusteringhidden) ? $enablemarkerclusteringhidden : "false";
 		if ($addmarkermashuphidden == "true") {
             $json_data_arr = make_marker_geo_mashup_2();
             $addmarkerlisthidden = $json_data_arr["data"];
@@ -103,12 +104,14 @@ class ComprehensiveGoogleMap_Widget extends WP_Widget {
         $map_data_properties['markerlist'] = $addmarkerlisthidden;
 		$map_data_properties['addmarkermashup'] = $addmarkermashuphidden;
 		$map_data_properties['enablegeolocationmarker'] = $enablegeolocationmarkerhidden;
+		$map_data_properties['enablemarkerclustering'] = $enablemarkerclusteringhidden;
 		$map_data_properties['kml'] = cgmp_clean_kml($map_data_properties['kml']);
 		$map_data_properties['panoramiouid'] = cgmp_clean_panoramiouid($map_data_properties['panoramiouid']);
 
 		//When widget was saved and untouched for a long time, the new added config options were not initialized
 		$map_data_properties['distanceunits'] = isset($map_data_properties['distanceunits']) ? $map_data_properties['distanceunits'] : "miles";
         $map_data_properties['scrollwheelcontrol'] = isset($map_data_properties['scrollwheelcontrol']) ? $map_data_properties['scrollwheelcontrol'] : "false";
+        $map_data_properties['enablemarkerclustering'] = isset($map_data_properties['enablemarkerclustering']) ? $map_data_properties['enablemarkerclustering'] : "false";
 		$map_data_properties['tiltfourtyfive'] = isset($map_data_properties['tiltfourtyfive']) ? $map_data_properties['tiltfourtyfive'] : "false";
 		$map_data_properties['draggable'] = isset($map_data_properties['draggable']) ? $map_data_properties['draggable'] : "true";
 		$map_data_properties['styles'] = isset($map_data_properties['styles']) ? cgmp_clean_styles($map_data_properties['styles']) : "";

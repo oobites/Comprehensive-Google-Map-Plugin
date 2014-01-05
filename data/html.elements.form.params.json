@@ -253,6 +253,15 @@
     },
     {
         "backendFunctionNameSuffix": "input",
+        "cssClasses": "marker-clustering",
+        "dbParameterId": "enablemarkerclustering",
+        "dbParameterName": "enablemarkerclustering",
+        "htmlInputElementType": "checkbox",
+        "htmlLabelValue": "Some applications are required to display a large number of locations or markers. Naively plotting hundreds-to-thousands of markers on a map can quickly lead to a degraded user experience. Too many markers on the map cause both visual overload and sluggish interaction with the map. To overcome this poor performance, the information displayed on the map can be simplified by organizing markers into clusters.</b> ",
+        "templateTokenNameSuffix": "enablemarkerclustering"
+    },
+    {
+        "backendFunctionNameSuffix": "input",
         "cssClasses": "gps-location-marker",
         "dbParameterId": "enablegeolocationmarker",
         "dbParameterName": "enablegeolocationmarker",
@@ -276,6 +285,16 @@
         "dbParameterName": "addmarkermashupbubble",
         "htmlLabelValue": "",
         "templateTokenNameSuffix": "addmarkermashupbubble"
+    },
+    {
+        "backendFunctionNameSuffix": "input",
+        "cssClasses": "notshortcodeitem",
+        "dbParameterId": "enablemarkerclusteringhidden",
+        "dbParameterName": "enablemarkerclusteringhidden",
+        "htmlInputElementType": "hidden",
+        "htmlLabelValue": "",
+        "templateTokenNamePrefix": "hidden",
+        "templateTokenNameSuffix": "enablemarkerclusteringhidden"
     },
     {
         "backendFunctionNameSuffix": "input",

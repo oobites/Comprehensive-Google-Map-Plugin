@@ -495,6 +495,31 @@ function buildShortcode(id, shortcodeId, $) {
             });
         }
 
+        function initMarkerClusteringEvent() {
+
+            $(document).on("change", "input.marker-clustering", function (source) {
+                var checkboxId = $(this).attr("id");
+
+                if ($(this).is(":checked")) {
+                    $("#" + checkboxId + "hidden").val("true");
+                } else {
+                    $("#" + checkboxId + "hidden").val("false");
+                }
+            });
+        }
+
+        function checkedMarkerClusteringOnInit() {
+            $.each($("input.marker-clustering"), function() {
+                var checkboxId = $(this).attr("id");
+                var hiddenIdVal = $("#" + checkboxId + "hidden").val();
+                if (hiddenIdVal === "true") {
+                    $(this).prop("checked", true);
+                } else {
+                    $(this).removeAttr("checked");
+                }
+            });
+        }
+
 		$(document).ready(function() {
 			initTokenHolders();
 			initAddLocationEevent();
@@ -502,9 +527,11 @@ function buildShortcode(id, shortcodeId, $) {
 			initTooltips();
 			initMarkerIconEvents();
             checkedGPSMarkerOnInit();
+            checkedMarkerClusteringOnInit();
             initGPSMarkerEvent();
 			checkedGeoMashupOnInit();
 			initGeoMashupEvent();
+            initMarkerClusteringEvent();
             initInsertShortcodeToPostEvent() ;
 
 			if (typeof $("ul.tools-tabs-nav").tabs == "function") {
@@ -524,6 +551,7 @@ function buildShortcode(id, shortcodeId, $) {
                         initTokenHolders();
                         checkedGPSMarkerOnInit();
                         checkedGeoMashupOnInit();
+                        checkedMarkerClusteringOnInit();
                     }
 				}
 			}
