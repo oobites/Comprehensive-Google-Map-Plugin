@@ -129,7 +129,6 @@ function buildShortcode(id, shortcodeId, $) {
 			val = val.replace(new RegExp("'", "g"), "");
 			val = val.replace(new RegExp("\"", "g"), "");
             val = val.replace(new RegExp("\\[|\\]", "g"), "");
-            val = val.replace(new RegExp("\\|", "g"), " - ");
 		}
 
         if (role === 'styles') {

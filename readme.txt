@@ -96,6 +96,7 @@ You can use one of the following formats:<br />
 * Enhancement: Corrections in French translation by Marcello Cavallucci
 * Cleanup: Changed the way map data is rendered on the client-side
 * Cleanup: Removed all JS alerts from the client-side in favor of console logging
+* Bug: marker list separator (pipe character |) was cleaned up too much
 
 = 9.0.18 =
 * Enhancement: Added ability to set styles to the generated maps: https://developers.google.com/maps/documentation/javascript/styling
