@@ -97,9 +97,20 @@ if ( !function_exists('cgmp_shortcode_googlemap_handler') ):
 			}
 
             if ($addmarkermashup == 'false' && trim($addmarkerlist) != "") {
+                
+                $post_type = "custom";
+                $post_id = -1;
+
                 global $post;
-                $post_type = $post->post_type;
-                $post_id = $post->ID;
+                if (isset($post)) {
+                    if (is_object($post)) {
+                        $post_type = isset($post->post_type) ? $post->post_type : $post_type;
+                        $post_id = isset($post->ID) ? $post->ID : $post_id;
+                    } else if (is_array($post) && !empty($post)) {
+                        $post_type = isset($post['post_type']) ? $post['post_type'] : $post_type;
+                        $post_id = isset($post['ID']) ? $post['ID'] : $post_id;
+                    }
+                }
 
                 if (is_numeric($shortcodeid) && $shortcodeid == -1) {
                     $shortcodeid =  md5($addmarkerlist);

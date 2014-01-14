@@ -1455,7 +1455,7 @@
 
                     if ($('div#' + json.id).length > 0) {
                         var mapDiv = document.getElementById(json.id);
-                        if (CGMPGlobal.mapFillViewport) {
+                        if (CGMPGlobal.mapFillViewport === "true") {
                             // Very basic mobile user agent detection
                             if (is_mobile_device()) {
                                 mapDiv.style.width = '100%';

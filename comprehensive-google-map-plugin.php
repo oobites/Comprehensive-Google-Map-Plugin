@@ -3,7 +3,7 @@
 Plugin Name: Comprehensive Google Map Plugin
 Plugin URI: http://wordpress.org/support/plugin/comprehensive-google-map-plugin
 Description: A simple and intuitive, yet elegant and fully documented Google map plugin that installs as a widget and a short code. The plugin is packed with useful features. Widget and shortcode enabled. Offers extensive configuration options for markers, over 250 custom marker icons, marker Geo mashup, controls, size, KML files, location by latitude/longitude, location by address, info window, directions, traffic/bike lanes and more. 
-Version: 9.0.19
+Version: 9.0.20
 Author: Alex Zagniotov
 Author URI: http://wordpress.org/support/plugin/comprehensive-google-map-plugin
 License: GPLv2
@@ -128,7 +128,6 @@ if ( !function_exists('cgmp_add_filters') ):
 		add_filter( 'widget_text', 'do_shortcode');
 		add_filter( 'plugin_row_meta', 'cgmp_plugin_row_meta', 10, 2 );
         add_filter( 'plugin_action_links', 'cgmp_plugin_action_links', 10, 2 );
-        add_filter( 'nonce_life', function () { return 4 * 3600; } );
 	}
 endif;
 
